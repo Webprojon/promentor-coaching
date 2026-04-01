@@ -52,11 +52,15 @@ export default function TeamsPage() {
                 key={member.id}
                 className="border-t border-white/10 hover:bg-slate-800/45"
               >
-                <td className="px-4 py-3 text-sm text-slate-300">{member.id}</td>
+                <td className="px-4 py-3 text-sm text-slate-300">
+                  {member.id}
+                </td>
                 <td className="px-4 py-3 text-sm font-semibold text-slate-100">
                   {member.name}
                 </td>
-                <td className="px-4 py-3 text-sm text-slate-300">{member.role}</td>
+                <td className="px-4 py-3 text-sm text-slate-300">
+                  {member.role}
+                </td>
                 <td className="px-4 py-3 text-sm">
                   <span className="inline-flex rounded-full border border-white/30 bg-white/15 px-2.5 py-1 text-xs font-medium text-white">
                     {member.status}
