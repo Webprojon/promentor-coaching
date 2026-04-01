@@ -21,7 +21,9 @@ export default function MentorsPage() {
                 <h2 className="mt-2 text-lg font-semibold text-white">
                   {mentor.name}
                 </h2>
-                <p className="mt-1 text-sm text-slate-300">{mentor.expertise}</p>
+                <p className="mt-1 text-sm text-slate-300">
+                  {mentor.expertise}
+                </p>
               </div>
               <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
                 {mentor.rating} rating

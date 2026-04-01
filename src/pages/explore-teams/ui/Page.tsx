@@ -16,7 +16,9 @@ export default function ExploreTeamsPage() {
             <p className="text-xs uppercase tracking-wider text-cyan-200/80">
               {team.id}
             </p>
-            <h2 className="mt-2 text-lg font-semibold text-white">{team.name}</h2>
+            <h2 className="mt-2 text-lg font-semibold text-white">
+              {team.name}
+            </h2>
             <p className="mt-2 text-sm text-slate-300">{team.focus}</p>
             <div className="mt-4 flex items-center justify-between text-sm text-slate-200">
               <span>{team.members} members</span>

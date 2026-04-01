@@ -16,7 +16,9 @@ export default function BoardsPage() {
             <p className="text-xs uppercase tracking-wider text-cyan-200/80">
               {board.id}
             </p>
-            <h2 className="mt-2 text-lg font-semibold text-white">{board.title}</h2>
+            <h2 className="mt-2 text-lg font-semibold text-white">
+              {board.title}
+            </h2>
             <p className="mt-1 text-sm text-slate-300">Owner: {board.owner}</p>
             <p className="mt-1 text-sm text-slate-300">
               Tasks this week: {board.tasks}

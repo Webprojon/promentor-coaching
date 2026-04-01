@@ -16,7 +16,9 @@ export default function SuggestionPage() {
             <p className="text-xs uppercase tracking-wider text-cyan-200/80">
               {item.id}
             </p>
-            <h2 className="mt-2 text-lg font-semibold text-white">{item.title}</h2>
+            <h2 className="mt-2 text-lg font-semibold text-white">
+              {item.title}
+            </h2>
             <p className="mt-2 text-sm text-slate-300">{item.detail}</p>
             <span className="mt-4 inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
               Priority: {item.priority}
