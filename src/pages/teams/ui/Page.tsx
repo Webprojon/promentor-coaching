@@ -16,7 +16,10 @@ export default function TeamsPage() {
           >
             Active Mentors
           </Typography>
-          <Typography component="p" className="mt-2 text-2xl font-bold text-white">
+          <Typography
+            component="p"
+            className="mt-2 text-2xl font-bold text-white"
+          >
             12
           </Typography>
         </article>
@@ -27,7 +30,10 @@ export default function TeamsPage() {
           >
             Teams Running
           </Typography>
-          <Typography component="p" className="mt-2 text-2xl font-bold text-white">
+          <Typography
+            component="p"
+            className="mt-2 text-2xl font-bold text-white"
+          >
             5
           </Typography>
         </article>
@@ -38,7 +44,10 @@ export default function TeamsPage() {
           >
             Weekly Check-ins
           </Typography>
-          <Typography component="p" className="mt-2 text-2xl font-bold text-white">
+          <Typography
+            component="p"
+            className="mt-2 text-2xl font-bold text-white"
+          >
             28
           </Typography>
         </article>

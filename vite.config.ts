@@ -26,7 +26,12 @@ export default defineConfig(({ mode }) => {
           "./MentorsPage": "./src/pages/mentors/index.tsx",
           "./SuggestionPage": "./src/pages/suggestion/index.tsx",
         },
-        shared: ["react", "react-dom", "react-router-dom", "@promentorapp/ui-kit"],
+        shared: [
+          "react",
+          "react-dom",
+          "react-router-dom",
+          "@promentorapp/ui-kit",
+        ],
       }),
     ],
     server: {

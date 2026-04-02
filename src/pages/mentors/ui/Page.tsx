@@ -28,7 +28,10 @@ export default function MentorsPage() {
                 >
                   {mentor.name}
                 </Typography>
-                <Typography component="p" className="mt-1 text-sm text-slate-300">
+                <Typography
+                  component="p"
+                  className="mt-1 text-sm text-slate-300"
+                >
                   {mentor.expertise}
                 </Typography>
               </div>
