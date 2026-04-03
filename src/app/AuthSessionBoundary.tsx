@@ -27,7 +27,11 @@ export default function AuthSessionBoundary({
         description={AUTH_SESSION_HYDRATING_TEXT}
       >
         <div className="mt-4 rounded-xl border border-cyan-300/30 bg-cyan-300/10 p-4 text-sm text-cyan-100">
-          <Typography component="p" variantStyle="body" className="text-cyan-100">
+          <Typography
+            component="p"
+            variantStyle="body"
+            className="text-cyan-100"
+          >
             {AUTH_SESSION_HYDRATING_TEXT}
           </Typography>
         </div>
