@@ -41,22 +41,27 @@ async function loadHostAuthBridge(): Promise<HostAuthBridge | null> {
 export function useHostAuthSession() {
   const [session, setSession] = useState<HostAuthSession>(fallbackSession);
   const [isBridgeAvailable, setIsBridgeAvailable] = useState(false);
+  const [isHydrating, setIsHydrating] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
     let unsubscribe: (() => void) | null = null;
 
     void loadHostAuthBridge().then((bridge) => {
-      if (!isMounted || !bridge) {
+      if (!isMounted) {
         return;
       }
 
-      setIsBridgeAvailable(true);
-      const initialSession = bridge.getSession();
-      setSession(initialSession);
-      unsubscribe = bridge.subscribe((nextSession) => {
-        setSession(nextSession);
-      });
+      if (bridge) {
+        setIsBridgeAvailable(true);
+        const initialSession = bridge.getSession();
+        setSession(initialSession);
+        unsubscribe = bridge.subscribe((nextSession) => {
+          setSession(nextSession);
+        });
+      }
+
+      setIsHydrating(false);
     });
 
     return () => {
@@ -67,5 +72,5 @@ export function useHostAuthSession() {
     };
   }, []);
 
-  return { session, isBridgeAvailable };
+  return { session, isBridgeAvailable, isHydrating };
 }
