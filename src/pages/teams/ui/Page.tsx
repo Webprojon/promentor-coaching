@@ -1,4 +1,5 @@
 import PageForShell from "../../../shared/ui/page-for-shell/PageForShell";
+import { Typography } from "@promentorapp/ui-kit";
 import { members } from "../model/constants";
 
 export default function TeamsPage() {
@@ -9,22 +10,46 @@ export default function TeamsPage() {
     >
       <section className="mt-6 grid gap-4 md:grid-cols-3">
         <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <p className="text-xs uppercase tracking-wider text-cyan-200/80">
+          <Typography
+            component="p"
+            className="text-xs uppercase tracking-wider text-cyan-200/80"
+          >
             Active Mentors
-          </p>
-          <p className="mt-2 text-2xl font-bold text-white">12</p>
+          </Typography>
+          <Typography
+            component="p"
+            className="mt-2 text-2xl font-bold text-white"
+          >
+            12
+          </Typography>
         </article>
         <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <p className="text-xs uppercase tracking-wider text-cyan-200/80">
+          <Typography
+            component="p"
+            className="text-xs uppercase tracking-wider text-cyan-200/80"
+          >
             Teams Running
-          </p>
-          <p className="mt-2 text-2xl font-bold text-white">5</p>
+          </Typography>
+          <Typography
+            component="p"
+            className="mt-2 text-2xl font-bold text-white"
+          >
+            5
+          </Typography>
         </article>
         <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <p className="text-xs uppercase tracking-wider text-cyan-200/80">
+          <Typography
+            component="p"
+            className="text-xs uppercase tracking-wider text-cyan-200/80"
+          >
             Weekly Check-ins
-          </p>
-          <p className="mt-2 text-2xl font-bold text-white">28</p>
+          </Typography>
+          <Typography
+            component="p"
+            className="mt-2 text-2xl font-bold text-white"
+          >
+            28
+          </Typography>
         </article>
       </section>
 
