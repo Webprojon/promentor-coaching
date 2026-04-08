@@ -1,101 +1,42 @@
-import PageForShell from "../../../shared/ui/page-for-shell/PageForShell";
-import { Typography } from "@promentorapp/ui-kit";
-import { members } from "../model/constants";
+import { Button, Typography } from "@promentorapp/ui-kit";
+import { useTeamsPage } from "../model/useTeamsPage";
+import { TeamCreatorSection } from "./components/TeamCreatorSection";
+import { TeamTable } from "./components/TeamTable";
+import { EmptyState } from "./components/EmptyState";
+import { Modal } from "../../../shared/ui/Modal";
 
 export default function TeamsPage() {
-  return (
-    <PageForShell
-      title="Teams Workspace"
-      description="Build focused learning squads, track mentor availability, and keep collaboration flowing inside one consistent Promentor workflow."
-    >
-      <section className="mt-6 grid gap-4 md:grid-cols-3">
-        <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <Typography
-            component="p"
-            className="text-xs uppercase tracking-wider text-cyan-200/80"
-          >
-            Active Mentors
-          </Typography>
-          <Typography
-            component="p"
-            className="mt-2 text-2xl font-bold text-white"
-          >
-            12
-          </Typography>
-        </article>
-        <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <Typography
-            component="p"
-            className="text-xs uppercase tracking-wider text-cyan-200/80"
-          >
-            Teams Running
-          </Typography>
-          <Typography
-            component="p"
-            className="mt-2 text-2xl font-bold text-white"
-          >
-            5
-          </Typography>
-        </article>
-        <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <Typography
-            component="p"
-            className="text-xs uppercase tracking-wider text-cyan-200/80"
-          >
-            Weekly Check-ins
-          </Typography>
-          <Typography
-            component="p"
-            className="mt-2 text-2xl font-bold text-white"
-          >
-            28
-          </Typography>
-        </article>
-      </section>
+  const state = useTeamsPage();
 
-      <section className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/55 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-sm">
-        <table className="w-full border-collapse">
-          <thead className="bg-slate-800/70">
-            <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                ID
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                Role
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {members.map((member) => (
-              <tr
-                key={member.id}
-                className="border-t border-white/10 hover:bg-slate-800/45"
-              >
-                <td className="px-4 py-3 text-sm text-slate-300">
-                  {member.id}
-                </td>
-                <td className="px-4 py-3 text-sm font-semibold text-slate-100">
-                  {member.name}
-                </td>
-                <td className="px-4 py-3 text-sm text-slate-300">
-                  {member.role}
-                </td>
-                <td className="px-4 py-3 text-sm">
-                  <span className="inline-flex rounded-full border border-white/30 bg-white/15 px-2.5 py-1 text-xs font-medium text-white">
-                    {member.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-    </PageForShell>
+  return (
+    <main className="flex flex-col gap-6 w-full mx-auto max-w-7xl min-h-screen text-slate-100">
+      <Typography
+        component="h2"
+        variantStyle="title"
+        className="flex flex-wrap items-center justify-between gap-3 text-xl text-white"
+      >
+        Team management
+        <Button type="button" variant="contained" onClick={state.openCreator}>
+          Create Team
+        </Button>
+      </Typography>
+
+      {state.hasTeams ? <TeamTable rows={state.teamRows} /> : <EmptyState />}
+
+      <Modal
+        open={state.isCreatorOpen}
+        onClose={state.closeCreator}
+        title="Create Team"
+        secondaryAction={{ label: "Cancel", onClick: state.closeCreator, variant: "outlined" }}
+        primaryAction={{
+          label: "Confirm",
+          onClick: state.saveCreator,
+          variant: "contained",
+          disabled: !state.canSave,
+        }}
+      >
+        <TeamCreatorSection state={state} />
+      </Modal>
+    </main>
   );
 }

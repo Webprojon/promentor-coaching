@@ -8,11 +8,12 @@ import TeamsPage from "../pages/teams";
 import WorkoutPlansPage from "../pages/workout-plans";
 import Header from "../widgets/header";
 import AuthSessionBoundary from "./AuthSessionBoundary";
+import { AppBackground } from "../shared/ui/AppBackground";
 
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-slate-900">
+      <AppBackground>
         <Header />
         <AuthSessionBoundary>
           <Routes>
@@ -25,7 +26,7 @@ export default function App() {
             <Route path="/suggestion" element={<SuggestionPage />} />
           </Routes>
         </AuthSessionBoundary>
-      </div>
+      </AppBackground>
     </BrowserRouter>
   );
 }
