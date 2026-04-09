@@ -1,4 +1,4 @@
-import type { RequestStatus, WizardStep } from "../../../shared/model/types";
+import type { RequestStatus, WizardStep } from "@/shared/model/types";
 
 export type MentorExpertise = "Frontend" | "Backend" | "Career";
 export type MentorAvailability = "High" | "Medium";

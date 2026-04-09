@@ -1,6 +1,6 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
-import type { SuggestionComposerProps } from "../../model/types";
-import { PRIORITY_BADGE_CLASS, PRIORITY_SELECTED_BORDER_CLASS } from "../../model/constants";
+import type { SuggestionComposerProps } from "@/pages/suggestion/model/types";
+import { PRIORITY_BADGE_CLASS, PRIORITY_SELECTED_BORDER_CLASS } from "@/pages/suggestion/model/constants";
 
 export default function SuggestionComposer({
   draft,

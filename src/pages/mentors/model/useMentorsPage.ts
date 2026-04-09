@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { RequestDraft } from "../../../shared/model/types";
-import { MENTOR_ROWS } from "./constants";
-import type { Mentor, WizardStep } from "./types";
+import type { RequestDraft } from "@/shared/model/types";
+import { MENTOR_ROWS } from "@/pages/mentors/model/constants";
+import type { Mentor, WizardStep } from "@/pages/mentors/model/types";
 import {
   canProceedWizardStep,
   createEmptyMentorDraft,
@@ -9,7 +9,7 @@ import {
   getMentorActionStatus,
   getNextWizardStep,
   getPreviousWizardStep,
-} from "./utils";
+} from "@/pages/mentors/model/utils";
 
 const updateMentorStatus = (rows: Mentor[], mentorId: string, requestStatus: Mentor["requestStatus"]) =>
   rows.map((mentor) => (mentor.id === mentorId ? { ...mentor, requestStatus } : mentor));

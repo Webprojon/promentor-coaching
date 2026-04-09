@@ -1,8 +1,8 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
-import { REQUEST_STATUS_BADGE_CLASS, TEAM_STATUS_BADGE_CLASS } from "../../../../shared/model/constants";
-import type { ExploreTeam, ExploreTeamTableProps } from "../../model/types";
-import { TABLE_COLUMNS } from "../../model/constants";
-import { Table } from "../../../../shared/ui/Table";
+import { REQUEST_STATUS_BADGE_CLASS, TEAM_STATUS_BADGE_CLASS } from "@/shared/model/constants";
+import type { ExploreTeam, ExploreTeamTableProps } from "@/pages/explore-teams/model/types";
+import { TABLE_COLUMNS } from "@/pages/explore-teams/model/constants";
+import { Badge, Table } from "@/shared/ui";
 
 const REQUEST_ACTION_LABEL: Partial<Record<ExploreTeam["requestStatus"], string>> = {
   Pending: "Pending",
@@ -19,11 +19,9 @@ export function ExploreTeamTable({ rows, onRequestClick }: ExploreTeamTableProps
         <>
           <td className="px-4 py-3 text-sm font-semibold text-slate-100">{teamName}</td>
           <td className="px-4 py-3 text-sm">
-            <span
-              className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${TEAM_STATUS_BADGE_CLASS[status]}`}
-            >
+            <Badge toneClassName={TEAM_STATUS_BADGE_CLASS[status]}>
               {status}
-            </span>
+            </Badge>
           </td>
           <td className="px-4 py-3 text-sm">
             <div className="flex items-center">
@@ -46,11 +44,9 @@ export function ExploreTeamTable({ rows, onRequestClick }: ExploreTeamTableProps
           <td className="px-4 py-3 text-sm">
             <div className="flex items-center justify-end">
               {REQUEST_ACTION_LABEL[requestStatus] ? (
-                <span
-                  className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${REQUEST_STATUS_BADGE_CLASS[requestStatus]}`}
-                >
+                <Badge toneClassName={REQUEST_STATUS_BADGE_CLASS[requestStatus]}>
                   {REQUEST_ACTION_LABEL[requestStatus]}
-                </span>
+                </Badge>
               ) : (
                 <Button type="button" variant="outlined" onClick={() => onRequestClick(id)}>
                   Send request

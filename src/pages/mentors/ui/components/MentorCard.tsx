@@ -1,7 +1,8 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
-import { REQUEST_STATUS_BADGE_CLASS } from "../../../../shared/model/constants";
-import { ACTION_BUTTON_PROPS_BY_STATUS, ACTION_LABEL_BY_STATUS } from "../../model/constants";
-import type { MentorCardProps } from "../../model/types";
+import { REQUEST_STATUS_BADGE_CLASS } from "@/shared/model/constants";
+import { ACTION_BUTTON_PROPS_BY_STATUS, ACTION_LABEL_BY_STATUS } from "@/pages/mentors/model/constants";
+import type { MentorCardProps } from "@/pages/mentors/model/types";
+import { Badge } from "@/shared/ui";
 
 export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
   const actionButtonProps = ACTION_BUTTON_PROPS_BY_STATUS[mentor.requestStatus];
@@ -28,11 +29,9 @@ export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
           </div>
         </div>
         {mentor.requestStatus !== "NotRequested" ? (
-          <span
-            className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${REQUEST_STATUS_BADGE_CLASS[mentor.requestStatus]}`}
-          >
+          <Badge toneClassName={REQUEST_STATUS_BADGE_CLASS[mentor.requestStatus]}>
             {mentor.requestStatus}
-          </span>
+          </Badge>
         ) : null}
       </div>
 

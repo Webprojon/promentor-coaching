@@ -1,4 +1,4 @@
-import { PROFILE_HEADER } from "./constants";
+import { PROFILE_HEADER } from "@/pages/profile/model/constants";
 
 export function useProfilePage() {
   return {

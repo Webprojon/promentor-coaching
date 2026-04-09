@@ -1,8 +1,7 @@
-import { ExploreTeamTable } from "./components/ExploreTeamTable";
-import { useExploreTeamsPage } from "../model/useExploreTeamsPage";
-import PageForShell from "../../../shared/ui/PageForShell";
-import { Modal } from "../../../shared/ui/Modal";
-import { RequestFlowWizard } from "../../requests/ui/components/RequestFlowWizard";
+import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
+import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
+import { Modal, PageForShell } from "@/shared/ui";
+import { RequestFlowWizard } from "@/pages/requests/ui/components/RequestFlowWizard";
 
 export default function ExploreTeamsPage() {
   const state = useExploreTeamsPage();

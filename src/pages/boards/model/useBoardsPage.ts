@@ -1,4 +1,4 @@
-import { boards } from "./constants";
+import { boards } from "@/pages/boards/model/constants";
 
 export function useBoardsPage() {
   return { boards };

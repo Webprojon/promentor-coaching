@@ -1,7 +1,8 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
-import { SUGGESTION_STATUS_BADGE_CLASS } from "../../model/constants";
-import type { SuggestionHistoryProps } from "../../model/types";
+import { SUGGESTION_STATUS_BADGE_CLASS } from "@/pages/suggestion/model/constants";
+import type { SuggestionHistoryProps } from "@/pages/suggestion/model/types";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
+import { Badge } from "@/shared/ui";
 
 export default function SuggestionHistory({ history }: SuggestionHistoryProps) {
 
@@ -19,11 +20,9 @@ export default function SuggestionHistory({ history }: SuggestionHistoryProps) {
                   <Typography component="p" className="text-sm font-semibold text-white">
                     {item.title}
                   </Typography>
-                  <span
-                    className={`inline-flex rounded-lg border px-2.5 py-1 text-[10px] font-medium ${SUGGESTION_STATUS_BADGE_CLASS[item.status]}`}
-                  >
+                  <Badge toneClassName={SUGGESTION_STATUS_BADGE_CLASS[item.status]}>
                     {item.status}
-                  </span>
+                  </Badge>
                 </div>
 
                 <div className="flex items-center">

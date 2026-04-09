@@ -1,6 +1,6 @@
-import PageForShell from "../../../shared/ui/PageForShell";
+import { PageForShell } from "@/shared/ui";
 import { Typography } from "@promentorapp/ui-kit";
-import { useWorkoutPlansPage } from "../model/useWorkoutPlansPage";
+import { useWorkoutPlansPage } from "@/pages/workout-plans/model/useWorkoutPlansPage";
 
 export default function WorkoutPlansPage() {
   const { workoutPlans } = useWorkoutPlansPage();

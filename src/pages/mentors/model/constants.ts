@@ -1,4 +1,4 @@
-import type { Mentor } from "./types";
+import type { Mentor } from "@/pages/mentors/model/types";
 
 export const MENTOR_ROWS: Mentor[] = [
   {

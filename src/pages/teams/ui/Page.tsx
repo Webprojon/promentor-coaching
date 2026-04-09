@@ -1,10 +1,9 @@
 import { Button } from "@promentorapp/ui-kit";
-import { useTeamsPage } from "../model/useTeamsPage";
-import { TeamCreatorSection } from "./components/TeamCreatorSection";
-import { TeamTable } from "./components/TeamTable";
-import { EmptyState } from "./components/EmptyState";
-import { Modal } from "../../../shared/ui/Modal";
-import PageForShell from "../../../shared/ui/PageForShell";
+import { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
+import { TeamCreatorSection } from "@/pages/teams/ui/components/TeamCreatorSection";
+import { TeamTable } from "@/pages/teams/ui/components/TeamTable";
+import { EmptyState } from "@/pages/teams/ui/components/EmptyState";
+import { Modal, PageForShell } from "@/shared/ui";
 
 export default function TeamsPage() {
   const state = useTeamsPage();

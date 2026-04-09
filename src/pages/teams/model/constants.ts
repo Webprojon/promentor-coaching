@@ -1,4 +1,4 @@
-import type { TeamMemberOption, TeamRow } from "./types";
+import type { TeamMemberOption, TeamRow } from "@/pages/teams/model/types";
 
 export const TEAM_ROWS: TeamRow[] = [
   {

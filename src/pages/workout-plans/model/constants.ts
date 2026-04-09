@@ -1,4 +1,4 @@
-import type { WorkoutPlan } from "./types";
+import type { WorkoutPlan } from "@/pages/workout-plans/model/types";
 
 export const workoutPlans: WorkoutPlan[] = [
   {

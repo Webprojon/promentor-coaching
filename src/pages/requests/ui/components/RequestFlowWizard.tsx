@@ -1,6 +1,6 @@
 import { TextField, Typography } from "@promentorapp/ui-kit";
-import type { RequestFlowWizardProps } from "../../model/types";
-import { SHARED_TEXT_FIELD_CLASS } from "../../../../shared/model/constants";
+import type { RequestFlowWizardProps } from "@/pages/requests/model/types";
+import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 
 export function RequestFlowWizard({
   step,

@@ -1,7 +1,7 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
-import type { TeamCreatorSectionProps } from "../../model/types";
-import { SHARED_TEXT_FIELD_CLASS } from "../../../../shared/model/constants";
-import { FieldError } from "./FieldError";
+import type { TeamCreatorSectionProps } from "@/pages/teams/model/types";
+import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
+import { FieldError } from "@/pages/teams/ui/components/FieldError";
 
 export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
   const {

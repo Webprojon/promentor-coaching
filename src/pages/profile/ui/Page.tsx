@@ -1,6 +1,6 @@
 import { Typography } from "@promentorapp/ui-kit";
-import PageForShell from "../../../shared/ui/PageForShell";
-import { useProfilePage } from "../model/useProfilePage";
+import { PageForShell } from "@/shared/ui";
+import { useProfilePage } from "@/pages/profile/model/useProfilePage";
 
 export default function ProfilePage() {
   const { profileHeader } = useProfilePage();

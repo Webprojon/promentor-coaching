@@ -1,6 +1,6 @@
-import type { RequestDraft, WizardStep } from "../../../shared/model/types";
+import type { RequestDraft, WizardStep } from "@/shared/model/types";
 
-export type { DiscoveryTargetType, RequestStatus } from "../../../shared/model/types";
+export type { DiscoveryTargetType, RequestStatus } from "@/shared/model/types";
 
 export type RequestFlowWizardProps = {
   step: WizardStep;

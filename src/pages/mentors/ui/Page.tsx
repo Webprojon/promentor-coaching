@@ -1,8 +1,7 @@
-import PageForShell from "../../../shared/ui/PageForShell";
-import { Modal } from "../../../shared/ui/Modal";
-import { RequestFlowWizard } from "../../requests/ui/components/RequestFlowWizard";
-import { useMentorsPage } from "../model/useMentorsPage";
-import { MentorCard } from "./components/MentorCard";
+import { Modal, PageForShell } from "@/shared/ui";
+import { RequestFlowWizard } from "@/pages/requests/ui/components/RequestFlowWizard";
+import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
+import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
 
 export default function MentorsPage() {
   const {

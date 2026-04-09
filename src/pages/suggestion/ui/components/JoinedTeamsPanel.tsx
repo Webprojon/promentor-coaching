@@ -1,5 +1,5 @@
 import { Typography } from "@promentorapp/ui-kit";
-import type { JoinedTeamsPanelProps } from "../../model/types";
+import type { JoinedTeamsPanelProps } from "@/pages/suggestion/model/types";
 
 export default function JoinedTeamsPanel({
   joinedTeams,

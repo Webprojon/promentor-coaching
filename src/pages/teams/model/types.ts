@@ -1,5 +1,5 @@
-import type { useTeamsPage } from "./useTeamsPage";
-import type { TeamStatus } from "../../../shared/model/types";
+import type { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
+import type { TeamStatus } from "@/shared/model/types";
 
 export type TeamRow = {
   id: string;

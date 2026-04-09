@@ -1,8 +1,8 @@
-import PageForShell from "../../../shared/ui/PageForShell";
-import { useSuggestionPage } from "../model/useSuggestionPage";
-import JoinedTeamsPanel from "./components/JoinedTeamsPanel";
-import SuggestionComposer from "./components/SuggestionComposer";
-import SuggestionHistory from "./components/SuggestionHistory";
+import { PageForShell } from "@/shared/ui";
+import { useSuggestionPage } from "@/pages/suggestion/model/useSuggestionPage";
+import JoinedTeamsPanel from "@/pages/suggestion/ui/components/JoinedTeamsPanel";
+import SuggestionComposer from "@/pages/suggestion/ui/components/SuggestionComposer";
+import SuggestionHistory from "@/pages/suggestion/ui/components/SuggestionHistory";
 
 export default function SuggestionPage() {
   const state = useSuggestionPage();

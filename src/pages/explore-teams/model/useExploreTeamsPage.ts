@@ -1,7 +1,7 @@
 import { useState } from "react";
-import type { RequestDraft } from "../../../shared/model/types";
-import { EXPLORE_TEAM_ROWS } from "./constants";
-import type { ExploreTeam } from "./types";
+import type { RequestDraft } from "@/shared/model/types";
+import { EXPLORE_TEAM_ROWS } from "@/pages/explore-teams/model/constants";
+import type { ExploreTeam } from "@/pages/explore-teams/model/types";
 
 const createEmptyDraft = (): RequestDraft => ({
   targetType: "team",

@@ -1,4 +1,4 @@
-import { REQUESTS_OVERVIEW } from "./constants";
+import { REQUESTS_OVERVIEW } from "@/pages/requests/model/constants";
 
 export function useRequestsPage() {
   return {

@@ -1,9 +1,9 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
-import { TABLE_COLUMNS } from "../../model/constants";
-import { TEAM_STATUS_BADGE_CLASS } from "../../../../shared/model/constants";
-import type { TeamTableProps } from "../../model/types";
-import { Table } from "../../../../shared/ui/Table";
+import { TABLE_COLUMNS } from "@/pages/teams/model/constants";
+import { TEAM_STATUS_BADGE_CLASS } from "@/shared/model/constants";
+import type { TeamTableProps } from "@/pages/teams/model/types";
+import { Badge, Table } from "@/shared/ui";
 
 export function TeamTable({ rows }: TeamTableProps) {
   return (
@@ -15,11 +15,9 @@ export function TeamTable({ rows }: TeamTableProps) {
         <>
           <td className="px-4 py-3 text-sm font-semibold text-slate-100">{teamName}</td>
           <td className="px-4 py-3 text-sm">
-            <span
-              className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${TEAM_STATUS_BADGE_CLASS[status]}`}
-            >
+            <Badge toneClassName={TEAM_STATUS_BADGE_CLASS[status]}>
               {status}
-            </span>
+            </Badge>
           </td>
           <td className="px-4 py-3 text-sm">
             <div className="flex items-center">

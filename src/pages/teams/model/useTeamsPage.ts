@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TEAM_MEMBER_OPTIONS, TEAM_ROWS } from "./constants";
+import { TEAM_MEMBER_OPTIONS, TEAM_ROWS } from "@/pages/teams/model/constants";
 import {
   addManualMemberSchema,
   createTeamSchema,
   type AddManualMemberFormValues,
   type CreateTeamFormValues,
-} from "./teamCreatorSchema";
+} from "@/pages/teams/model/teamCreatorSchema";
 
 export function useTeamsPage() {
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);

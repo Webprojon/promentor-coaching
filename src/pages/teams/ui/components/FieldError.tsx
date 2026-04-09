@@ -1,5 +1,5 @@
 import { Typography } from "@promentorapp/ui-kit";
-import type { FieldErrorProps } from "../../model/types";
+import type { FieldErrorProps } from "@/pages/teams/model/types";
 
 export function FieldError({ message }: FieldErrorProps) {
     if (!message) return null;

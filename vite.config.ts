@@ -9,6 +9,11 @@ export default defineConfig(({ mode }) => {
     env.VITE_SHELL_REMOTE_URL || "http://localhost:5173/assets/remoteEntry.js";
 
   return {
+    resolve: {
+      alias: {
+        "@": "/src",
+      },
+    },
     plugins: [
       react(),
       tailwindcss(),

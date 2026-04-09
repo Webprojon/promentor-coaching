@@ -1,6 +1,6 @@
 import { Typography } from "@promentorapp/ui-kit";
-import PageForShell from "../../../shared/ui/PageForShell";
-import { useRequestsPage } from "../model/useRequestsPage";
+import { PageForShell } from "@/shared/ui";
+import { useRequestsPage } from "@/pages/requests/model/useRequestsPage";
 
 export default function RequestsPage() {
   const { overview } = useRequestsPage();

@@ -1,6 +1,6 @@
-import PageForShell from "../../../shared/ui/PageForShell";
+import { PageForShell } from "@/shared/ui";
 import { Typography } from "@promentorapp/ui-kit";
-import { useBoardsPage } from "../model/useBoardsPage";
+import { useBoardsPage } from "@/pages/boards/model/useBoardsPage";
 
 export default function BoardsPage() {
   const { boards } = useBoardsPage();

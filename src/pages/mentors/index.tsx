@@ -1,1 +1,1 @@
-export { default } from "./ui/Page";
+export { default } from "@/pages/mentors/ui/Page";

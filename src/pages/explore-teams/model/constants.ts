@@ -1,4 +1,4 @@
-import type { ExploreTeam } from "./types";
+import type { ExploreTeam } from "@/pages/explore-teams/model/types";
 
 export const EXPLORE_TEAM_ROWS: ExploreTeam[] = [
   {

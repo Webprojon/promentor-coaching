@@ -7,8 +7,8 @@ import {
   AUTH_SESSION_ENDED_TITLE,
   AUTH_SESSION_WAITING_TEXT,
   useHostAuthSession,
-} from "../features/auth";
-import PageForShell from "../shared/ui/PageForShell";
+} from "@/features/auth";
+import { PageForShell } from "@/shared/ui";
 
 type AuthSessionBoundaryProps = {
   children: ReactNode;

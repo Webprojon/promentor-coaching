@@ -1,4 +1,4 @@
-import type { JoinedTeam, SuggestionHistoryItem, SuggestionPriority, SuggestionStatus } from "./types";
+import type { JoinedTeam, SuggestionHistoryItem, SuggestionPriority, SuggestionStatus } from "@/pages/suggestion/model/types";
 
 export const PRIORITY_BADGE_CLASS: Record<SuggestionPriority, string> = {
   High: "bg-emerald-500/20 text-emerald-200",

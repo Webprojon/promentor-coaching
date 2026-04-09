@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import type { SuggestionDraft, SuggestionPriority } from "./types";
-import { joinedTeams, suggestionHistory } from "./constants";
+import type { SuggestionDraft, SuggestionPriority } from "@/pages/suggestion/model/types";
+import { joinedTeams, suggestionHistory } from "@/pages/suggestion/model/constants";
 
 const DEFAULT_TEAM = joinedTeams[0];
 

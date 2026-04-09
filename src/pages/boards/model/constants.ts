@@ -1,4 +1,4 @@
-import type { Board } from "./types";
+import type { Board } from "@/pages/boards/model/types";
 
 export const boards: Board[] = [
   {

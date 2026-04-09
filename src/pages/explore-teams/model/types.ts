@@ -1,4 +1,4 @@
-import type { RequestStatus, TeamStatus } from "../../../shared/model/types";
+import type { RequestStatus, TeamStatus } from "@/shared/model/types";
 
 export type ExploreVisibility = "Open" | "Limited";
 

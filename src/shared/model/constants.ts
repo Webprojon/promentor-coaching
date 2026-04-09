@@ -1,4 +1,4 @@
-import type { RequestStatus, TeamStatus } from "./types";
+import type { RequestStatus, TeamStatus } from "@/shared/model/types";
 
 export const REQUEST_STATUS_BADGE_CLASS: Record<RequestStatus, string> = {
   Pending: "border-amber-400/40 bg-amber-500/15 text-amber-200",
