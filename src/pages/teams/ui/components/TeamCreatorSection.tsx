@@ -1,9 +1,9 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
-import type { TeamCreatorSectionProps } from "@/pages/teams/model/types";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { FieldError } from "@/pages/teams/ui/components/FieldError";
+import { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
 
-export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
+export function TeamCreatorSection() {
   const {
     addManualMember,
     canAddManualMember,
@@ -15,7 +15,7 @@ export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
     selectedMemberIds,
     toggleManualMemberForm,
     toggleMember,
-  } = state;
+  } = useTeamsPage();
 
   const selectedLabel =
     selectedMemberIds.length > 0
@@ -50,19 +50,19 @@ export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
         </div>
 
         <div className="hide-scrollbar flex items-center max-h-[100px] min-h-12 pb-1 flex-1 flex-wrap gap-2 overflow-y-auto pr-1">
-          {memberOptions.map((member) => {
-            const isSelected = selectedMemberIds.includes(member.id);
+          {memberOptions.map(({id, avatarUrl, name}) => {
+            const isSelected = selectedMemberIds.includes(id);
             return (
               <Button
-                key={member.id}
+                key={id}
                 type="button"
                 aria-pressed={isSelected}
-                onClick={() => toggleMember(member.id)}
+                onClick={() => toggleMember(id)}
                 className={`h-9 border px-2! ${isSelected ? "border-[#2a6de5]!" : "border-white/20!"}`}
               >
-                <img src={member.avatarUrl} alt={member.name} className="h-5 w-5 rounded-full object-cover" />
+                <img src={avatarUrl} alt={name} className="h-5 w-5 rounded-full object-cover" />
                 <Typography component="span" variantStyle="label" className="text-xs!">
-                  {member.name}
+                  {name}
                 </Typography>
               </Button>
             );

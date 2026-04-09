@@ -6,7 +6,7 @@ import { EmptyState } from "@/pages/teams/ui/components/EmptyState";
 import { Modal, PageForShell } from "@/shared/ui";
 
 export default function TeamsPage() {
-  const state = useTeamsPage();
+  const {openCreator, closeCreator, saveCreator, canSave, teamRows, hasTeams, isCreatorOpen} = useTeamsPage();
 
   return (
     <PageForShell
@@ -15,27 +15,27 @@ export default function TeamsPage() {
     >
       <section className="mt-6 flex flex-col gap-6">
         <div className="flex justify-end">
-          <Button type="button" variant="contained" onClick={state.openCreator}>
+          <Button type="button" variant="contained" onClick={openCreator}>
             Create Team
           </Button>
         </div>
 
-        {state.hasTeams ? <TeamTable rows={state.teamRows} /> : <EmptyState />}
+        {hasTeams ? <TeamTable rows={teamRows} /> : <EmptyState />}
       </section>
 
       <Modal
-        open={state.isCreatorOpen}
-        onClose={state.closeCreator}
+        open={isCreatorOpen}
+        onClose={closeCreator}
         title="Create Team"
-        secondaryAction={{ label: "Cancel", onClick: state.closeCreator, variant: "outlined" }}
+        secondaryAction={{ label: "Cancel", onClick: closeCreator, variant: "outlined" }}
         primaryAction={{
           label: "Confirm",
-          onClick: state.saveCreator,
+          onClick: saveCreator,
           variant: "contained",
-          disabled: !state.canSave,
+          disabled: !canSave,
         }}
       >
-        <TeamCreatorSection state={state} />
+        <TeamCreatorSection />
       </Modal>
     </PageForShell>
   );

@@ -1,4 +1,3 @@
-import type { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
 import type { TeamStatus } from "@/shared/model/types";
 
 export type TeamRow = {
@@ -13,12 +12,6 @@ export type TeamMemberOption = {
   id: string;
   name: string;
   avatarUrl: string;
-};
-
-export type TeamsPageState = ReturnType<typeof useTeamsPage>;
-
-export type TeamCreatorSectionProps = {
-  state: TeamsPageState;
 };
 
 export type TeamTableProps = {

@@ -6,41 +6,42 @@ import { Badge } from "@/shared/ui";
 
 export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
   const actionButtonProps = ACTION_BUTTON_PROPS_BY_STATUS[mentor.requestStatus];
+  const {id, avatarUrl, name, expertise, availability, requestStatus, sessions, linkedTeams} = mentor;
 
   return (
     <article className="flex h-full flex-col rounded-lg border border-white/10 bg-linear-to-br from-cyan-500/10 via-slate-900/70 to-indigo-500/10 p-4 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm transition hover:border-cyan-300/30">
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-3">
           <img
-            src={mentor.avatarUrl}
-            alt={mentor.name}
+            src={avatarUrl}
+            alt={name}
             className="h-12 w-12 shrink-0 rounded-full border border-white/20 object-cover"
           />
           <div className="min-w-0">
             <Typography component="h2" className="truncate text-base! font-bold text-white">
-              {mentor.name}
+              {name}
             </Typography>
             <Typography component="p" className="mt-1 text-sm text-slate-300">
-              {mentor.expertise} coaching
+              {expertise} coaching
             </Typography>
             <Typography component="p" className="mt-1 text-xs text-cyan-200/80">
-              Availability: {mentor.availability}
+              Availability: {availability}
             </Typography>
           </div>
         </div>
-        {mentor.requestStatus !== "NotRequested" ? (
-          <Badge toneClassName={REQUEST_STATUS_BADGE_CLASS[mentor.requestStatus]}>
-            {mentor.requestStatus}
+        {requestStatus !== "NotRequested" ? (
+          <Badge toneClassName={REQUEST_STATUS_BADGE_CLASS[requestStatus]}>
+            {requestStatus}
           </Badge>
         ) : null}
       </div>
 
       <div className="mt-4 space-y-1">
         <Typography component="p" className="text-sm text-slate-200">
-          {mentor.sessions} sessions this week
+          {sessions} sessions this week
         </Typography>
         <Typography component="p" className="line-clamp-2 text-sm text-slate-300">
-          Linked teams: {mentor.linkedTeams.join(", ")}
+          Linked teams: {linkedTeams.join(", ")}
         </Typography>
       </div>
 
@@ -49,9 +50,9 @@ export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
           type="button"
           variant={actionButtonProps.variant}
           color={actionButtonProps.color}
-          onClick={() => onActionClick(mentor.id)}
+          onClick={() => onActionClick(id)}
         >
-          {ACTION_LABEL_BY_STATUS[mentor.requestStatus]}
+          {ACTION_LABEL_BY_STATUS[requestStatus]}
         </Button>
       </div>
     </article>

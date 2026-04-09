@@ -7,6 +7,12 @@ export default function JoinedTeamsPanel({
   selectedTeam,
   onTeamChange,
 }: JoinedTeamsPanelProps) {
+  const teamMetaRows = [
+    { label: "Weekly goal", value: selectedTeam?.weeklyGoal },
+    { label: "Progress", value: selectedTeam?.progress },
+    { label: "Mentors", value: selectedTeam?.mentors.join(", ") },
+  ];
+
   return (
     <aside className="rounded-lg border border-white/10 bg-slate-900/55 p-4">
       <Typography component="h2" className="text-sm font-semibold uppercase tracking-wide text-slate-300">
@@ -28,16 +34,12 @@ export default function JoinedTeamsPanel({
             ))}
           </select>
         </label>
-        <div className="text-sm text-slate-300 mt-3">
-          <p>
-            <span className="text-slate-400">Weekly goal:</span> {selectedTeam?.weeklyGoal}
-          </p>
-          <p className="mt-2">
-            <span className="text-slate-400">Progress:</span> {selectedTeam?.progress}
-          </p>
-          <p className="mt-2">
-            <span className="text-slate-400">Mentors:</span> {selectedTeam?.mentors.join(", ")}
-          </p>
+        <div className="mt-3 text-sm text-slate-300">
+          {teamMetaRows.map((row, index) => (
+            <p key={row.label} className={index > 0 ? "mt-2" : undefined}>
+              <span className="text-slate-400">{row.label}:</span> {row.value}
+            </p>
+          ))}
         </div>
       </div>
     </aside>
