@@ -1,17 +1,7 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
 import type { TeamsPageState } from "../../model/useTeamsPage";
-
-const MODAL_TEXT_FIELD_CLASS =
-  "border-white/20 bg-transparent focus:border-[#2a6de5]";
-
-function FieldError({ message }: { message?: string }) {
-  if (!message) return null;
-  return (
-    <Typography component="p" variantStyle="caption" className="text-xs! text-rose-300">
-      {message}
-    </Typography>
-  );
-}
+import { MODAL_TEXT_FIELD_CLASS } from "../../model/constants";
+import { FieldError } from "./FieldError";
 
 type TeamCreatorSectionProps = {
   state: TeamsPageState;

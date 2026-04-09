@@ -5,6 +5,8 @@ export const TEAM_STATUS_BADGE_CLASS: Record<TeamStatus, string> = {
   Pending: "border-amber-400/40 bg-amber-500/15 text-amber-200",
 };
 
+export const MODAL_TEXT_FIELD_CLASS = "border-white/20 h-12!";
+
 export type TeamRow = {
   id: string;
   teamName: string;

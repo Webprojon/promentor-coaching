@@ -50,7 +50,7 @@ export default function Header() {
     : null;
 
   return (
-    <header className="border-b border-white/10 mb-6">
+    <header className="border-b border-white/10 mb-6 px-4 lg:px-0">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 py-3">
         {isGuestInHostMode ? (
           <Typography

@@ -9,7 +9,7 @@ export default function TeamsPage() {
   const state = useTeamsPage();
 
   return (
-    <main className="flex flex-col gap-6 w-full mx-auto max-w-7xl min-h-screen text-slate-100">
+    <main className="flex flex-col gap-6 w-full mx-auto max-w-7xl min-h-screen text-slate-100 px-4 lg:px-0">
       <Typography
         component="h2"
         variantStyle="title"
