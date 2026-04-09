@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { RequestDraft } from "../../../shared/model/types";
 import { EXPLORE_TEAM_ROWS } from "./constants";
 import type { ExploreTeam } from "./types";
@@ -19,18 +19,6 @@ export function useExploreTeamsPage() {
   const [draft, setDraft] = useState<RequestDraft>(createEmptyDraft);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const rows = exploreRows;
-
-  const metrics = useMemo(() => {
-    return exploreRows.reduce(
-      (acc, row) => {
-        if (row.visibility === "Open") acc.openTeams += 1;
-        if (row.requestStatus === "Pending") acc.pendingRequests += 1;
-        if (row.requestStatus === "Accepted") acc.joinedTeams += 1;
-        return acc;
-      },
-      { openTeams: 0, pendingRequests: 0, joinedTeams: 0 },
-    );
-  }, [exploreRows]);
 
   const onRequestClick = (targetId: string) => {
     const target = exploreRows.find((row) => row.id === targetId);
@@ -72,7 +60,6 @@ export function useExploreTeamsPage() {
     wizardStep === 3;
 
   return {
-    metrics,
     rows,
     wizardStep,
     draft,

@@ -48,9 +48,3 @@ export const TABLE_COLUMNS = [
   { key: "members", label: "Members", className: "w-[20%] text-left" },
   { key: "joinUs", label: "JOIN US", className: "w-[20%] text-right" },
 ] as const;
-
-export const EXPLORE_METRIC_KEYS = [
-  { key: "openTeams", label: "Open teams" },
-  { key: "pendingRequests", label: "Pending requests" },
-  { key: "joinedTeams", label: "Joined teams" },
-] as const;

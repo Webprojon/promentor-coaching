@@ -1,4 +1,4 @@
-import type { Mentor, MentorMetricKey } from "./types";
+import type { Mentor } from "./types";
 
 export const MENTOR_ROWS: Mentor[] = [
   {
@@ -41,12 +41,6 @@ export const MENTOR_ROWS: Mentor[] = [
     linkedTeams: ["Product Ninjas", "API Builders"],
     requestStatus: "NotRequested",
   },
-];
-
-export const METRIC_CARDS: Array<{ key: MentorMetricKey; label: string }> = [
-  { key: "openMentors", label: "Open mentors" },
-  { key: "pendingRequests", label: "Pending requests" },
-  { key: "connectedMentors", label: "Connected mentors" },
 ];
 
 export const ACTION_LABEL_BY_STATUS: Record<Mentor["requestStatus"], string> = {

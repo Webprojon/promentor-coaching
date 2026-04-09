@@ -1,7 +1,7 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { RequestDraft } from "../../../shared/model/types";
 import { MENTOR_ROWS } from "./constants";
-import type { Mentor, MentorMetrics, WizardStep } from "./types";
+import type { Mentor, WizardStep } from "./types";
 import {
   canProceedWizardStep,
   createEmptyMentorDraft,
@@ -19,18 +19,6 @@ export function useMentorsPage() {
   const [wizardStep, setWizardStep] = useState<WizardStep>(FIRST_WIZARD_STEP);
   const [draft, setDraft] = useState<RequestDraft>(createEmptyMentorDraft);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
-
-  const metrics = useMemo<MentorMetrics>(() => {
-    return mentorRows.reduce(
-      (acc, mentor) => {
-        acc.openMentors += 1;
-        if (mentor.requestStatus === "Pending") acc.pendingRequests += 1;
-        if (mentor.requestStatus === "Accepted") acc.connectedMentors += 1;
-        return acc;
-      },
-      { openMentors: 0, pendingRequests: 0, connectedMentors: 0 },
-    );
-  }, [mentorRows]);
 
   const onRequestClick = (mentorId: string) => {
     const mentor = mentorRows.find((item) => item.id === mentorId);
@@ -79,7 +67,6 @@ export function useMentorsPage() {
 
   return {
     rows: mentorRows,
-    metrics,
     wizardStep,
     draft,
     isWizardOpen,

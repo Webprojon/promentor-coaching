@@ -1,10 +1,8 @@
-import { Typography } from "@promentorapp/ui-kit";
 import { ExploreTeamTable } from "./components/ExploreTeamTable";
 import { useExploreTeamsPage } from "../model/useExploreTeamsPage";
 import PageForShell from "../../../shared/ui/PageForShell";
 import { Modal } from "../../../shared/ui/Modal";
 import { RequestFlowWizard } from "../../requests/ui/components/RequestFlowWizard";
-import { EXPLORE_METRIC_KEYS } from "../model/constants";
 
 export default function ExploreTeamsPage() {
   const state = useExploreTeamsPage();
@@ -14,20 +12,7 @@ export default function ExploreTeamsPage() {
       title="Explore Teams"
       description="Find active teams, compare fit, and send structured join requests with clear goals and availability."
     >
-      <section className="mt-6 grid gap-4 md:grid-cols-3">
-        {EXPLORE_METRIC_KEYS.map((metric) => (
-          <article key={metric.key} className="rounded-xl border border-white/10 bg-slate-900/55 p-4">
-            <Typography component="p" className="text-xs uppercase tracking-wide text-slate-400">
-              {metric.label}
-            </Typography>
-            <Typography component="p" className="mt-2 text-2xl font-bold text-white">
-              {state.metrics[metric.key]}
-            </Typography>
-          </article>
-        ))}
-      </section>
-
-      <section className="mt-4">
+      <section className="mt-6">
         <ExploreTeamTable rows={state.rows} onRequestClick={state.onRequestClick} />
       </section>
 

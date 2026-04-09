@@ -16,9 +16,6 @@ export type Mentor = {
   requestStatus: MentorRequestStatus;
 };
 
-export type MentorMetricKey = "openMentors" | "pendingRequests" | "connectedMentors";
-export type MentorMetrics = Record<MentorMetricKey, number>;
-
 export type MentorCardProps = {
   mentor: Mentor;
   onActionClick: (mentorId: string) => void;
