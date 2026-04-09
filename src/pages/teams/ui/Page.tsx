@@ -1,27 +1,28 @@
-import { Button, Typography } from "@promentorapp/ui-kit";
+import { Button } from "@promentorapp/ui-kit";
 import { useTeamsPage } from "../model/useTeamsPage";
 import { TeamCreatorSection } from "./components/TeamCreatorSection";
 import { TeamTable } from "./components/TeamTable";
 import { EmptyState } from "./components/EmptyState";
 import { Modal } from "../../../shared/ui/Modal";
+import PageForShell from "../../../shared/ui/PageForShell";
 
 export default function TeamsPage() {
   const state = useTeamsPage();
 
   return (
-    <main className="flex flex-col gap-6 w-full mx-auto max-w-7xl min-h-screen text-slate-100 px-4 lg:px-0">
-      <Typography
-        component="h2"
-        variantStyle="title"
-        className="flex flex-wrap items-center justify-between gap-3 text-xl text-white"
-      >
-        Team management
-        <Button type="button" variant="contained" onClick={state.openCreator}>
-          Create Team
-        </Button>
-      </Typography>
+    <PageForShell
+      title="Team management"
+      description="Build and manage your teams, invite members, and keep delivery aligned."
+    >
+      <section className="mt-6 flex flex-col gap-6">
+        <div className="flex justify-end">
+          <Button type="button" variant="contained" onClick={state.openCreator}>
+            Create Team
+          </Button>
+        </div>
 
-      {state.hasTeams ? <TeamTable rows={state.teamRows} /> : <EmptyState />}
+        {state.hasTeams ? <TeamTable rows={state.teamRows} /> : <EmptyState />}
+      </section>
 
       <Modal
         open={state.isCreatorOpen}
@@ -37,6 +38,6 @@ export default function TeamsPage() {
       >
         <TeamCreatorSection state={state} />
       </Modal>
-    </main>
+    </PageForShell>
   );
 }

@@ -9,6 +9,8 @@ import WorkoutPlansPage from "../pages/workout-plans";
 import Header from "../widgets/header";
 import AuthSessionBoundary from "./AuthSessionBoundary";
 import { AppBackground } from "../shared/ui/AppBackground";
+import ProfilePage from "../pages/profile";
+import RequestsPage from "../pages/requests";
 
 export default function App() {
   return (
@@ -24,6 +26,8 @@ export default function App() {
             <Route path="/explore-teams" element={<ExploreTeamsPage />} />
             <Route path="/mentors" element={<MentorsPage />} />
             <Route path="/suggestion" element={<SuggestionPage />} />
+            <Route path="/requests" element={<RequestsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </AuthSessionBoundary>
       </AppBackground>

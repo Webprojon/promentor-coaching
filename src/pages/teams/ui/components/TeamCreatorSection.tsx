@@ -1,11 +1,7 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
-import type { TeamsPageState } from "../../model/useTeamsPage";
-import { MODAL_TEXT_FIELD_CLASS } from "../../model/constants";
+import type { TeamCreatorSectionProps } from "../../model/types";
+import { SHARED_TEXT_FIELD_CLASS } from "../../../../shared/model/constants";
 import { FieldError } from "./FieldError";
-
-type TeamCreatorSectionProps = {
-  state: TeamsPageState;
-};
 
 export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
   const {
@@ -33,7 +29,7 @@ export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
           label="Team name"
           aria-label="Team name"
           placeholder="e.g. Frontend Growth Squad"
-          className={MODAL_TEXT_FIELD_CLASS}
+          className={SHARED_TEXT_FIELD_CLASS}
           {...createTeamFormRegister("teamName")}
         />
         <FieldError message={errors.teamName} />
@@ -80,7 +76,7 @@ export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
             label="User name"
             aria-label="Username"
             placeholder="e.g. John Carter"
-            className={MODAL_TEXT_FIELD_CLASS}
+            className={SHARED_TEXT_FIELD_CLASS}
             {...manualMemberFormRegister("memberName")}
           />
           <FieldError message={errors.memberName} />
@@ -90,7 +86,7 @@ export function TeamCreatorSection({ state }: TeamCreatorSectionProps) {
             aria-label="User email"
             type="email"
             placeholder="e.g. john@example.com"
-            className={MODAL_TEXT_FIELD_CLASS}
+            className={SHARED_TEXT_FIELD_CLASS}
             {...manualMemberFormRegister("memberEmail")}
           />
           <FieldError message={errors.memberEmail} />

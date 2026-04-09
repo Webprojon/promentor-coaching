@@ -1,40 +1,35 @@
-import PageForShell from "../../../shared/ui/page-for-shell/PageForShell";
-import { Typography } from "@promentorapp/ui-kit";
-import { suggestions } from "../model/constants";
+import PageForShell from "../../../shared/ui/PageForShell";
+import { useSuggestionPage } from "../model/useSuggestionPage";
+import JoinedTeamsPanel from "./components/JoinedTeamsPanel";
+import SuggestionComposer from "./components/SuggestionComposer";
+import SuggestionHistory from "./components/SuggestionHistory";
 
 export default function SuggestionPage() {
+  const state = useSuggestionPage();
+
   return (
     <PageForShell
       title="Suggestion Hub"
-      description="Personalized suggestions to improve consistency, learning speed, and mentor feedback quality."
+      description="Send focused suggestions to teams you already joined and track what gets reviewed or applied."
     >
-      <section className="mt-6 grid gap-4 md:grid-cols-3">
-        {suggestions.map((item) => (
-          <article
-            key={item.id}
-            className="rounded-xl border border-white/10 bg-slate-900/55 p-5 shadow-sm backdrop-blur"
-          >
-            <Typography
-              component="p"
-              className="text-xs uppercase tracking-wider text-cyan-200/80"
-            >
-              {item.id}
-            </Typography>
-            <Typography
-              component="h2"
-              className="mt-2 text-lg font-semibold text-white"
-            >
-              {item.title}
-            </Typography>
-            <Typography component="p" className="mt-2 text-sm text-slate-300">
-              {item.detail}
-            </Typography>
-            <span className="mt-4 inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
-              Priority: {item.priority}
-            </span>
-          </article>
-        ))}
+      <section className="mt-6 grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
+        <JoinedTeamsPanel
+          joinedTeams={state.joinedTeams}
+          selectedTeamId={state.selectedTeamId}
+          selectedTeam={state.selectedTeam}
+          onTeamChange={state.onTeamChange}
+        />
+
+        <SuggestionComposer
+          draft={state.draft}
+          priorities={state.priorities}
+          canSend={state.canSend}
+          onDraftChange={state.onDraftChange}
+          onSend={state.onSend}
+        />
       </section>
+
+      <SuggestionHistory history={state.history} />
     </PageForShell>
   );
 }

@@ -1,25 +1,4 @@
-export type TeamStatus = "Active" | "Pending";
-
-export const TEAM_STATUS_BADGE_CLASS: Record<TeamStatus, string> = {
-  Active: "border-emerald-400/40 bg-emerald-500/15 text-emerald-200",
-  Pending: "border-amber-400/40 bg-amber-500/15 text-amber-200",
-};
-
-export const MODAL_TEXT_FIELD_CLASS = "border-white/20 h-12!";
-
-export type TeamRow = {
-  id: string;
-  teamName: string;
-  status: TeamStatus;
-  membersCount: number;
-  memberAvatars: string[];
-};
-
-export type TeamMemberOption = {
-  id: string;
-  name: string;
-  avatarUrl: string;
-};
+import type { TeamMemberOption, TeamRow } from "./types";
 
 export const TEAM_ROWS: TeamRow[] = [
   {

@@ -1,24 +1,31 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
-import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
+import { REQUEST_STATUS_BADGE_CLASS, TEAM_STATUS_BADGE_CLASS } from "../../../../shared/model/constants";
+import type { ExploreTeam, ExploreTeamTableProps } from "../../model/types";
 import { TABLE_COLUMNS } from "../../model/constants";
-import { TEAM_STATUS_BADGE_CLASS } from "../../../../shared/model/constants";
-import type { TeamTableProps } from "../../model/types";
 
-export function TeamTable({ rows }: TeamTableProps) {
+const REQUEST_ACTION_LABEL: Partial<Record<ExploreTeam["requestStatus"], string>> = {
+  Pending: "Pending",
+  Accepted: "Joined",
+};
+
+export function ExploreTeamTable({ rows, onRequestClick }: ExploreTeamTableProps) {
   return (
     <section className="overflow-hidden rounded-lg border border-white/10 bg-slate-900/55 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-sm">
       <table className="w-full table-fixed border-collapse">
         <thead className="bg-slate-800/70">
           <tr>
             {TABLE_COLUMNS.map((column) => (
-              <th key={column.key} className={`p-4 text-xs font-semibold uppercase tracking-wide text-white/90 ${column.className}`}>
+              <th
+                key={column.key}
+                className={`p-4 text-xs font-semibold uppercase tracking-wide text-white/90 ${column.className}`}
+              >
                 {column.label}
               </th>
             ))}
           </tr>
         </thead>
         <tbody>
-          {rows.map(({ id, teamName, status, memberAvatars, membersCount }) => (
+          {rows.map(({ id, teamName, status, memberAvatars, membersCount, requestStatus }) => (
             <tr key={id} className="border-t border-white/10 hover:bg-slate-800/45">
               <td className="px-4 py-3 text-sm font-semibold text-slate-100">{teamName}</td>
               <td className="px-4 py-3 text-sm">
@@ -47,14 +54,18 @@ export function TeamTable({ rows }: TeamTableProps) {
                 </div>
               </td>
               <td className="px-4 py-3 text-sm">
-                <div className="flex items-center justify-end gap-2">
-                  <Button type="button" color="success" aria-label="Edit team" onClick={() => undefined}>
-                    <RiEdit2Fill className="h-4 w-4" />
-                  </Button>
-
-                  <Button type="button" color="error" aria-label="Delete team" onClick={() => undefined}>
-                    <RiDeleteBin6Line className="h-4 w-4" />
-                  </Button>
+                <div className="flex items-center justify-end">
+                  {REQUEST_ACTION_LABEL[requestStatus] ? (
+                    <span
+                      className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${REQUEST_STATUS_BADGE_CLASS[requestStatus]}`}
+                    >
+                      {REQUEST_ACTION_LABEL[requestStatus]}
+                    </span>
+                  ) : (
+                    <Button type="button" variant="outlined" onClick={() => onRequestClick(id)}>
+                      Send request
+                    </Button>
+                  )}
                 </div>
               </td>
             </tr>

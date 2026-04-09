@@ -1,4 +1,6 @@
-export const workoutPlans = [
+import type { WorkoutPlan } from "./types";
+
+export const workoutPlans: WorkoutPlan[] = [
   {
     id: "wp-101",
     title: "Weekly Coding Core",

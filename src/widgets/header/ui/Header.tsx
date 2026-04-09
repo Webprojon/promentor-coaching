@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { Typography } from "@promentorapp/ui-kit";
 import { mentorLinks, regularUserLinks } from "../model/constants";
-import { useHostAuthSession } from "../../../shared/auth";
+import { useHostAuthSession } from "../../../features/auth";
 
 type HeaderNavLink = {
   to: string;

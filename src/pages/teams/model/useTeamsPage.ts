@@ -99,4 +99,3 @@ export function useTeamsPage() {
   };
 }
 
-export type TeamsPageState = ReturnType<typeof useTeamsPage>;
