@@ -1,5 +1,7 @@
 import { NavLink } from "react-router-dom";
+import { Typography } from "@promentorapp/ui-kit";
 import { mentorLinks, regularUserLinks } from "../model/constants";
+import { useHostAuthSession } from "../../../shared/auth";
 
 type HeaderNavLink = {
   to: string;
@@ -32,11 +34,47 @@ function LinkGroup({ links }: { links: HeaderNavLink[] }) {
 }
 
 export default function Header() {
+  const {
+    session: { user },
+    isBridgeAvailable,
+  } = useHostAuthSession();
+
+  const isGuestInHostMode = isBridgeAvailable && !user;
+  const isMentor = user?.role === "MENTOR";
+  const links = isBridgeAvailable
+    ? user
+      ? isMentor
+        ? mentorLinks
+        : regularUserLinks
+      : null
+    : null;
+
   return (
     <header className="border-b border-white/10 bg-slate-900/90 backdrop-blur mb-6">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 py-3">
-        <LinkGroup links={mentorLinks} />
-        <LinkGroup links={regularUserLinks} />
+        {isGuestInHostMode ? (
+          <Typography
+            component="span"
+            className="rounded-md border border-amber-300/30 bg-amber-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-amber-100"
+          >
+            Session ended
+          </Typography>
+        ) : links && user ? (
+          <>
+            <LinkGroup links={links} />
+            <Typography
+              component="span"
+              className="rounded-md border border-cyan-300/30 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-cyan-200"
+            >
+              {isMentor ? "Mentor" : "Regular User"}
+            </Typography>
+          </>
+        ) : (
+          <>
+            <LinkGroup links={mentorLinks} />
+            <LinkGroup links={regularUserLinks} />
+          </>
+        )}
       </div>
     </header>
   );
