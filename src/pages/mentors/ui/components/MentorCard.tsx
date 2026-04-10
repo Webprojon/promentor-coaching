@@ -1,4 +1,4 @@
-import { Button, Typography } from "@promentorapp/ui-kit";
+import { Avatar, Button, Typography } from "@promentorapp/ui-kit";
 import { REQUEST_STATUS_BADGE_CLASS } from "@/shared/model/constants";
 import {
   ACTION_BUTTON_PROPS_BY_STATUS,
@@ -24,11 +24,7 @@ export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
     <article className="flex h-full flex-col rounded-lg border border-white/10 bg-linear-to-br from-cyan-500/10 via-slate-900/70 to-indigo-500/10 p-4 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm transition hover:border-cyan-300/30">
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 items-start gap-3">
-          <img
-            src={avatarUrl}
-            alt={name}
-            className="h-12 w-12 shrink-0 rounded-full border border-white/20 object-cover"
-          />
+          <Avatar user={{ name, avatarUrl }} size="md" />
           <div className="min-w-0">
             <Typography
               component="h2"

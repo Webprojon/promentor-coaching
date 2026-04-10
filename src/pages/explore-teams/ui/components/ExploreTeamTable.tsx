@@ -1,4 +1,4 @@
-import { Button, Typography } from "@promentorapp/ui-kit";
+import { Button } from "@promentorapp/ui-kit";
 import {
   REQUEST_STATUS_BADGE_CLASS,
   TEAM_STATUS_BADGE_CLASS,
@@ -8,7 +8,7 @@ import type {
   ExploreTeamTableProps,
 } from "@/pages/explore-teams/model/types";
 import { TABLE_COLUMNS } from "@/pages/explore-teams/model/constants";
-import { Badge, Table } from "@/shared/ui";
+import { Badge, MemberAvatarStack, Table } from "@/shared/ui";
 
 const REQUEST_ACTION_LABEL: Partial<
   Record<ExploreTeam["requestStatus"], string>
@@ -44,29 +44,11 @@ export function ExploreTeamTable({
             </Badge>
           </td>
           <td className="px-4 py-3 text-sm">
-            <div className="flex items-center">
-              <div className="flex">
-                {memberAvatars.slice(0, 3).map((avatar, index) => (
-                  <div
-                    key={`${id}-avatar-${index}`}
-                    className={index > 0 ? "-ml-2" : ""}
-                  >
-                    <img
-                      src={avatar}
-                      alt="Member avatar"
-                      className="h-8 w-8 rounded-full border-2 border-slate-900 object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-              <Typography
-                component="span"
-                variantStyle="caption"
-                className="ml-2 text-slate-300"
-              >
-                +{Math.max(membersCount - 3, 0)}
-              </Typography>
-            </div>
+            <MemberAvatarStack
+              id={id}
+              avatarUrls={memberAvatars}
+              totalCount={membersCount}
+            />
           </td>
           <td className="px-4 py-3 text-sm">
             <div className="flex items-center justify-end">
