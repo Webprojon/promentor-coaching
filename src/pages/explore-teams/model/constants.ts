@@ -1,23 +1,50 @@
-export const featuredTeams = [
+import type { ExploreTeam } from "@/pages/explore-teams/model/types";
+
+export const EXPLORE_TEAM_ROWS: ExploreTeam[] = [
   {
-    id: "et-01",
-    name: "Frontend Accelerator",
-    focus: "Advanced React and design systems",
-    members: 14,
-    match: "92%",
+    id: "team-001",
+    teamName: "Growth Mentors",
+    visibility: "Open",
+    status: "Active",
+    membersCount: 12,
+    memberAvatars: [
+      "https://i.pravatar.cc/64?img=11",
+      "https://i.pravatar.cc/64?img=18",
+      "https://i.pravatar.cc/64?img=24",
+    ],
+    requestStatus: "Pending",
   },
   {
-    id: "et-02",
-    name: "Backend Builders",
-    focus: "Reliable APIs and database modeling",
-    members: 11,
-    match: "88%",
+    id: "team-002",
+    teamName: "Product Ninjas",
+    visibility: "Open",
+    status: "Pending",
+    membersCount: 8,
+    memberAvatars: [
+      "https://i.pravatar.cc/64?img=34",
+      "https://i.pravatar.cc/64?img=47",
+      "https://i.pravatar.cc/64?img=53",
+    ],
+    requestStatus: "Accepted",
   },
   {
-    id: "et-03",
-    name: "Career Launchpad",
-    focus: "Portfolio, CV, and interview practice",
-    members: 9,
-    match: "85%",
+    id: "team-003",
+    teamName: "Career Boosters",
+    visibility: "Limited",
+    status: "Active",
+    membersCount: 9,
+    memberAvatars: [
+      "https://i.pravatar.cc/64?img=2",
+      "https://i.pravatar.cc/64?img=14",
+      "https://i.pravatar.cc/64?img=28",
+    ],
+    requestStatus: "Declined",
   },
 ];
+
+export const TABLE_COLUMNS = [
+  { key: "teamName", label: "Team Name", className: "w-[35%] text-left" },
+  { key: "status", label: "Status", className: "w-[20%] text-left" },
+  { key: "members", label: "Members", className: "w-[20%] text-left" },
+  { key: "joinUs", label: "JOIN US", className: "w-[20%] text-right" },
+] as const;
