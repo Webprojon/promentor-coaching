@@ -43,7 +43,7 @@ export function Modal({
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-[1300] transition-opacity duration-200 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+      className={`fixed inset-0 z-1300 transition-opacity duration-200 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
     >
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
