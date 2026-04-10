@@ -1,8 +1,10 @@
-import PageForShell from "../../../shared/ui/page-for-shell/PageForShell";
+import { PageForShell } from "@/shared/ui";
 import { Typography } from "@promentorapp/ui-kit";
-import { workoutPlans } from "../model/constants";
+import { useWorkoutPlansPage } from "@/pages/workout-plans/model/useWorkoutPlansPage";
 
 export default function WorkoutPlansPage() {
+  const { workoutPlans } = useWorkoutPlansPage();
+
   return (
     <PageForShell
       title="Workout Plans"

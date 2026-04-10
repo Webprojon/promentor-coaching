@@ -9,6 +9,11 @@ export default defineConfig(({ mode }) => {
     env.VITE_SHELL_REMOTE_URL || "http://localhost:5173/assets/remoteEntry.js";
 
   return {
+    resolve: {
+      alias: {
+        "@": "/src",
+      },
+    },
     plugins: [
       react(),
       tailwindcss(),
@@ -25,6 +30,8 @@ export default defineConfig(({ mode }) => {
           "./ExploreTeamsPage": "./src/pages/explore-teams/index.tsx",
           "./MentorsPage": "./src/pages/mentors/index.tsx",
           "./SuggestionPage": "./src/pages/suggestion/index.tsx",
+          "./RequestsPage": "./src/pages/mentorship-requests/index.tsx",
+          "./ProfilePage": "./src/pages/profile/index.tsx",
         },
         shared: [
           "react",

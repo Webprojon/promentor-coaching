@@ -1,43 +1,55 @@
-import PageForShell from "../../../shared/ui/page-for-shell/PageForShell";
-import { Typography } from "@promentorapp/ui-kit";
-import { featuredTeams } from "../model/constants";
+import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
+import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
+import { Modal, PageForShell } from "@/shared/ui";
+import { RequestFlowWizard } from "@/pages/mentorship-requests/ui/components/RequestFlowWizard";
 
 export default function ExploreTeamsPage() {
+  const {
+    rows,
+    isWizardOpen,
+    wizardStep,
+    draft,
+    onChangeDraft,
+    onRequestClick,
+    onCloseWizard,
+    onSubmitRequest,
+    goBack,
+    goNext,
+    canGoNext,
+  } = useExploreTeamsPage();
+
   return (
     <PageForShell
       title="Explore Teams"
-      description="Discover active learning teams, compare focus areas, and join the cohort that best matches your goals."
+      description="Find active teams, compare fit, and send structured join requests with clear goals and availability."
     >
-      <section className="mt-6 grid gap-4 md:grid-cols-3">
-        {featuredTeams.map((team) => (
-          <article
-            key={team.id}
-            className="rounded-xl border border-white/10 bg-slate-900/55 p-5 shadow-sm backdrop-blur"
-          >
-            <Typography
-              component="p"
-              className="text-xs uppercase tracking-wider text-cyan-200/80"
-            >
-              {team.id}
-            </Typography>
-            <Typography
-              component="h2"
-              className="mt-2 text-lg font-semibold text-white"
-            >
-              {team.name}
-            </Typography>
-            <Typography component="p" className="mt-2 text-sm text-slate-300">
-              {team.focus}
-            </Typography>
-            <div className="mt-4 flex items-center justify-between text-sm text-slate-200">
-              <span>{team.members} members</span>
-              <span className="rounded-full border border-white/20 bg-white/10 px-2.5 py-1 text-xs font-semibold text-white">
-                Match {team.match}
-              </span>
-            </div>
-          </article>
-        ))}
+      <section className="mt-6">
+        <ExploreTeamTable rows={rows} onRequestClick={onRequestClick} />
       </section>
+
+      <Modal
+        open={isWizardOpen}
+        onClose={onCloseWizard}
+        title={`Team request · Step ${wizardStep}/3`}
+        secondaryAction={{
+          label: wizardStep === 1 ? "Cancel" : "Back",
+          onClick: wizardStep === 1 ? onCloseWizard : goBack,
+          variant: "outlined",
+        }}
+        primaryAction={{
+          label: wizardStep === 3 ? "Send request" : "Continue",
+          onClick: wizardStep === 3 ? onSubmitRequest : goNext,
+          variant: "contained",
+          disabled: !canGoNext,
+        }}
+      >
+        <RequestFlowWizard
+          step={wizardStep}
+          targetLabel={draft.targetName}
+          draft={draft}
+          onChange={onChangeDraft}
+        />
+      </Modal>
     </PageForShell>
   );
 }

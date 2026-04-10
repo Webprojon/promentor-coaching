@@ -1,4 +1,6 @@
-export const boards = [
+import type { Board } from "@/pages/boards/model/types";
+
+export const boards: Board[] = [
   {
     id: "b-014",
     title: "Frontend Foundations",

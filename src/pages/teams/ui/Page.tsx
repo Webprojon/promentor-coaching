@@ -1,101 +1,55 @@
-import PageForShell from "../../../shared/ui/page-for-shell/PageForShell";
-import { Typography } from "@promentorapp/ui-kit";
-import { members } from "../model/constants";
+import { Button } from "@promentorapp/ui-kit";
+import { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
+import { TeamCreatorSection } from "@/pages/teams/ui/components/TeamCreatorSection";
+import { TeamTable } from "@/pages/teams/ui/components/TeamTable";
+import { EmptyState } from "@/pages/teams/ui/components/EmptyState";
+import { Modal, PageForShell } from "@/shared/ui";
 
 export default function TeamsPage() {
+  const {
+    openCreator,
+    closeCreator,
+    saveCreator,
+    canSave,
+    teamRows,
+    hasTeams,
+    isCreatorOpen,
+    ...teamCreatorSectionProps
+  } = useTeamsPage();
+
   return (
     <PageForShell
-      title="Teams Workspace"
-      description="Build focused learning squads, track mentor availability, and keep collaboration flowing inside one consistent Promentor workflow."
+      title="Team management"
+      description="Build and manage your teams, invite members, and keep delivery aligned."
     >
-      <section className="mt-6 grid gap-4 md:grid-cols-3">
-        <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <Typography
-            component="p"
-            className="text-xs uppercase tracking-wider text-cyan-200/80"
-          >
-            Active Mentors
-          </Typography>
-          <Typography
-            component="p"
-            className="mt-2 text-2xl font-bold text-white"
-          >
-            12
-          </Typography>
-        </article>
-        <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <Typography
-            component="p"
-            className="text-xs uppercase tracking-wider text-cyan-200/80"
-          >
-            Teams Running
-          </Typography>
-          <Typography
-            component="p"
-            className="mt-2 text-2xl font-bold text-white"
-          >
-            5
-          </Typography>
-        </article>
-        <article className="rounded-xl border border-white/10 bg-slate-900/50 p-4 shadow-sm backdrop-blur">
-          <Typography
-            component="p"
-            className="text-xs uppercase tracking-wider text-cyan-200/80"
-          >
-            Weekly Check-ins
-          </Typography>
-          <Typography
-            component="p"
-            className="mt-2 text-2xl font-bold text-white"
-          >
-            28
-          </Typography>
-        </article>
+      <section className="mt-6 flex flex-col gap-6">
+        <div className="flex justify-end">
+          <Button type="button" variant="contained" onClick={openCreator}>
+            Create Team
+          </Button>
+        </div>
+
+        {hasTeams ? <TeamTable rows={teamRows} /> : <EmptyState />}
       </section>
 
-      <section className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-slate-900/55 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur-sm">
-        <table className="w-full border-collapse">
-          <thead className="bg-slate-800/70">
-            <tr>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                ID
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                Name
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                Role
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-white/90">
-                Status
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {members.map((member) => (
-              <tr
-                key={member.id}
-                className="border-t border-white/10 hover:bg-slate-800/45"
-              >
-                <td className="px-4 py-3 text-sm text-slate-300">
-                  {member.id}
-                </td>
-                <td className="px-4 py-3 text-sm font-semibold text-slate-100">
-                  {member.name}
-                </td>
-                <td className="px-4 py-3 text-sm text-slate-300">
-                  {member.role}
-                </td>
-                <td className="px-4 py-3 text-sm">
-                  <span className="inline-flex rounded-full border border-white/30 bg-white/15 px-2.5 py-1 text-xs font-medium text-white">
-                    {member.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+      <Modal
+        open={isCreatorOpen}
+        onClose={closeCreator}
+        title="Create Team"
+        secondaryAction={{
+          label: "Cancel",
+          onClick: closeCreator,
+          variant: "outlined",
+        }}
+        primaryAction={{
+          label: "Confirm",
+          onClick: saveCreator,
+          variant: "contained",
+          disabled: !canSave,
+        }}
+      >
+        <TeamCreatorSection {...teamCreatorSectionProps} />
+      </Modal>
     </PageForShell>
   );
 }

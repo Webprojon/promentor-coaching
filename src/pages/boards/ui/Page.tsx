@@ -1,8 +1,10 @@
-import PageForShell from "../../../shared/ui/page-for-shell/PageForShell";
+import { PageForShell } from "@/shared/ui";
 import { Typography } from "@promentorapp/ui-kit";
-import { boards } from "../model/constants";
+import { useBoardsPage } from "@/pages/boards/model/useBoardsPage";
 
 export default function BoardsPage() {
+  const { boards } = useBoardsPage();
+
   return (
     <PageForShell
       title="Boards"

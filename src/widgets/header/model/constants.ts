@@ -2,6 +2,8 @@ export const mentorLinks = [
   { to: "/teams", label: "Teams" },
   { to: "/boards", label: "Boards" },
   { to: "/workout-plans", label: "Workout Plans" },
+  { to: "/requests", label: "Requests" },
+  { to: "/profile", label: "Profile" },
 ];
 
 export const regularUserLinks = [

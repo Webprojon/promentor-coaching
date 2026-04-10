@@ -1,7 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { Typography } from "@promentorapp/ui-kit";
-import { mentorLinks, regularUserLinks } from "../model/constants";
-import { useHostAuthSession } from "../../../shared/auth";
+import {
+  mentorLinks,
+  regularUserLinks,
+} from "@/widgets/header/model/constants";
+import { useHostAuthSession } from "@/features/auth";
 
 type HeaderNavLink = {
   to: string;
@@ -50,7 +53,7 @@ export default function Header() {
     : null;
 
   return (
-    <header className="border-b border-white/10 bg-slate-900/90 backdrop-blur mb-6">
+    <header className="border-b border-white/10 mb-6 px-4 lg:px-0">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 py-3">
         {isGuestInHostMode ? (
           <Typography
