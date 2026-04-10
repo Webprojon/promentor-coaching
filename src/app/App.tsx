@@ -10,7 +10,7 @@ import Header from "@/widgets/header";
 import AuthSessionBoundary from "@/app/AuthSessionBoundary";
 import { AppBackground } from "@/shared/ui";
 import ProfilePage from "@/pages/profile";
-import RequestsPage from "@/pages/requests";
+import RequestsPage from "@/pages/mentorship-requests";
 
 export default function App() {
   return (

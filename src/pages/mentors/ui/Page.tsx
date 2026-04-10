@@ -1,5 +1,5 @@
 import { Modal, PageForShell } from "@/shared/ui";
-import { RequestFlowWizard } from "@/pages/requests/ui/components/RequestFlowWizard";
+import { RequestFlowWizard } from "@/pages/mentorship-requests/ui/components/RequestFlowWizard";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
 import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
 

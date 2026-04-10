@@ -1,7 +1,7 @@
 import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
 import { Modal, PageForShell } from "@/shared/ui";
-import { RequestFlowWizard } from "@/pages/requests/ui/components/RequestFlowWizard";
+import { RequestFlowWizard } from "@/pages/mentorship-requests/ui/components/RequestFlowWizard";
 
 export default function ExploreTeamsPage() {
   const { rows, isWizardOpen, wizardStep, draft, onChangeDraft, onRequestClick, onCloseWizard, onSubmitRequest, goBack, goNext, canGoNext } = useExploreTeamsPage();
