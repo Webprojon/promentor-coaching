@@ -36,7 +36,10 @@ export function ProfileQuickLinks({ links }: ProfileQuickLinksProps) {
                   component="span"
                   className="mt-0.5 grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-white/10 bg-slate-900/80"
                 >
-                  <Icon className={PROFILE_QUICK_LINK_ICON_CLASSNAME} aria-hidden />
+                  <Icon
+                    className={PROFILE_QUICK_LINK_ICON_CLASSNAME}
+                    aria-hidden
+                  />
                 </Typography>
                 <Typography component="span" className="block min-w-0 flex-1">
                   <Typography

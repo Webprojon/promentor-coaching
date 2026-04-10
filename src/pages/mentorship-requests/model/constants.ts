@@ -101,8 +101,7 @@ export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
     title: "Suggestion · Mobile guild",
     targetLabel: "Mobile Platform Guild",
     counterpartName: "Mobile Platform Guild",
-    summary:
-      "Propose shorter async standup template for distributed members.",
+    summary: "Propose shorter async standup template for distributed members.",
     status: "Declined",
     createdLabel: "3d ago",
   },
@@ -113,8 +112,7 @@ export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
     title: "Join request for your team",
     targetLabel: "Core Delivery · your team",
     counterpartName: "Samira Ortiz",
-    summary:
-      "Interested in pairing on release train rituals and risk boards.",
+    summary: "Interested in pairing on release train rituals and risk boards.",
     status: "Pending",
     createdLabel: "5h ago",
   },

@@ -28,7 +28,10 @@ export default function ProfilePage() {
 
       <div className="mt-6 grid gap-6 lg:grid-cols-12">
         <div className="flex flex-col gap-6 lg:col-span-5 xl:col-span-4">
-          <ProfileAboutSection bio={profileHeader.bio} focusAreas={focusAreas} />
+          <ProfileAboutSection
+            bio={profileHeader.bio}
+            focusAreas={focusAreas}
+          />
           <ProfileMilestones milestones={milestones} />
         </div>
         <div className="flex flex-col gap-6 lg:col-span-7 xl:col-span-8">

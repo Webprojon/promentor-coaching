@@ -35,7 +35,10 @@ export function ProfileIdeasTeaser() {
                 >
                   {item.title}
                 </Typography>
-                <Typography component="p" className="mt-0.5 text-xs text-slate-500">
+                <Typography
+                  component="p"
+                  className="mt-0.5 text-xs text-slate-500"
+                >
                   {item.body}
                 </Typography>
               </div>

@@ -28,7 +28,10 @@ export function RequestsEmptyState({
       >
         Nothing in {scope} yet
       </Typography>
-      <Typography component="p" className="mx-auto mt-2 max-w-md text-sm text-slate-500">
+      <Typography
+        component="p"
+        className="mx-auto mt-2 max-w-md text-sm text-slate-500"
+      >
         {direction === "sent"
           ? "Send a join request from Explore Teams, ask a mentor from Mentors, or share a suggestion from the hub."
           : "When someone targets you or your team, their request will land here for review."}

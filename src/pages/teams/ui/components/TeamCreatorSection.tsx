@@ -15,7 +15,6 @@ export function TeamCreatorSection({
   toggleManualMemberForm,
   toggleMember,
 }: TeamCreatorSectionProps) {
-
   const selectedLabel =
     selectedMemberIds.length > 0
       ? `${selectedMemberIds.length} ${selectedMemberIds.length > 1 ? "members" : "member"} selected`

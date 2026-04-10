@@ -26,7 +26,9 @@ export function ProfileMilestones({ milestones }: ProfileMilestonesProps) {
           <li key={`${m.title}-${index}`} className="relative">
             <span
               className={`absolute -left-[21px] top-1.5 flex h-2.5 w-2.5 rounded-full border-2 border-slate-950 ${
-                m.complete ? "bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]" : "bg-slate-600"
+                m.complete
+                  ? "bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                  : "bg-slate-600"
               }`}
               aria-hidden
             />
@@ -44,7 +46,10 @@ export function ProfileMilestones({ milestones }: ProfileMilestonesProps) {
                 />
               ) : null}
             </div>
-            <Typography component="span" className="mt-0.5 block text-xs text-slate-500">
+            <Typography
+              component="span"
+              className="mt-0.5 block text-xs text-slate-500"
+            >
               {m.date}
             </Typography>
           </li>

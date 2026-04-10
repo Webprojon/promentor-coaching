@@ -22,7 +22,10 @@ export function ProfileAboutSection({
           About you
         </Typography>
       </div>
-      <Typography component="p" className="mt-3 text-sm leading-relaxed text-slate-300">
+      <Typography
+        component="p"
+        className="mt-3 text-sm leading-relaxed text-slate-300"
+      >
         {bio}
       </Typography>
       <Typography
