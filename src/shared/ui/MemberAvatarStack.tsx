@@ -28,13 +28,15 @@ export function MemberAvatarStack({
           </div>
         ))}
       </div>
-      <Typography
-        component="span"
-        variantStyle="caption"
-        className="ml-2 text-slate-300"
-      >
-        +{overflow}
-      </Typography>
+      {overflow > 0 ? (
+        <Typography
+          component="span"
+          variantStyle="caption"
+          className="ml-2 text-slate-300"
+        >
+          +{overflow}
+        </Typography>
+      ) : null}
     </div>
   );
 }

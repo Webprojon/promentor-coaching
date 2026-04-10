@@ -1,21 +1,20 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { FieldError } from "@/pages/teams/ui/components/FieldError";
-import { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
+import type { TeamCreatorSectionProps } from "@/pages/teams/model/useTeamsPage";
 
-export function TeamCreatorSection() {
-  const {
-    addManualMember,
-    canAddManualMember,
-    createTeamFormRegister,
-    errors,
-    isManualMemberFormOpen,
-    manualMemberFormRegister,
-    memberOptions,
-    selectedMemberIds,
-    toggleManualMemberForm,
-    toggleMember,
-  } = useTeamsPage();
+export function TeamCreatorSection({
+  addManualMember,
+  canAddManualMember,
+  createTeamFormRegister,
+  errors,
+  isManualMemberFormOpen,
+  manualMemberFormRegister,
+  memberOptions,
+  selectedMemberIds,
+  toggleManualMemberForm,
+  toggleMember,
+}: TeamCreatorSectionProps) {
 
   const selectedLabel =
     selectedMemberIds.length > 0

@@ -102,3 +102,14 @@ export function useTeamsPage() {
     toggleMember,
   };
 }
+
+export type TeamCreatorSectionProps = Omit<
+  ReturnType<typeof useTeamsPage>,
+  | "canSave"
+  | "closeCreator"
+  | "hasTeams"
+  | "isCreatorOpen"
+  | "openCreator"
+  | "saveCreator"
+  | "teamRows"
+>;

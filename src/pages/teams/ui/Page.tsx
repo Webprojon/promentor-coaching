@@ -14,6 +14,7 @@ export default function TeamsPage() {
     teamRows,
     hasTeams,
     isCreatorOpen,
+    ...teamCreatorSectionProps
   } = useTeamsPage();
 
   return (
@@ -47,7 +48,7 @@ export default function TeamsPage() {
           disabled: !canSave,
         }}
       >
-        <TeamCreatorSection />
+        <TeamCreatorSection {...teamCreatorSectionProps} />
       </Modal>
     </PageForShell>
   );
