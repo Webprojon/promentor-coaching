@@ -26,12 +26,36 @@ export const TEAM_ROWS: TeamRow[] = [
 ];
 
 export const TEAM_MEMBER_OPTIONS: TeamMemberOption[] = [
-  { id: "user-001", name: "Ava Carter", avatarUrl: "https://i.pravatar.cc/64?img=5" },
-  { id: "user-002", name: "Noah Brooks", avatarUrl: "https://i.pravatar.cc/64?img=12" },
-  { id: "user-003", name: "Sofia Reed", avatarUrl: "https://i.pravatar.cc/64?img=20" },
-  { id: "user-004", name: "Mason Lee", avatarUrl: "https://i.pravatar.cc/64?img=31" },
-  { id: "user-005", name: "Isabella James", avatarUrl: "https://i.pravatar.cc/64?img=44" },
-  { id: "user-006", name: "Liam Ward", avatarUrl: "https://i.pravatar.cc/64?img=56" },
+  {
+    id: "user-001",
+    name: "Ava Carter",
+    avatarUrl: "https://i.pravatar.cc/64?img=5",
+  },
+  {
+    id: "user-002",
+    name: "Noah Brooks",
+    avatarUrl: "https://i.pravatar.cc/64?img=12",
+  },
+  {
+    id: "user-003",
+    name: "Sofia Reed",
+    avatarUrl: "https://i.pravatar.cc/64?img=20",
+  },
+  {
+    id: "user-004",
+    name: "Mason Lee",
+    avatarUrl: "https://i.pravatar.cc/64?img=31",
+  },
+  {
+    id: "user-005",
+    name: "Isabella James",
+    avatarUrl: "https://i.pravatar.cc/64?img=44",
+  },
+  {
+    id: "user-006",
+    name: "Liam Ward",
+    avatarUrl: "https://i.pravatar.cc/64?img=56",
+  },
 ];
 
 export const TABLE_COLUMNS = [

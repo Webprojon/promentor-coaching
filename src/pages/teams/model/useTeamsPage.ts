@@ -28,7 +28,8 @@ export function useTeamsPage() {
   });
 
   const hasTeams = TEAM_ROWS.length > 0;
-  const canSave = createTeamForm.formState.isValid && selectedMemberIds.length > 0;
+  const canSave =
+    createTeamForm.formState.isValid && selectedMemberIds.length > 0;
 
   const resetCreatorForm = () => {
     setSelectedMemberIds([]);
@@ -52,11 +53,14 @@ export function useTeamsPage() {
 
   const toggleMember = (memberId: string) => {
     setSelectedMemberIds((previous) =>
-      previous.includes(memberId) ? previous.filter((id) => id !== memberId) : [...previous, memberId],
+      previous.includes(memberId)
+        ? previous.filter((id) => id !== memberId)
+        : [...previous, memberId],
     );
   };
 
-  const toggleManualMemberForm = () => setIsManualMemberFormOpen((open) => !open);
+  const toggleManualMemberForm = () =>
+    setIsManualMemberFormOpen((open) => !open);
 
   const addManualMember = manualMemberForm.handleSubmit((values) => {
     const normalizedEmail = values.memberEmail.trim().toLowerCase();
@@ -98,4 +102,3 @@ export function useTeamsPage() {
     toggleMember,
   };
 }
-

@@ -4,7 +4,19 @@ import { Modal, PageForShell } from "@/shared/ui";
 import { RequestFlowWizard } from "@/pages/mentorship-requests/ui/components/RequestFlowWizard";
 
 export default function ExploreTeamsPage() {
-  const { rows, isWizardOpen, wizardStep, draft, onChangeDraft, onRequestClick, onCloseWizard, onSubmitRequest, goBack, goNext, canGoNext } = useExploreTeamsPage();
+  const {
+    rows,
+    isWizardOpen,
+    wizardStep,
+    draft,
+    onChangeDraft,
+    onRequestClick,
+    onCloseWizard,
+    onSubmitRequest,
+    goBack,
+    goNext,
+    canGoNext,
+  } = useExploreTeamsPage();
 
   return (
     <PageForShell

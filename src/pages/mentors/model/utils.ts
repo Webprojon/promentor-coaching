@@ -22,7 +22,9 @@ export const getPreviousWizardStep = (step: WizardStep): WizardStep =>
 
 export const canProceedWizardStep = (step: WizardStep, draft: RequestDraft) =>
   (step === 1 && draft.goal.trim().length > 0) ||
-  (step === 2 && draft.reason.trim().length > 0 && draft.weeklyAvailability.trim().length > 0) ||
+  (step === 2 &&
+    draft.reason.trim().length > 0 &&
+    draft.weeklyAvailability.trim().length > 0) ||
   step === 3;
 
 export const getMentorActionStatus = (status: RequestStatus): RequestStatus =>

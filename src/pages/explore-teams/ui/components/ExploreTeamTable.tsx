@@ -1,23 +1,43 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
-import { REQUEST_STATUS_BADGE_CLASS, TEAM_STATUS_BADGE_CLASS } from "@/shared/model/constants";
-import type { ExploreTeam, ExploreTeamTableProps } from "@/pages/explore-teams/model/types";
+import {
+  REQUEST_STATUS_BADGE_CLASS,
+  TEAM_STATUS_BADGE_CLASS,
+} from "@/shared/model/constants";
+import type {
+  ExploreTeam,
+  ExploreTeamTableProps,
+} from "@/pages/explore-teams/model/types";
 import { TABLE_COLUMNS } from "@/pages/explore-teams/model/constants";
 import { Badge, Table } from "@/shared/ui";
 
-const REQUEST_ACTION_LABEL: Partial<Record<ExploreTeam["requestStatus"], string>> = {
+const REQUEST_ACTION_LABEL: Partial<
+  Record<ExploreTeam["requestStatus"], string>
+> = {
   Pending: "Pending",
   Accepted: "Joined",
 };
 
-export function ExploreTeamTable({ rows, onRequestClick }: ExploreTeamTableProps) {
+export function ExploreTeamTable({
+  rows,
+  onRequestClick,
+}: ExploreTeamTableProps) {
   return (
     <Table
       columns={TABLE_COLUMNS}
       rows={rows}
       getRowKey={(row) => row.id}
-      renderRow={({ id, teamName, status, memberAvatars, membersCount, requestStatus }) => (
+      renderRow={({
+        id,
+        teamName,
+        status,
+        memberAvatars,
+        membersCount,
+        requestStatus,
+      }) => (
         <>
-          <td className="px-4 py-3 text-sm font-semibold text-slate-100">{teamName}</td>
+          <td className="px-4 py-3 text-sm font-semibold text-slate-100">
+            {teamName}
+          </td>
           <td className="px-4 py-3 text-sm">
             <Badge toneClassName={TEAM_STATUS_BADGE_CLASS[status]}>
               {status}
@@ -27,7 +47,10 @@ export function ExploreTeamTable({ rows, onRequestClick }: ExploreTeamTableProps
             <div className="flex items-center">
               <div className="flex">
                 {memberAvatars.slice(0, 3).map((avatar, index) => (
-                  <div key={`${id}-avatar-${index}`} className={index > 0 ? "-ml-2" : ""}>
+                  <div
+                    key={`${id}-avatar-${index}`}
+                    className={index > 0 ? "-ml-2" : ""}
+                  >
                     <img
                       src={avatar}
                       alt="Member avatar"
@@ -36,7 +59,11 @@ export function ExploreTeamTable({ rows, onRequestClick }: ExploreTeamTableProps
                   </div>
                 ))}
               </div>
-              <Typography component="span" variantStyle="caption" className="ml-2 text-slate-300">
+              <Typography
+                component="span"
+                variantStyle="caption"
+                className="ml-2 text-slate-300"
+              >
                 +{Math.max(membersCount - 3, 0)}
               </Typography>
             </div>
@@ -44,11 +71,17 @@ export function ExploreTeamTable({ rows, onRequestClick }: ExploreTeamTableProps
           <td className="px-4 py-3 text-sm">
             <div className="flex items-center justify-end">
               {REQUEST_ACTION_LABEL[requestStatus] ? (
-                <Badge toneClassName={REQUEST_STATUS_BADGE_CLASS[requestStatus]}>
+                <Badge
+                  toneClassName={REQUEST_STATUS_BADGE_CLASS[requestStatus]}
+                >
                   {REQUEST_ACTION_LABEL[requestStatus]}
                 </Badge>
               ) : (
-                <Button type="button" variant="outlined" onClick={() => onRequestClick(id)}>
+                <Button
+                  type="button"
+                  variant="outlined"
+                  onClick={() => onRequestClick(id)}
+                >
                   Send request
                 </Button>
               )}

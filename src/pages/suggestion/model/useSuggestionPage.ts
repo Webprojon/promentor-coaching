@@ -1,6 +1,12 @@
 import { useMemo, useState } from "react";
-import type { SuggestionDraft, SuggestionPriority } from "@/pages/suggestion/model/types";
-import { joinedTeams, suggestionHistory } from "@/pages/suggestion/model/constants";
+import type {
+  SuggestionDraft,
+  SuggestionPriority,
+} from "@/pages/suggestion/model/types";
+import {
+  joinedTeams,
+  suggestionHistory,
+} from "@/pages/suggestion/model/constants";
 
 const DEFAULT_TEAM = joinedTeams[0];
 
@@ -14,11 +20,14 @@ const EMPTY_DRAFT: SuggestionDraft = {
 };
 
 export function useSuggestionPage() {
-  const [selectedTeamId, setSelectedTeamId] = useState<string>(DEFAULT_TEAM?.id ?? "");
+  const [selectedTeamId, setSelectedTeamId] = useState<string>(
+    DEFAULT_TEAM?.id ?? "",
+  );
   const [draft, setDraft] = useState<SuggestionDraft>(EMPTY_DRAFT);
 
   const selectedTeam = useMemo(
-    () => joinedTeams.find((team) => team.id === selectedTeamId) ?? joinedTeams[0],
+    () =>
+      joinedTeams.find((team) => team.id === selectedTeamId) ?? joinedTeams[0],
     [selectedTeamId],
   );
 
@@ -45,7 +54,8 @@ export function useSuggestionPage() {
 
   const priorities: SuggestionPriority[] = ["High", "Medium", "Low"];
 
-  const canSend = draft.title.trim().length > 0 && draft.detail.trim().length > 0;
+  const canSend =
+    draft.title.trim().length > 0 && draft.detail.trim().length > 0;
 
   const onSend = () => {
     setDraft((previous) => ({
@@ -69,4 +79,3 @@ export function useSuggestionPage() {
     onSend,
   };
 }
-

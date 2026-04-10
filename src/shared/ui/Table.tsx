@@ -37,7 +37,10 @@ export function Table<T>({
         <thead className={headClassName}>
           <tr>
             {columns.map((column) => (
-              <th key={column.key} className={`p-4 text-xs font-semibold uppercase tracking-wide text-white/90 ${column.className ?? ""}`}>
+              <th
+                key={column.key}
+                className={`p-4 text-xs font-semibold uppercase tracking-wide text-white/90 ${column.className ?? ""}`}
+              >
                 {column.label}
               </th>
             ))}

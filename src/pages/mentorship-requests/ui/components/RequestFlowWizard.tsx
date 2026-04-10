@@ -12,7 +12,8 @@ export function RequestFlowWizard({
     return (
       <section className="grid gap-3">
         <Typography component="p" className="text-sm text-slate-300">
-          You are requesting to join <span className="font-semibold text-white">{targetLabel}</span>.
+          You are requesting to join{" "}
+          <span className="font-semibold text-white">{targetLabel}</span>.
         </Typography>
         <TextField
           label="Goal"
@@ -43,7 +44,9 @@ export function RequestFlowWizard({
           placeholder="e.g. Tue/Thu evening, 6h weekly"
           className={SHARED_TEXT_FIELD_CLASS}
           value={draft.weeklyAvailability}
-          onChange={(event) => onChange("weeklyAvailability", event.target.value)}
+          onChange={(event) =>
+            onChange("weeklyAvailability", event.target.value)
+          }
         />
         <label className="grid gap-2">
           <Typography variantStyle="label" className="pm-text-secondary">
@@ -76,7 +79,8 @@ export function RequestFlowWizard({
           <span className="text-slate-400">Reason:</span> {draft.reason || "-"}
         </p>
         <p className="mt-2">
-          <span className="text-slate-400">Availability:</span> {draft.weeklyAvailability || "-"}
+          <span className="text-slate-400">Availability:</span>{" "}
+          {draft.weeklyAvailability || "-"}
         </p>
         <p className="mt-2">
           <span className="text-slate-400">Note:</span> {draft.note || "-"}

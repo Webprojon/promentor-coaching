@@ -15,10 +15,13 @@ export default function JoinedTeamsPanel({
 
   return (
     <aside className="rounded-lg border border-white/10 bg-slate-900/55 p-4">
-      <Typography component="h2" className="text-sm font-semibold uppercase tracking-wide text-slate-300">
+      <Typography
+        component="h2"
+        className="text-sm font-semibold uppercase tracking-wide text-slate-300"
+      >
         Joined teams
       </Typography>
-      
+
       <div className="mt-3 grid gap-3">
         <label className="grid gap-1 text-sm text-slate-300">
           Team

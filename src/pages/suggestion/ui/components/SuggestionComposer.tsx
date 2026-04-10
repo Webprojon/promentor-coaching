@@ -1,6 +1,9 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
 import type { SuggestionComposerProps } from "@/pages/suggestion/model/types";
-import { PRIORITY_BADGE_CLASS, PRIORITY_SELECTED_BORDER_CLASS } from "@/pages/suggestion/model/constants";
+import {
+  PRIORITY_BADGE_CLASS,
+  PRIORITY_SELECTED_BORDER_CLASS,
+} from "@/pages/suggestion/model/constants";
 
 export default function SuggestionComposer({
   draft,
@@ -11,7 +14,10 @@ export default function SuggestionComposer({
 }: SuggestionComposerProps) {
   return (
     <article className="rounded-lg border border-white/10 bg-slate-900/55 p-4">
-      <Typography component="h2" className="text-sm font-semibold uppercase tracking-wide text-slate-300">
+      <Typography
+        component="h2"
+        className="text-sm font-semibold uppercase tracking-wide text-slate-300"
+      >
         Suggestion composer
       </Typography>
       <div className="mt-3 grid gap-3">
@@ -34,7 +40,7 @@ export default function SuggestionComposer({
             onChange={(event) => onDraftChange("detail", event.target.value)}
           />
         </label>
-        
+
         <div className="flex justify-between items-end mt-2">
           <div className="grid gap-2 text-sm text-slate-300">
             <Typography variantStyle="label" className="pm-text-secondary">
@@ -60,9 +66,14 @@ export default function SuggestionComposer({
             </div>
           </div>
 
-            <Button type="button" variant="contained" disabled={!canSend} onClick={onSend}>
-              Send Suggestion
-            </Button>
+          <Button
+            type="button"
+            variant="contained"
+            disabled={!canSend}
+            onClick={onSend}
+          >
+            Send Suggestion
+          </Button>
         </div>
       </div>
     </article>

@@ -6,10 +6,7 @@ export default function RequestsPage() {
   const { overview } = useRequestsPage();
 
   return (
-    <PageForShell
-      title="Requests"
-      description="Track your request activity."
-    >
+    <PageForShell title="Requests" description="Track your request activity.">
       <section className="mt-6 rounded-xl border border-white/10 bg-slate-900/55 p-5">
         <Typography component="p" className="text-sm text-slate-300">
           Total requests: {overview.total}

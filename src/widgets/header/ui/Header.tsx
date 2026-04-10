@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
 import { Typography } from "@promentorapp/ui-kit";
-import { mentorLinks, regularUserLinks } from "@/widgets/header/model/constants";
+import {
+  mentorLinks,
+  regularUserLinks,
+} from "@/widgets/header/model/constants";
 import { useHostAuthSession } from "@/features/auth";
 
 type HeaderNavLink = {

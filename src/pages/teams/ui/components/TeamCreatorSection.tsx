@@ -44,13 +44,15 @@ export function TeamCreatorSection() {
           {selectedLabel ? (
             <Typography className="text-xs! text-green-600!">
               {selectedLabel}{" "}
-              <span className="text-red-400!">out of {memberOptions.length}</span>
+              <span className="text-red-400!">
+                out of {memberOptions.length}
+              </span>
             </Typography>
           ) : null}
         </div>
 
         <div className="hide-scrollbar flex items-center max-h-[100px] min-h-12 pb-1 flex-1 flex-wrap gap-2 overflow-y-auto pr-1">
-          {memberOptions.map(({id, avatarUrl, name}) => {
+          {memberOptions.map(({ id, avatarUrl, name }) => {
             const isSelected = selectedMemberIds.includes(id);
             return (
               <Button
@@ -60,8 +62,16 @@ export function TeamCreatorSection() {
                 onClick={() => toggleMember(id)}
                 className={`h-9 border px-2! ${isSelected ? "border-[#2a6de5]!" : "border-white/20!"}`}
               >
-                <img src={avatarUrl} alt={name} className="h-5 w-5 rounded-full object-cover" />
-                <Typography component="span" variantStyle="label" className="text-xs!">
+                <img
+                  src={avatarUrl}
+                  alt={name}
+                  className="h-5 w-5 rounded-full object-cover"
+                />
+                <Typography
+                  component="span"
+                  variantStyle="label"
+                  className="text-xs!"
+                >
                   {name}
                 </Typography>
               </Button>
@@ -92,22 +102,40 @@ export function TeamCreatorSection() {
           <FieldError message={errors.memberEmail} />
 
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="contained" onClick={addManualMember} disabled={!canAddManualMember}>
+            <Button
+              type="button"
+              variant="contained"
+              onClick={addManualMember}
+              disabled={!canAddManualMember}
+            >
               Add New User
             </Button>
-            <Button type="button" variant="outlined" onClick={toggleManualMemberForm}>
+            <Button
+              type="button"
+              variant="outlined"
+              onClick={toggleManualMemberForm}
+            >
               Cancel
             </Button>
           </div>
         </div>
       ) : (
         <>
-          <Typography component="p" variantStyle="caption" className="mt-4 text-xs! text-slate-400!">
-            If there are no members that you are looking for in your directory, add new user manually to the system
-            and they will be automatically added to this team.
+          <Typography
+            component="p"
+            variantStyle="caption"
+            className="mt-4 text-xs! text-slate-400!"
+          >
+            If there are no members that you are looking for in your directory,
+            add new user manually to the system and they will be automatically
+            added to this team.
           </Typography>
 
-          <Button type="button" variant="outlined" onClick={toggleManualMemberForm}>
+          <Button
+            type="button"
+            variant="outlined"
+            onClick={toggleManualMemberForm}
+          >
             Add New User
           </Button>
         </>

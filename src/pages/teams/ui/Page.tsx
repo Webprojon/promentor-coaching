@@ -6,7 +6,15 @@ import { EmptyState } from "@/pages/teams/ui/components/EmptyState";
 import { Modal, PageForShell } from "@/shared/ui";
 
 export default function TeamsPage() {
-  const {openCreator, closeCreator, saveCreator, canSave, teamRows, hasTeams, isCreatorOpen} = useTeamsPage();
+  const {
+    openCreator,
+    closeCreator,
+    saveCreator,
+    canSave,
+    teamRows,
+    hasTeams,
+    isCreatorOpen,
+  } = useTeamsPage();
 
   return (
     <PageForShell
@@ -27,7 +35,11 @@ export default function TeamsPage() {
         open={isCreatorOpen}
         onClose={closeCreator}
         title="Create Team"
-        secondaryAction={{ label: "Cancel", onClick: closeCreator, variant: "outlined" }}
+        secondaryAction={{
+          label: "Cancel",
+          onClick: closeCreator,
+          variant: "outlined",
+        }}
         primaryAction={{
           label: "Confirm",
           onClick: saveCreator,

@@ -11,8 +11,14 @@ import {
   getPreviousWizardStep,
 } from "@/pages/mentors/model/utils";
 
-const updateMentorStatus = (rows: Mentor[], mentorId: string, requestStatus: Mentor["requestStatus"]) =>
-  rows.map((mentor) => (mentor.id === mentorId ? { ...mentor, requestStatus } : mentor));
+const updateMentorStatus = (
+  rows: Mentor[],
+  mentorId: string,
+  requestStatus: Mentor["requestStatus"],
+) =>
+  rows.map((mentor) =>
+    mentor.id === mentorId ? { ...mentor, requestStatus } : mentor,
+  );
 
 export function useMentorsPage() {
   const [mentorRows, setMentorRows] = useState<Mentor[]>(MENTOR_ROWS);
@@ -44,7 +50,9 @@ export function useMentorsPage() {
 
   const onSubmitRequest = () => {
     if (!draft.targetId) return;
-    setMentorRows((previous) => updateMentorStatus(previous, draft.targetId, "Pending"));
+    setMentorRows((previous) =>
+      updateMentorStatus(previous, draft.targetId, "Pending"),
+    );
     onCloseWizard();
   };
 
@@ -58,11 +66,14 @@ export function useMentorsPage() {
     }
 
     const nextStatus = getMentorActionStatus(mentor.requestStatus);
-    setMentorRows((previous) => updateMentorStatus(previous, mentorId, nextStatus));
+    setMentorRows((previous) =>
+      updateMentorStatus(previous, mentorId, nextStatus),
+    );
   };
 
   const goNext = () => setWizardStep((previous) => getNextWizardStep(previous));
-  const goBack = () => setWizardStep((previous) => getPreviousWizardStep(previous));
+  const goBack = () =>
+    setWizardStep((previous) => getPreviousWizardStep(previous));
   const canGoNext = canProceedWizardStep(wizardStep, draft);
 
   return {
@@ -80,4 +91,3 @@ export function useMentorsPage() {
     canGoNext,
   };
 }
-

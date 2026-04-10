@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import type { HostAuthBridge, HostAuthSession } from "@/features/auth/model/types";
+import type {
+  HostAuthBridge,
+  HostAuthSession,
+} from "@/features/auth/model/types";
 
 const fallbackSession: HostAuthSession = {
   isAuthenticated: false,

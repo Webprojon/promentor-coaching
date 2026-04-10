@@ -25,7 +25,11 @@ export default function MentorsPage() {
     >
       <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {rows.map((mentor) => (
-          <MentorCard key={mentor.id} mentor={mentor} onActionClick={onMentorActionClick} />
+          <MentorCard
+            key={mentor.id}
+            mentor={mentor}
+            onActionClick={onMentorActionClick}
+          />
         ))}
       </section>
 

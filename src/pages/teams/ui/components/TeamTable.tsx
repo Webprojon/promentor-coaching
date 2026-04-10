@@ -13,7 +13,9 @@ export function TeamTable({ rows }: TeamTableProps) {
       getRowKey={(row) => row.id}
       renderRow={({ id, teamName, status, memberAvatars, membersCount }) => (
         <>
-          <td className="px-4 py-3 text-sm font-semibold text-slate-100">{teamName}</td>
+          <td className="px-4 py-3 text-sm font-semibold text-slate-100">
+            {teamName}
+          </td>
           <td className="px-4 py-3 text-sm">
             <Badge toneClassName={TEAM_STATUS_BADGE_CLASS[status]}>
               {status}
@@ -23,7 +25,10 @@ export function TeamTable({ rows }: TeamTableProps) {
             <div className="flex items-center">
               <div className="flex">
                 {memberAvatars.slice(0, 3).map((avatar, index) => (
-                  <div key={`${id}-avatar-${index}`} className={index > 0 ? "-ml-2" : ""}>
+                  <div
+                    key={`${id}-avatar-${index}`}
+                    className={index > 0 ? "-ml-2" : ""}
+                  >
                     <img
                       src={avatar}
                       alt="Member avatar"
@@ -32,18 +37,32 @@ export function TeamTable({ rows }: TeamTableProps) {
                   </div>
                 ))}
               </div>
-              <Typography component="span" variantStyle="caption" className="ml-2 text-slate-300">
+              <Typography
+                component="span"
+                variantStyle="caption"
+                className="ml-2 text-slate-300"
+              >
                 +{Math.max(membersCount - 3, 0)}
               </Typography>
             </div>
           </td>
           <td className="px-4 py-3 text-sm">
             <div className="flex items-center justify-end gap-2">
-              <Button type="button" color="success" aria-label="Edit team" onClick={() => undefined}>
+              <Button
+                type="button"
+                color="success"
+                aria-label="Edit team"
+                onClick={() => undefined}
+              >
                 <RiEdit2Fill className="h-4 w-4" />
               </Button>
 
-              <Button type="button" color="error" aria-label="Delete team" onClick={() => undefined}>
+              <Button
+                type="button"
+                color="error"
+                aria-label="Delete team"
+                onClick={() => undefined}
+              >
                 <RiDeleteBin6Line className="h-4 w-4" />
               </Button>
             </div>

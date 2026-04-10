@@ -18,7 +18,14 @@ type ModalProps = {
   secondaryAction?: ModalAction;
 };
 
-export function Modal({ open, onClose, title, children, primaryAction, secondaryAction }: ModalProps) {
+export function Modal({
+  open,
+  onClose,
+  title,
+  children,
+  primaryAction,
+  secondaryAction,
+}: ModalProps) {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -35,13 +42,18 @@ export function Modal({ open, onClose, title, children, primaryAction, secondary
   };
 
   return createPortal(
-    <div className={`fixed inset-0 z-[1300] transition-opacity duration-200 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}>
+    <div
+      className={`fixed inset-0 z-[1300] transition-opacity duration-200 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+    >
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
         onClick={onClose}
       />
 
-      <div className="relative z-10 flex min-h-full items-center justify-center p-4" onClick={onOutsideClick}>
+      <div
+        className="relative z-10 flex min-h-full items-center justify-center p-4"
+        onClick={onOutsideClick}
+      >
         <div
           className={`w-full max-w-3xl overflow-hidden rounded-lg border border-white/20 bg-slate-900/80 shadow-[0_18px_60px_rgba(2,6,23,0.65)] backdrop-blur-md transition-all duration-200 ${open ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
           onClick={(event) => event.stopPropagation()}
@@ -60,7 +72,7 @@ export function Modal({ open, onClose, title, children, primaryAction, secondary
 
           <div className="p-5">{children}</div>
 
-          {(primaryAction || secondaryAction) ? (
+          {primaryAction || secondaryAction ? (
             <div className="flex items-center justify-end gap-2 border-t border-white/20 px-5 py-4">
               {secondaryAction ? (
                 <Button
