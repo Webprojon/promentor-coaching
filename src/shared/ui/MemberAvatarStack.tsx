@@ -24,10 +24,7 @@ export function MemberAvatarStack({
             key={`${id}-avatar-${index}`}
             className={index > 0 ? "-ml-2" : ""}
           >
-            <Avatar
-              user={{ name: "Member", avatarUrl }}
-              size="sm"
-            />
+            <Avatar user={{ name: "Member", avatarUrl }} size="sm" />
           </div>
         ))}
       </div>
