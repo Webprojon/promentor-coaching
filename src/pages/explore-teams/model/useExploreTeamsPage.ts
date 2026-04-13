@@ -1,5 +1,8 @@
 import { useState } from "react";
-import type { RequestDraft } from "@/shared/model/types";
+import type {
+  RequestDraft,
+  WizardStep,
+} from "@/features/send-request-flow/model/types";
 import { EXPLORE_TEAM_ROWS } from "@/pages/explore-teams/model/constants";
 import type { ExploreTeam } from "@/pages/explore-teams/model/types";
 
@@ -16,7 +19,7 @@ const createEmptyDraft = (): RequestDraft => ({
 export function useExploreTeamsPage() {
   const [exploreRows, setExploreRows] =
     useState<ExploreTeam[]>(EXPLORE_TEAM_ROWS);
-  const [wizardStep, setWizardStep] = useState<1 | 2 | 3>(1);
+  const [wizardStep, setWizardStep] = useState<WizardStep>(1);
   const [draft, setDraft] = useState<RequestDraft>(createEmptyDraft);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const rows = exploreRows;
@@ -56,11 +59,11 @@ export function useExploreTeamsPage() {
 
   const goNext = () =>
     setWizardStep((previous) =>
-      previous < 3 ? ((previous + 1) as 1 | 2 | 3) : previous,
+      previous < 3 ? ((previous + 1) as WizardStep) : previous,
     );
   const goBack = () =>
     setWizardStep((previous) =>
-      previous > 1 ? ((previous - 1) as 1 | 2 | 3) : previous,
+      previous > 1 ? ((previous - 1) as WizardStep) : previous,
     );
 
   const canGoNext =

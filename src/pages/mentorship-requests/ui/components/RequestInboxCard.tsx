@@ -17,7 +17,7 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
 
   return (
     <article
-      className={`flex h-full flex-col rounded-xl border border-white/10 p-4 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm transition hover:border-white/20 ${meta.cardAccentClass}`}
+      className={`flex h-full flex-col rounded-lg border border-white/10 p-4 transition hover:border-white/20 ${meta.cardAccentClass}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-start gap-3">
@@ -43,7 +43,7 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
             </div>
             <Typography
               component="h3"
-              className="mt-2 text-base! font-bold leading-snug text-white"
+              className="mt-2 font-bold leading-snug text-white"
             >
               {row.title}
             </Typography>
@@ -76,7 +76,7 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
         {row.summary}
       </Typography>
 
-      {showMentorActions ? (
+      {showMentorActions && (
         <div className="mt-4 flex flex-wrap justify-end gap-2 border-t border-white/10 pt-4">
           <Button type="button" variant="outlined" color="error">
             Decline
@@ -85,15 +85,6 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
             Accept
           </Button>
         </div>
-      ) : (
-        <Typography
-          component="p"
-          className="mt-4 border-t border-white/5 pt-3 text-xs text-slate-500"
-        >
-          {row.direction === "sent"
-            ? "Track status here; notifications will arrive once this is wired to your backend."
-            : "Resolved incoming items stay in this list for history."}
-        </Typography>
       )}
     </article>
   );

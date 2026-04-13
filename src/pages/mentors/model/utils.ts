@@ -1,4 +1,5 @@
-import type { RequestDraft, RequestStatus } from "@/shared/model/types";
+import type { RequestDraft } from "@/features/send-request-flow/model/types";
+import type { RequestStatus } from "@/shared/model/types";
 import type { WizardStep } from "@/pages/mentors/model/types";
 
 export const FIRST_WIZARD_STEP: WizardStep = 1;

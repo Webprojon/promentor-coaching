@@ -1,23 +1,39 @@
-import type {
-  RequestDraft,
-  RequestStatus,
-  WizardStep,
-} from "@/shared/model/types";
+import type { DiscoveryTargetType } from "@/features/send-request-flow/model/types";
+import type { RequestStatus } from "@/shared/model/types";
+import type { IconType } from "react-icons";
 
-export type { DiscoveryTargetType, RequestStatus } from "@/shared/model/types";
-
-export type RequestFlowWizardProps = {
-  step: WizardStep;
-  targetLabel: string;
-  draft: RequestDraft;
-  onChange: (field: keyof RequestDraft, value: string) => void;
-};
+export type { DiscoveryTargetType, RequestStatus };
 
 export type RequestCategory = "team_join" | "mentorship" | "suggestion";
 
 export type RequestInboxDirection = "sent" | "received";
 
 export type RequestCategoryFilter = RequestCategory | "all";
+
+export type RequestViewToggleOption = {
+  value: RequestInboxDirection;
+  label: string;
+  Icon: IconType;
+};
+
+export type RequestCategoryFilterOption = {
+  value: RequestCategoryFilter;
+  label: string;
+  hint?: string;
+  Icon?: IconType;
+  activeClassName: string;
+};
+
+export type RequestsEmptyStateProps = {
+  direction: RequestInboxDirection;
+  categoryFilter: RequestCategoryFilter;
+};
+
+export type EmptyStateActionLink = {
+  to: string;
+  label: string;
+  className: string;
+};
 
 export type RequestInboxRow = {
   id: string;

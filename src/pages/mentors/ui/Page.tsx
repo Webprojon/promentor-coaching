@@ -1,5 +1,5 @@
 import { Modal, PageForShell } from "@/shared/ui";
-import { RequestFlowWizard } from "@/pages/mentorship-requests/ui/components/RequestFlowWizard";
+import { SendRequestFlow } from "@/features/send-request-flow";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
 import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
 
@@ -49,7 +49,7 @@ export default function MentorsPage() {
           disabled: !canGoNext,
         }}
       >
-        <RequestFlowWizard
+        <SendRequestFlow
           step={wizardStep}
           targetLabel={draft.targetName}
           draft={draft}

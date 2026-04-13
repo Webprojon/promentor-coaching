@@ -1,16 +1,30 @@
 import type { IconType } from "react-icons";
-import { RiLightbulbLine, RiTeamLine, RiUserStarLine } from "react-icons/ri";
+import {
+  RiInboxArchiveLine,
+  RiLightbulbLine,
+  RiSendPlaneLine,
+  RiTeamLine,
+  RiUserStarLine,
+} from "react-icons/ri";
 import type {
+  EmptyStateActionLink,
   RequestCategory,
+  RequestCategoryFilter,
+  RequestCategoryFilterOption,
   RequestInboxRow,
+  RequestInboxDirection,
+  RequestViewToggleOption,
   RequestsOverviewStats,
 } from "@/pages/mentorship-requests/model/types";
 
-export const REQUEST_CATEGORY_ORDER: RequestCategory[] = [
+export const REQUEST_CATEGORY_FILTER_ORDER: RequestCategoryFilter[] = [
+  "all",
   "team_join",
   "mentorship",
   "suggestion",
 ];
+
+export const REQUEST_DEFAULT_CATEGORY_FILTER: RequestCategoryFilter = "all";
 
 export const REQUESTS_SUMMARY_STRIP_ITEMS: {
   overviewKey: keyof RequestsOverviewStats;
@@ -26,6 +40,20 @@ export const REQUESTS_SUMMARY_STRIP_ITEMS: {
     sub: "incoming · pending",
   },
 ];
+
+export const REQUEST_VIEW_TOGGLE_OPTIONS: RequestViewToggleOption[] = [
+  { value: "sent", label: "Sent", Icon: RiSendPlaneLine },
+  { value: "received", label: "Received", Icon: RiInboxArchiveLine },
+];
+
+export const REQUEST_VIEW_TOGGLE_BUTTON_CLASS =
+  "flex items-center justify-center gap-2 cursor-pointer rounded-lg px-4 py-3 text-sm font-semibold transition sm:justify-start sm:px-5";
+
+export const REQUEST_CATEGORY_FILTER_BASE_BUTTON_CLASS =
+  "flex shrink-0 items-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition";
+
+export const REQUEST_CATEGORY_FILTER_INACTIVE_BUTTON_CLASS =
+  "border-white/10 text-slate-400 hover:border-white/20 hover:text-slate-200";
 
 export const REQUEST_CATEGORY_META: Record<
   RequestCategory,
@@ -66,6 +94,58 @@ export const REQUEST_CATEGORY_META: Record<
     chipClass: "border-violet-400/35 bg-violet-500/12 text-violet-100",
   },
 };
+
+export const REQUEST_CATEGORY_FILTER_OPTIONS: RequestCategoryFilterOption[] = [
+  ...REQUEST_CATEGORY_FILTER_ORDER.map((key) => {
+    if (key === "all") {
+      return {
+        value: key,
+        label: "All",
+        activeClassName: "border-cyan-400/50 bg-cyan-500/15 text-cyan-100",
+      };
+    }
+
+    const meta = REQUEST_CATEGORY_META[key];
+    return {
+      value: key,
+      label: meta.label,
+      hint: meta.hint,
+      Icon: meta.Icon,
+      activeClassName: `${meta.chipClass} shadow-[0_0_20px_rgba(34,211,238,0.08)]`,
+    };
+  }),
+];
+
+export const EMPTY_STATE_MESSAGE_BY_DIRECTION: Record<
+  RequestInboxDirection,
+  string
+> = {
+  sent:
+    "Send a join request from Explore Teams, ask a mentor from Mentors, or share a suggestion from the hub.",
+  received:
+    "When someone targets you or your team, their request will land here for review.",
+};
+
+export const EMPTY_STATE_ACTION_LINKS: EmptyStateActionLink[] = [
+  {
+    to: "/explore-teams",
+    label: "Explore teams",
+    className:
+      "rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-4 py-2 text-cyan-100 transition hover:bg-cyan-500/20",
+  },
+  {
+    to: "/mentors",
+    label: "Mentors",
+    className:
+      "rounded-lg border border-indigo-400/40 bg-indigo-500/10 px-4 py-2 text-indigo-100 transition hover:bg-indigo-500/20",
+  },
+  {
+    to: "/suggestion",
+    label: "Suggestion hub",
+    className:
+      "rounded-lg border border-violet-400/40 bg-violet-500/10 px-4 py-2 text-violet-100 transition hover:bg-violet-500/20",
+  },
+];
 
 export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
   {

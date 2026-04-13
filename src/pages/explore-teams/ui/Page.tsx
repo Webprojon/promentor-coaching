@@ -1,7 +1,7 @@
 import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
+import { SendRequestFlow } from "@/features/send-request-flow";
 import { Modal, PageForShell } from "@/shared/ui";
-import { RequestFlowWizard } from "@/pages/mentorship-requests/ui/components/RequestFlowWizard";
 
 export default function ExploreTeamsPage() {
   const {
@@ -43,7 +43,7 @@ export default function ExploreTeamsPage() {
           disabled: !canGoNext,
         }}
       >
-        <RequestFlowWizard
+        <SendRequestFlow
           step={wizardStep}
           targetLabel={draft.targetName}
           draft={draft}

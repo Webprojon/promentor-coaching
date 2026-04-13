@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { RequestDraft } from "@/shared/model/types";
+import type { RequestDraft } from "@/features/send-request-flow/model/types";
 import { MENTOR_ROWS } from "@/pages/mentors/model/constants";
 import type { Mentor, WizardStep } from "@/pages/mentors/model/types";
 import {

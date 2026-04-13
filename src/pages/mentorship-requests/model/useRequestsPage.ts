@@ -1,5 +1,8 @@
 import { useMemo, useState } from "react";
-import { MOCK_REQUEST_INBOX } from "@/pages/mentorship-requests/model/constants";
+import {
+  MOCK_REQUEST_INBOX,
+  REQUEST_DEFAULT_CATEGORY_FILTER,
+} from "@/pages/mentorship-requests/model/constants";
 import type {
   RequestCategoryFilter,
   RequestInboxDirection,
@@ -31,7 +34,7 @@ export function useRequestsPage() {
   const rows = MOCK_REQUEST_INBOX;
   const [direction, setDirection] = useState<RequestInboxDirection>("sent");
   const [categoryFilter, setCategoryFilter] =
-    useState<RequestCategoryFilter>("all");
+    useState<RequestCategoryFilter>(REQUEST_DEFAULT_CATEGORY_FILTER);
 
   const overview = useMemo(() => computeOverview(rows), [rows]);
 

@@ -1,13 +1,22 @@
 import { TextField, Typography } from "@promentorapp/ui-kit";
-import type { RequestFlowWizardProps } from "@/pages/mentorship-requests/model/types";
+import { SEND_REQUEST_REVIEW_FIELDS } from "@/features/send-request-flow/model/constants";
+import type { SendRequestFlowProps } from "@/features/send-request-flow/model/types";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 
-export function RequestFlowWizard({
+export function SendRequestFlow({
   step,
   targetLabel,
   draft,
   onChange,
-}: RequestFlowWizardProps) {
+}: SendRequestFlowProps) {
+  const REVIEW_ITEMS = SEND_REQUEST_REVIEW_FIELDS.map((field) => ({
+    label: field.label,
+    value:
+      field.key === "targetLabel"
+        ? targetLabel
+        : (draft[field.key] as string) || "-",
+  }));
+
   if (step === 1) {
     return (
       <section className="grid gap-3">
@@ -44,9 +53,7 @@ export function RequestFlowWizard({
           placeholder="e.g. Tue/Thu evening, 6h weekly"
           className={SHARED_TEXT_FIELD_CLASS}
           value={draft.weeklyAvailability}
-          onChange={(event) =>
-            onChange("weeklyAvailability", event.target.value)
-          }
+          onChange={(event) => onChange("weeklyAvailability", event.target.value)}
         />
         <label className="grid gap-2">
           <Typography variantStyle="label" className="pm-text-secondary">
@@ -69,22 +76,11 @@ export function RequestFlowWizard({
         Confirm your request details before sending.
       </Typography>
       <div className="rounded-lg border border-white/10 bg-slate-900/60 p-4 text-sm text-slate-200">
-        <p>
-          <span className="text-slate-400">Target:</span> {targetLabel}
-        </p>
-        <p className="mt-2">
-          <span className="text-slate-400">Goal:</span> {draft.goal || "-"}
-        </p>
-        <p className="mt-2">
-          <span className="text-slate-400">Reason:</span> {draft.reason || "-"}
-        </p>
-        <p className="mt-2">
-          <span className="text-slate-400">Availability:</span>{" "}
-          {draft.weeklyAvailability || "-"}
-        </p>
-        <p className="mt-2">
-          <span className="text-slate-400">Note:</span> {draft.note || "-"}
-        </p>
+        {REVIEW_ITEMS.map((item, index) => (
+          <p key={item.label} className={index === 0 ? undefined : "mt-2"}>
+            <span className="text-slate-400">{item.label}:</span> {item.value}
+          </p>
+        ))}
       </div>
     </section>
   );

@@ -1,15 +1,13 @@
 import { Typography } from "@promentorapp/ui-kit";
 import { Link } from "react-router-dom";
-import { REQUEST_CATEGORY_META } from "@/pages/mentorship-requests/model/constants";
+import {
+  EMPTY_STATE_ACTION_LINKS,
+  EMPTY_STATE_MESSAGE_BY_DIRECTION,
+  REQUEST_CATEGORY_META,
+} from "@/pages/mentorship-requests/model/constants";
 import type {
-  RequestCategoryFilter,
-  RequestInboxDirection,
+  RequestsEmptyStateProps,
 } from "@/pages/mentorship-requests/model/types";
-
-type RequestsEmptyStateProps = {
-  direction: RequestInboxDirection;
-  categoryFilter: RequestCategoryFilter;
-};
 
 export function RequestsEmptyState({
   direction,
@@ -21,7 +19,7 @@ export function RequestsEmptyState({
       : `“${REQUEST_CATEGORY_META[categoryFilter].label}”`;
 
   return (
-    <div className="mt-8 rounded-2xl border border-dashed border-white/15 bg-slate-950/35 px-6 py-12 text-center backdrop-blur-sm">
+    <div className="mt-8 rounded-lg border border-dashed border-white/15 px-6 py-12 text-center">
       <Typography
         component="p"
         className="text-base! font-semibold text-slate-300"
@@ -32,32 +30,17 @@ export function RequestsEmptyState({
         component="p"
         className="mx-auto mt-2 max-w-md text-sm text-slate-500"
       >
-        {direction === "sent"
-          ? "Send a join request from Explore Teams, ask a mentor from Mentors, or share a suggestion from the hub."
-          : "When someone targets you or your team, their request will land here for review."}
+        {EMPTY_STATE_MESSAGE_BY_DIRECTION[direction]}
       </Typography>
       <Typography
         component="div"
         className="mt-6 flex flex-wrap justify-center gap-3 text-sm font-semibold"
       >
-        <Link
-          to="/explore-teams"
-          className="rounded-lg border border-cyan-400/40 bg-cyan-500/10 px-4 py-2 text-cyan-100 transition hover:bg-cyan-500/20"
-        >
-          Explore teams
-        </Link>
-        <Link
-          to="/mentors"
-          className="rounded-lg border border-indigo-400/40 bg-indigo-500/10 px-4 py-2 text-indigo-100 transition hover:bg-indigo-500/20"
-        >
-          Mentors
-        </Link>
-        <Link
-          to="/suggestion"
-          className="rounded-lg border border-violet-400/40 bg-violet-500/10 px-4 py-2 text-violet-100 transition hover:bg-violet-500/20"
-        >
-          Suggestion hub
-        </Link>
+        {EMPTY_STATE_ACTION_LINKS.map((link) => (
+          <Link key={link.to} to={link.to} className={link.className}>
+            {link.label}
+          </Link>
+        ))}
       </Typography>
     </div>
   );
