@@ -16,11 +16,13 @@ import type {
   MentorSentTargetKind,
   RequestCategory,
   RequestCategoryFilter,
-  RequestInboxRow,
   RequestInboxDirection,
+  RequestInboxRow,
   RequestViewToggleOption,
   RequestsTabFilterOption,
+  MentorSentRequestSendFieldset,
 } from "@/pages/requests/model/types";
+import type { ModalAction } from "@/shared/ui/Modal";
 
 const REQUEST_CATEGORY_FILTER_ORDER: RequestCategoryFilter[] = [
   "all",
@@ -142,6 +144,44 @@ export const MENTOR_SENT_DEFAULT_FILTER: MentorSentFilter = "all";
 export const MENTOR_SENT_DELIVERED_BADGE_CLASS =
   "border-slate-500/45 bg-slate-500/10 text-slate-200 shadow-[0_0_16px_rgba(148,163,184,0.12)]";
 
+export const MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS = {
+  cancel: "Cancel",
+  edit: "Edit",
+  delete: "Delete",
+} as const;
+
+export type MentorSentRequestViewModalFooterHandlers = {
+  onClose: () => void;
+  onEditSent?: () => void;
+  onDeleteSent?: () => void;
+};
+
+export function mentorSentRequestViewModalFooterActions(
+  handlers: MentorSentRequestViewModalFooterHandlers,
+): ModalAction[] {
+  const { onClose, onEditSent, onDeleteSent } = handlers;
+  return [
+    {
+      label: MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS.cancel,
+      onClick: onClose,
+      variant: "outlined",
+    },
+    {
+      label: MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS.edit,
+      onClick: () => onEditSent?.(),
+      variant: "outlined",
+      disabled: !onEditSent,
+    },
+    {
+      label: MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS.delete,
+      onClick: () => onDeleteSent?.(),
+      variant: "outlined",
+      color: "error",
+      disabled: !onDeleteSent,
+    },
+  ];
+}
+
 export const MENTOR_SENT_KIND_META: Record<
   MentorSentTargetKind,
   {
@@ -188,6 +228,94 @@ export const MENTOR_SENT_KIND_META: Record<
     cardAccentClass:
       "border-l-4 border-l-fuchsia-400/75 bg-linear-to-br from-fuchsia-500/12 via-slate-900/70 to-slate-950/80",
     chipClass: "border-fuchsia-400/35 bg-fuchsia-500/12 text-fuchsia-100",
+  },
+};
+
+export const MENTOR_SENT_REQUEST_SEND_FIELDSET: Record<
+  MentorSentTargetKind,
+  MentorSentRequestSendFieldset
+> = {
+  teams: {
+    primaryLabel: "Team",
+    primaryAriaLabel: "Choose team",
+    primaryOptions: [
+      { value: "", label: "Select a team you mentor" },
+      { value: "core", label: "Core Delivery Guild" },
+      { value: "design", label: "Design Systems Guild" },
+      { value: "mobile", label: "Mobile Platform Guild" },
+    ],
+    angleField: {
+      label: "Ritual or workflow",
+      ariaLabel: "Ritual or workflow",
+      placeholder: "e.g. Sprint planning, backlog scrub",
+    },
+    detailPlaceholder:
+      "What should change, and why does it help the whole team?",
+  },
+  interns: {
+    primaryLabel: "Cohort",
+    primaryAriaLabel: "Choose intern cohort",
+    primaryOptions: [
+      { value: "", label: "Pick a cohort" },
+      { value: "summer-design", label: "Summer · Design" },
+      { value: "summer-eng", label: "Summer · Engineering" },
+      { value: "returning", label: "Returning interns" },
+    ],
+    angleField: {
+      label: "Focus skill",
+      ariaLabel: "Focus skill",
+      placeholder: "e.g. Storytelling, critique, async updates",
+    },
+    detailPlaceholder:
+      "What practice, template, or cadence would accelerate their growth?",
+    extraFields: [
+      {
+        label: "Optional office hours",
+        ariaLabel: "Optional office hours",
+        placeholder: "e.g. Fri 15:00–16:00 UTC",
+      },
+    ],
+  },
+  boards: {
+    primaryLabel: "Board",
+    primaryAriaLabel: "Choose board",
+    primaryOptions: [
+      { value: "", label: "Select a board" },
+      { value: "release", label: "Release train board" },
+      { value: "portfolio", label: "Portfolio kanban" },
+      { value: "risk", label: "Risk radar" },
+    ],
+    angleField: {
+      label: "Column or swimlane",
+      ariaLabel: "Column or swimlane",
+      placeholder: "Where should this request apply?",
+    },
+    detailPlaceholder:
+      "Describe the tweak — fewer columns, clearer WIP limits, new signal...",
+  },
+  workout_plans: {
+    primaryLabel: "Plan",
+    primaryAriaLabel: "Choose workout plan",
+    primaryOptions: [
+      { value: "", label: "Shared plan" },
+      { value: "guild", label: "Guild resilience track" },
+      { value: "sprint", label: "Sprint surge block" },
+      { value: "recovery", label: "Recovery micro-cycle" },
+    ],
+    angleField: {
+      label: "Load focus",
+      ariaLabel: "Load focus",
+      placeholder: "e.g. Deload week, mobility emphasis",
+    },
+    detailPlaceholder:
+      "How should intensity, rest, or shared accountability shift?",
+    extraFields: [
+      {
+        label: "Time horizon",
+        ariaLabel: "Time horizon",
+        placeholder: "e.g. Next 2 micro-cycles",
+      },
+    ],
   },
 };
 
@@ -242,17 +370,15 @@ export const MOCK_MENTOR_SENT_REQUESTS: MentorSentRequestRow[] = [
     id: "ms-teams-1",
     targetKind: "teams",
     title: "Request · Sprint hygiene",
-    targetLabel: "Core Delivery Guild",
     counterpartName: "Leads: Mara Chen",
     summary:
-      "Propose a lighter pre-planning packet so async updates stay under five minutes. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae cum similique blanditiis officia? Earum, dolorum asperiores. Eveniet perferendis doloremque corporis quidem consectetur officia, laborum alias unde ut nihil rem iure incidunt magnam consequatur voluptatem esse explicabo ratione fugiat. Quibusdam animi suscipit magni tempore quidem rerum. Vero dolor eum maxime neque illo aperiam sed ipsam quibusdam molestias enim fuga veritatis omnis distinctio assumenda atque nulla temporibus, ex odio. Incidunt iusto reprehenderit molestiae quia ratione quam, sequi dolore a similique doloribus velit nemo architecto magni harum, suscipit quisquam nam eos amet cum et! Porro numquam fuga, animi eum quisquam dolor laudantium cum.",
+      "Propose a lighter pre-planning packet so async updates stay under five minutes.",
     createdLabel: "6h ago",
   },
   {
     id: "ms-interns-1",
     targetKind: "interns",
     title: "Request · Portfolio reviews",
-    targetLabel: "Summer cohort · design",
     counterpartName: "Cohort anchor: Jordan Lee",
     summary:
       "Offer a rotating critique lane for figma files before final sign-off.",
@@ -262,7 +388,6 @@ export const MOCK_MENTOR_SENT_REQUESTS: MentorSentRequestRow[] = [
     id: "ms-boards-1",
     targetKind: "boards",
     title: "Request · Risk radar",
-    targetLabel: "Release train board",
     counterpartName: "Facilitator: Samira Ortiz",
     summary:
       "Tighten the “at risk” column so blocked work bubbles up without noise.",
@@ -272,7 +397,6 @@ export const MOCK_MENTOR_SENT_REQUESTS: MentorSentRequestRow[] = [
     id: "ms-workout-1",
     targetKind: "workout_plans",
     title: "Request · Deload micro-cycle",
-    targetLabel: "Team resilience plan",
     counterpartName: "Shared with: mobile guild",
     summary:
       "Slot a down week after major launches — swap two hard sessions for mobility.",
@@ -286,9 +410,9 @@ export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
     category: "team_join",
     direction: "received",
     title: "Join request for your team",
-    targetLabel: "Core Delivery · your team",
     counterpartName: "Samira Ortiz",
-    summary: "Interested in pairing on release train rituals and risk boards. Propose a lighter pre-planning packet so async updates stay under five minutes. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae cum similique blanditiis officia? Earum, dolorum asperiores. Eveniet perferendis doloremque corporis quidem consectetur officia, laborum alias unde ut nihil rem iure incidunt magnam consequatur voluptatem esse explicabo ratione fugiat.",
+    summary:
+      "Interested in pairing on release train rituals and risk boards, with lighter pre-planning packets.",
     status: "Pending",
     createdLabel: "5h ago",
   },
@@ -297,7 +421,6 @@ export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
     category: "mentorship",
     direction: "received",
     title: "Mentorship ask",
-    targetLabel: "You · as mentor",
     counterpartName: "Noah Patel",
     summary:
       "Wants a monthly cadence on stakeholder storytelling and exec updates.",
@@ -311,7 +434,6 @@ export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
     category: "suggestion",
     direction: "received",
     title: "Suggestion for you",
-    targetLabel: "Your mentee context",
     counterpartName: "Elena Vogt",
     summary:
       "Idea: add a shared doc for retro action items visible to the cohort.",

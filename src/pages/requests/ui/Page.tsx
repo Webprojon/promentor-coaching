@@ -78,7 +78,7 @@ function RequestsPageContent({ direction }: { direction: RequestInboxDirection }
       {isGridEmpty ? (
         <RequestsEmptyCard {...emptyCard} />
       ) : (
-        <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-2">
+        <section className="mt-6 grid gap-4 md:grid-cols-2">
           {gridItems}
         </section>
       )}

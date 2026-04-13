@@ -1,7 +1,13 @@
 export { AppBackground } from "@/shared/ui/AppBackground";
 export { Badge } from "@/shared/ui/Badge";
+export { FormField } from "@/shared/ui/FormField";
 export { MemberAvatarStack } from "@/shared/ui/MemberAvatarStack";
 export { Modal } from "@/shared/ui/Modal";
+export type { ModalAction } from "@/shared/ui/Modal";
 export { default as PageForShell } from "@/shared/ui/PageForShell";
+export { Select } from "@/shared/ui/Select";
+export type { SelectProps } from "@/shared/ui/Select";
 export { Table } from "@/shared/ui/Table";
 export type { TableColumn } from "@/shared/ui/Table";
+export { Textarea } from "@/shared/ui/Textarea";
+export type { TextareaProps } from "@/shared/ui/Textarea";

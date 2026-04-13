@@ -12,13 +12,13 @@ export function RequestSlotCard({ viewModel, onClick }: RequestSlotCardProps) {
 
   return (
     <article
-      className={`flex min-h-[220px] flex-col justify-center rounded-lg border border-dashed border-white/25 bg-linear-to-br from-slate-900/40 via-slate-950/70 to-slate-950/90 p-6 transition hover:border-cyan-400/45 hover:shadow-[0_0_32px_rgba(34,211,238,0.08)]`}
+      className={`flex flex-col justify-center rounded-lg border border-dashed border-white/25 bg-linear-to-br from-slate-900/40 via-slate-950/70 to-slate-950/90 p-6 transition hover:border-cyan-400/45 hover:shadow-[0_0_32px_rgba(34,211,238,0.08)]`}
     >
-      <div className="flex flex-col items-center gap-4 text-center">
+      <div className="flex flex-col items-center gap-2 text-center">
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl border ${chipClass}`}
+          className={`flex h-10 w-10 items-center justify-center rounded-lg border ${chipClass}`}
         >
-          <Icon className="text-2xl" aria-hidden />
+          <Icon className="text-xl" aria-hidden />
         </div>
         <div>
           <Typography
@@ -34,7 +34,7 @@ export function RequestSlotCard({ viewModel, onClick }: RequestSlotCardProps) {
         <Button
           type="button"
           onClick={onClick}
-          className="inline-flex items-center gap-2 rounded-lg border border-cyan-400/50 bg-linear-to-r from-cyan-500/20 to-indigo-500/15 px-5 py-2.5 text-sm font-semibold text-cyan-50 shadow-[0_8px_28px_rgba(2,6,23,0.45)] transition hover:border-cyan-300/70 hover:from-cyan-500/30 hover:to-indigo-500/25"
+          className="inline-flex items-center gap-2 rounded-lg border border-cyan-400/50 bg-linear-to-r from-cyan-500/20 to-indigo-500/15 px-3 py-2.5 text-sm font-semibold text-cyan-50 shadow-[0_8px_28px_rgba(2,6,23,0.45)] transition hover:border-cyan-300/70 hover:from-cyan-500/30 hover:to-indigo-500/25"
         >
           <RiAddLine className="text-lg" aria-hidden />
           Create New Request

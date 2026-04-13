@@ -2,7 +2,7 @@ import { Button } from "@promentorapp/ui-kit";
 import { type MouseEvent, type ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-type ModalAction = {
+export type ModalAction = {
   label: string;
   onClick: () => void;
   disabled?: boolean;
@@ -17,6 +17,7 @@ type ModalProps = {
   children: ReactNode;
   primaryAction?: ModalAction;
   secondaryAction?: ModalAction;
+  footerActions?: ModalAction[];
 };
 
 export function Modal({
@@ -26,6 +27,7 @@ export function Modal({
   children,
   primaryAction,
   secondaryAction,
+  footerActions,
 }: ModalProps) {
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -35,6 +37,11 @@ export function Modal({
   }, [open]);
 
   if (typeof document === "undefined") return null;
+
+  const hasCustomFooter = Boolean(footerActions?.length);
+  const hasLegacyFooter =
+    !hasCustomFooter && Boolean(primaryAction || secondaryAction);
+  const showFooter = hasCustomFooter || hasLegacyFooter;
 
   const onOutsideClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
@@ -73,9 +80,23 @@ export function Modal({
 
           <div className="p-5">{children}</div>
 
-          {primaryAction || secondaryAction ? (
-            <div className="flex items-center justify-end gap-2 border-t border-white/20 px-5 py-4">
-              {secondaryAction ? (
+          {showFooter ? (
+            <div className="flex flex-wrap items-center justify-end gap-2 border-t border-white/20 px-5 py-4">
+              {hasCustomFooter
+                ? (footerActions ?? []).map((action, index) => (
+                    <Button
+                      key={`${action.label}-${index}`}
+                      type="button"
+                      variant={action.variant ?? "outlined"}
+                      color={action.color}
+                      onClick={action.onClick}
+                      disabled={action.disabled}
+                    >
+                      {action.label}
+                    </Button>
+                  ))
+                : null}
+              {!hasCustomFooter && secondaryAction ? (
                 <Button
                   type="button"
                   variant={secondaryAction.variant ?? "outlined"}
@@ -86,7 +107,7 @@ export function Modal({
                   {secondaryAction.label}
                 </Button>
               ) : null}
-              {primaryAction ? (
+              {!hasCustomFooter && primaryAction ? (
                 <Button
                   type="button"
                   variant={primaryAction.variant ?? "contained"}

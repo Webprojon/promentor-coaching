@@ -24,7 +24,7 @@ export default function PageForShell({
         </Typography>
         <Typography
           component="p"
-          className="text-slate-300 tracking-wider"
+          className="text-slate-400 tracking-wide text-sm"
         >
           {description}
         </Typography>

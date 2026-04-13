@@ -8,7 +8,6 @@ type RequestCardSharedFields = {
   shortLabel: string;
   title: string;
   counterpartName: string;
-  targetLabel: string;
   createdLabel: string;
   summary: string;
 };
@@ -44,6 +43,28 @@ export type RequestCategoryFilter = RequestCategory | "all";
 
 export type MentorSentTargetKind = "teams" | "interns" | "boards" | "workout_plans";
 
+export type MentorSentRequestSendOption = {
+  value: string;
+  label: string;
+};
+
+export type MentorSentRequestSendFieldset = {
+  primaryLabel: string;
+  primaryAriaLabel: string;
+  primaryOptions: readonly MentorSentRequestSendOption[];
+  angleField: {
+    label: string;
+    ariaLabel: string;
+    placeholder: string;
+  };
+  detailPlaceholder: string;
+  extraFields?: readonly {
+    label: string;
+    ariaLabel: string;
+    placeholder: string;
+  }[];
+};
+
 export type RequestSlotCardViewModel = {
   targetKind: MentorSentTargetKind;
   hint: string;
@@ -57,7 +78,6 @@ export type MentorSentRequestRow = {
   id: string;
   targetKind: MentorSentTargetKind;
   title: string;
-  targetLabel: string;
   counterpartName: string;
   summary: string;
   createdLabel: string;
@@ -87,7 +107,6 @@ export type RequestInboxRow = {
   category: RequestCategory;
   direction: RequestInboxDirection;
   title: string;
-  targetLabel: string;
   counterpartName: string;
   summary: string;
   status: RequestStatus;

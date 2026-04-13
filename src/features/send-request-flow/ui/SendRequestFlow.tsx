@@ -2,6 +2,7 @@ import { TextField, Typography } from "@promentorapp/ui-kit";
 import { SEND_REQUEST_REVIEW_FIELDS } from "@/features/send-request-flow/model/constants";
 import type { SendRequestFlowProps } from "@/features/send-request-flow/model/types";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
+import { FormField, Textarea } from "@/shared/ui";
 
 export function SendRequestFlow({
   step,
@@ -55,17 +56,15 @@ export function SendRequestFlow({
           value={draft.weeklyAvailability}
           onChange={(event) => onChange("weeklyAvailability", event.target.value)}
         />
-        <label className="grid gap-2">
-          <Typography variantStyle="label" className="pm-text-secondary">
-            Note (optional)
-          </Typography>
-          <textarea
-            className="min-h-24 rounded-lg border border-white/20 bg-(--pm-surface) px-3 py-2 text-sm text-slate-100 outline-none transition-all placeholder:pm-text-muted focus:border-(--pm-accent-cyan) focus:ring-2 focus:ring-cyan-500/25"
+        <FormField label="Note (optional)">
+          <Textarea
+            minHeight="sm"
             placeholder="Extra context for the team or mentor."
             value={draft.note}
             onChange={(event) => onChange("note", event.target.value)}
+            aria-label="Optional note"
           />
-        </label>
+        </FormField>
       </section>
     );
   }

@@ -16,9 +16,15 @@ function isSentCardViewModel(
 
 type RequestCardProps = {
   viewModel: RequestSentCardViewModel | RequestSuggestionCardViewModel;
+  onSentEdit?: () => void;
+  onSentDelete?: () => void;
 };
 
-export function RequestCard({ viewModel }: RequestCardProps) {
+export function RequestCard({
+  viewModel,
+  onSentEdit,
+  onSentDelete,
+}: RequestCardProps) {
   const [detailOpen, setDetailOpen] = useState(false);
 
   const {
@@ -46,6 +52,21 @@ export function RequestCard({ viewModel }: RequestCardProps) {
     : viewModel.direction === "sent"
       ? "To"
       : "From";
+
+  const handleSentEdit = () => {
+    setDetailOpen(false);
+    onSentEdit?.();
+  };
+
+  const handleSentDelete = () => {
+    if (
+      typeof window !== "undefined" &&
+      window.confirm("Delete this request? This cannot be undone.")
+    ) {
+      setDetailOpen(false);
+      onSentDelete?.();
+    }
+  };
 
   return (
     <>
@@ -130,6 +151,12 @@ export function RequestCard({ viewModel }: RequestCardProps) {
         open={detailOpen}
         viewModel={viewModel}
         onClose={() => setDetailOpen(false)}
+        onEditSent={
+          isSentCardViewModel(viewModel) ? handleSentEdit : undefined
+        }
+        onDeleteSent={
+          isSentCardViewModel(viewModel) ? handleSentDelete : undefined
+        }
       />
     </>
   );

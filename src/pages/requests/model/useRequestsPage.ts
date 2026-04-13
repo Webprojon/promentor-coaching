@@ -47,7 +47,6 @@ function toRequestSuggestionCardViewModel(
     counterpartName: row.counterpartName,
     counterpartAvatarUrl: row.counterpartAvatarUrl,
     title: row.title,
-    targetLabel: row.targetLabel,
     createdLabel: row.createdLabel,
     summary: row.summary,
     status: row.status,
@@ -68,7 +67,6 @@ function toRequestSentCardViewModel(
     mentorAvatarUrl: MOCK_CURRENT_MENTOR_SENDER.avatarUrl,
     title: row.title,
     counterpartName: row.counterpartName,
-    targetLabel: row.targetLabel,
     createdLabel: row.createdLabel,
     summary: row.summary,
   };
