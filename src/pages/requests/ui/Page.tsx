@@ -1,90 +1,81 @@
-import { useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import {
+  isRequestInboxDirection,
   MENTOR_SENT_FILTER_OPTIONS,
   REQUEST_CATEGORY_FILTER_OPTIONS,
+  requestsPathForDirection,
 } from "@/pages/requests/model/constants";
 import { useRequestsPage } from "@/pages/requests/model/useRequestsPage";
-import type { MentorSentTargetKind } from "@/pages/requests/model/types";
-import { CreateMentorRequestModal } from "@/pages/requests/ui/components/CreateMentorRequestModal";
-import { CreateMentorRequestSlotCard } from "@/pages/requests/ui/components/CreateMentorRequestSlotCard";
-import { MentorSentRequestCard } from "@/pages/requests/ui/components/MentorSentRequestCard";
-import { RequestInboxCard } from "@/pages/requests/ui/components/RequestInboxCard";
-import { RequestsEmptyState } from "@/pages/requests/ui/components/RequestsEmptyState";
-import { RequestsPillFilter } from "@/pages/requests/ui/components/RequestsPillFilter";
-import { RequestsViewToggle } from "@/pages/requests/ui/components/RequestsViewToggle";
+import type { RequestInboxDirection } from "@/pages/requests/model/types";
+import { RequestSuggestionCard } from "@/pages/requests/ui/components/received/RequestSuggestionCard";
+import { RequestModal } from "@/pages/requests/ui/components/sent/RequestModal";
+import { RequestSlotCard } from "@/pages/requests/ui/components/sent/RequestSlotCard";
+import { RequestCard } from "@/pages/requests/ui/components/sent/RequestCard";
+import { RequestsEmptyCard } from "@/pages/requests/ui/components/RequestsEmptyCard";
+import { RequestsTabFilter } from "@/pages/requests/ui/components/RequestsTabFilter";
+import { RequestsViewNav } from "@/pages/requests/ui/components/RequestsViewNav";
 import { PageForShell } from "@/shared/ui";
 
-export default function RequestsPage() {
+function RequestsPageContent({ direction }: { direction: RequestInboxDirection }) {
   const {
-    direction,
-    setDirection,
     receivedCategoryFilter,
     setReceivedCategoryFilter,
     mentorSentFilter,
     setMentorSentFilter,
-    filteredReceivedRows,
-    filteredMentorSentRows,
-  } = useRequestsPage();
+    receivedCardRows,
+    mentorSentCardRows,
+    slotCardViewModel,
+    createModalKind,
+    setCreateModalKind,
+    isGridEmpty,
+    emptyCard,
+  } = useRequestsPage(direction);
 
-  const [createModalKind, setCreateModalKind] =
-    useState<MentorSentTargetKind | null>(null);
-
-  const showMentorCreateSlot =
-    direction === "sent" && mentorSentFilter !== "all";
-
-  const receivedCards = filteredReceivedRows.map((row) => (
-    <RequestInboxCard key={row.id} row={row} />
-  ));
-
-  const sentCards = [
-    ...filteredMentorSentRows.map((row) => (
-      <MentorSentRequestCard key={row.id} row={row} />
-    )),
-    ...(showMentorCreateSlot
-      ? [
-          <CreateMentorRequestSlotCard
-            key="create-slot"
-            targetKind={mentorSentFilter}
-            onClick={() => setCreateModalKind(mentorSentFilter)}
-          />,
-        ]
-      : []),
-  ];
-
-  const gridItems = direction === "received" ? receivedCards : sentCards;
-  const isEmpty = gridItems.length === 0;
+  const gridItems =
+    direction === "received"
+      ? receivedCardRows.map((viewModel) => (
+          <RequestSuggestionCard key={viewModel.id} viewModel={viewModel} />
+        ))
+      : [
+          ...mentorSentCardRows.map((viewModel) => (
+            <RequestCard key={viewModel.id} viewModel={viewModel} />
+          )),
+          ...(slotCardViewModel
+            ? [
+                <RequestSlotCard
+                  key="create-slot"
+                  viewModel={slotCardViewModel}
+                  onClick={() =>
+                    setCreateModalKind(slotCardViewModel.targetKind)
+                  }
+                />,
+              ]
+            : []),
+        ];
 
   return (
     <PageForShell
       title="Requests"
       description="Received keeps joins, mentorship asks, and suggestions awaiting your answer — members often share suggestions with mentors out of respect. Sent is for your own requests to teams, interns, boards, and workout plans."
     >
-      <RequestsViewToggle direction={direction} onDirectionChange={setDirection} />
+      <RequestsViewNav />
 
       {direction === "received" ? (
-        <RequestsPillFilter
+        <RequestsTabFilter
           value={receivedCategoryFilter}
           onChange={setReceivedCategoryFilter}
           options={REQUEST_CATEGORY_FILTER_OPTIONS}
-          sectionTitle="Request type"
-          ariaLabel="Filter by request category"
         />
       ) : (
-        <RequestsPillFilter
+        <RequestsTabFilter
           value={mentorSentFilter}
           onChange={setMentorSentFilter}
           options={MENTOR_SENT_FILTER_OPTIONS}
-          sectionTitle="Request type"
-          ariaLabel="Filter mentor requests by destination"
         />
       )}
 
-      {isEmpty ? (
-        <RequestsEmptyState
-          direction={direction}
-          categoryFilter={receivedCategoryFilter}
-          mentorSentFilter={mentorSentFilter}
-        />
+      {isGridEmpty ? (
+        <RequestsEmptyCard {...emptyCard} />
       ) : (
         <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-2">
           {gridItems}
@@ -92,7 +83,7 @@ export default function RequestsPage() {
       )}
 
       {createModalKind ? (
-        <CreateMentorRequestModal
+        <RequestModal
           open
           targetKind={createModalKind}
           onClose={() => setCreateModalKind(null)}
@@ -100,4 +91,14 @@ export default function RequestsPage() {
       ) : null}
     </PageForShell>
   );
+}
+
+export default function RequestsPage() {
+  const { direction: directionParam } = useParams<{ direction: string }>();
+  if (!directionParam || !isRequestInboxDirection(directionParam)) {
+    return (
+      <Navigate to={requestsPathForDirection("sent")} replace />
+    );
+  }
+  return <RequestsPageContent direction={directionParam} />;
 }

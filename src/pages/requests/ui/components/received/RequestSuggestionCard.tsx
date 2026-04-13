@@ -1,62 +1,69 @@
 import { Avatar, Button, Typography } from "@promentorapp/ui-kit";
-import { REQUEST_CATEGORY_META } from "@/pages/requests/model/constants";
-import type { RequestInboxRow } from "@/pages/requests/model/types";
-import { REQUEST_STATUS_BADGE_CLASS } from "@/shared/model/constants";
+import type { RequestSuggestionCardViewModel } from "@/pages/requests/model/types";
 import { Badge } from "@/shared/ui";
 
-type RequestInboxCardProps = {
-  row: RequestInboxRow;
+type RequestSuggestionCardProps = {
+  viewModel: RequestSuggestionCardViewModel;
 };
 
-export function RequestInboxCard({ row }: RequestInboxCardProps) {
-  const meta = REQUEST_CATEGORY_META[row.category];
-  const CategoryIcon = meta.Icon;
-  const showMentorActions =
-    row.direction === "received" && row.status === "Pending";
-  const relationLabel = row.direction === "sent" ? "To" : "From";
+export function RequestSuggestionCard({ viewModel }: RequestSuggestionCardProps) {
+  const {
+    cardAccentClass,
+    chipClass,
+    shortLabel,
+    CategoryIcon,
+    showMentorActions,
+    relationLabel,
+    counterpartName,
+    counterpartAvatarUrl,
+    title,
+    targetLabel,
+    createdLabel,
+    summary,
+    status,
+    statusBadgeClass,
+  } = viewModel;
 
   return (
     <article
-      className={`flex h-full flex-col rounded-lg border border-white/10 p-4 transition hover:border-white/20 ${meta.cardAccentClass}`}
+      className={`flex h-full flex-col rounded-lg border border-white/10 p-4 transition hover:border-white/20 ${cardAccentClass}`}
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-start gap-3">
           <Avatar
             user={{
-              name: row.counterpartName,
-              avatarUrl: row.counterpartAvatarUrl,
+              name: counterpartName,
+              avatarUrl: counterpartAvatarUrl,
             }}
             size="md"
           />
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <Badge
-                toneClassName={`${meta.chipClass} gap-1 border`}
+                toneClassName={`${chipClass} gap-1 border`}
                 className="inline-flex items-center"
               >
                 <CategoryIcon className="text-sm" aria-hidden />
-                {meta.shortLabel}
+                {shortLabel}
               </Badge>
-              <Badge toneClassName={REQUEST_STATUS_BADGE_CLASS[row.status]}>
-                {row.status}
-              </Badge>
+              <Badge toneClassName={statusBadgeClass}>{status}</Badge>
             </div>
             <Typography
               component="h3"
               className="mt-2 font-bold leading-snug text-white"
             >
-              {row.title}
+              {title}
             </Typography>
             <Typography component="p" className="mt-1 text-xs text-slate-400">
               <Typography component="span" className="text-slate-500">
                 {relationLabel}:
               </Typography>{" "}
               <Typography component="span" className="text-slate-300">
-                {row.counterpartName}
+                {counterpartName}
               </Typography>
               {" · "}
               <Typography component="span" className="text-slate-500">
-                {row.targetLabel}
+                {targetLabel}
               </Typography>
             </Typography>
           </div>
@@ -65,7 +72,7 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
           component="span"
           className="shrink-0 text-xs font-medium text-slate-500"
         >
-          {row.createdLabel}
+          {createdLabel}
         </Typography>
       </div>
 
@@ -73,7 +80,7 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
         component="p"
         className="mt-3 line-clamp-3 text-sm leading-relaxed text-slate-300"
       >
-        {row.summary}
+        {summary}
       </Typography>
 
       {showMentorActions && (

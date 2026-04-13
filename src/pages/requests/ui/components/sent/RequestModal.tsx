@@ -1,11 +1,12 @@
 import { TextField, Typography } from "@promentorapp/ui-kit";
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { MENTOR_SENT_KIND_META } from "@/pages/requests/model/constants";
 import type { MentorSentTargetKind } from "@/pages/requests/model/types";
+import { useRequestModalForm } from "@/pages/requests/model/useRequestsPage";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { Modal } from "@/shared/ui";
 
-type CreateMentorRequestModalProps = {
+type RequestModalProps = {
   open: boolean;
   targetKind: MentorSentTargetKind;
   onClose: () => void;
@@ -17,40 +18,34 @@ const SELECT_CLASS =
 const TEXTAREA_CLASS =
   "min-h-28 w-full rounded-lg border border-white/20 bg-(--pm-surface) px-3 py-2 text-sm text-slate-100 outline-none transition-all placeholder:pm-text-muted focus:border-(--pm-accent-cyan) focus:ring-2 focus:ring-cyan-500/25";
 
-export function CreateMentorRequestModal({
+export function RequestModal({
   open,
   targetKind,
   onClose,
-}: CreateMentorRequestModalProps) {
+}: RequestModalProps) {
   const meta = MENTOR_SENT_KIND_META[targetKind];
 
-  const [primaryPick, setPrimaryPick] = useState("");
-  const [angle, setAngle] = useState("");
-  const [detail, setDetail] = useState("");
-  const [extra, setExtra] = useState("");
-
-  useEffect(() => {
-    if (!open) {
-      return;
-    }
-    setPrimaryPick("");
-    setAngle("");
-    setDetail("");
-    setExtra("");
-  }, [open, targetKind]);
-
-  const onSubmit = () => {
-    onClose();
-  };
+  const {
+    primaryPick,
+    setPrimaryPick,
+    angle,
+    setAngle,
+    detail,
+    setDetail,
+    extra,
+    setExtra,
+    submit,
+    canSubmit,
+  } = useRequestModalForm(onClose);
 
   const kindIntro = (
     <div
-      className={`rounded-xl border px-4 py-3 text-sm leading-relaxed text-slate-300 ${meta.chipClass}`}
+      className={`rounded-lg border px-4 py-3 text-sm leading-relaxed text-slate-300 ${meta.chipClass}`}
     >
       <Typography component="p">
         You are sending a <span className="font-semibold text-white">request</span>{" "}
         scoped to <span className="font-semibold text-white">{meta.label}</span>. Keep it
-        clear and actionable — recipients can thread replies when the backend is live.
+        clear and actionable.
       </Typography>
     </div>
   );
@@ -246,9 +241,9 @@ export function CreateMentorRequestModal({
       }}
       primaryAction={{
         label: "Send request",
-        onClick: onSubmit,
+        onClick: submit,
         variant: "contained",
-        disabled: !primaryPick.trim() || !detail.trim(),
+        disabled: !canSubmit,
       }}
     >
       <div className="max-h-[min(70vh,540px)] overflow-y-auto pr-1">

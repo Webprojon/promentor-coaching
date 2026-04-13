@@ -10,6 +10,7 @@ import Header from "@/widgets/header";
 import AuthSessionBoundary from "@/app/AuthSessionBoundary";
 import { AppBackground } from "@/shared/ui";
 import ProfilePage from "@/pages/profile";
+import { requestsPathForDirection } from "@/pages/requests/model/constants";
 import RequestsPage from "@/pages/requests";
 
 export default function App() {
@@ -26,7 +27,13 @@ export default function App() {
             <Route path="/explore-teams" element={<ExploreTeamsPage />} />
             <Route path="/mentors" element={<MentorsPage />} />
             <Route path="/suggestion" element={<SuggestionPage />} />
-            <Route path="/requests" element={<RequestsPage />} />
+            <Route
+              path="/requests"
+              element={
+                <Navigate to={requestsPathForDirection("sent")} replace />
+              }
+            />
+            <Route path="/requests/:direction" element={<RequestsPage />} />
             <Route path="/profile" element={<ProfilePage />} />
           </Routes>
         </AuthSessionBoundary>

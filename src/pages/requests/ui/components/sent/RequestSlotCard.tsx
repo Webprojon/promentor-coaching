@@ -1,19 +1,14 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
 import { RiAddLine } from "react-icons/ri";
-import { MENTOR_SENT_KIND_META } from "@/pages/requests/model/constants";
-import type { MentorSentTargetKind } from "@/pages/requests/model/types";
+import type { RequestSlotCardViewModel } from "@/pages/requests/model/types";
 
-type CreateMentorRequestSlotCardProps = {
-  targetKind: MentorSentTargetKind;
+type RequestSlotCardProps = {
+  viewModel: RequestSlotCardViewModel;
   onClick: () => void;
 };
 
-export function CreateMentorRequestSlotCard({
-  targetKind,
-  onClick,
-}: CreateMentorRequestSlotCardProps) {
-  const meta = MENTOR_SENT_KIND_META[targetKind];
-  const Icon = meta.Icon;
+export function RequestSlotCard({ viewModel, onClick }: RequestSlotCardProps) {
+  const { hint, chipClass, Icon } = viewModel;
 
   return (
     <article
@@ -21,7 +16,7 @@ export function CreateMentorRequestSlotCard({
     >
       <div className="flex flex-col items-center gap-4 text-center">
         <div
-          className={`flex h-14 w-14 items-center justify-center rounded-2xl border ${meta.chipClass}`}
+          className={`flex h-14 w-14 items-center justify-center rounded-2xl border ${chipClass}`}
         >
           <Icon className="text-2xl" aria-hidden />
         </div>
@@ -33,7 +28,7 @@ export function CreateMentorRequestSlotCard({
             Draft something new
           </Typography>
           <Typography component="p" className="mt-1 text-sm text-slate-500">
-            {meta.hint}
+            {hint}
           </Typography>
         </div>
         <Button

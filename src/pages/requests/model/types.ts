@@ -1,16 +1,40 @@
-import type { DiscoveryTargetType } from "@/features/send-request-flow/model/types";
 import type { RequestStatus } from "@/shared/model/types";
 import type { IconType } from "react-icons";
 
-export type RequestsPillFilterOption<T extends string = string> = {
+type RequestCardSharedFields = {
+  id: string;
+  cardAccentClass: string;
+  chipClass: string;
+  shortLabel: string;
+  title: string;
+  counterpartName: string;
+  targetLabel: string;
+  createdLabel: string;
+  summary: string;
+};
+
+export type RequestSuggestionCardViewModel = RequestCardSharedFields & {
+  CategoryIcon: IconType;
+  showMentorActions: boolean;
+  relationLabel: string;
+  counterpartAvatarUrl?: string | null;
+  status: RequestStatus;
+  statusBadgeClass: string;
+};
+
+export type RequestSentCardViewModel = RequestCardSharedFields & {
+  KindIcon: IconType;
+  mentorName: string;
+  mentorAvatarUrl?: string | null;
+};
+
+export type RequestsTabFilterOption<T extends string = string> = {
   value: T;
   label: string;
   hint?: string;
   Icon?: IconType;
   activeClassName: string;
 };
-
-export type { DiscoveryTargetType, RequestStatus };
 
 export type RequestCategory = "team_join" | "mentorship" | "suggestion";
 
@@ -19,6 +43,13 @@ export type RequestInboxDirection = "sent" | "received";
 export type RequestCategoryFilter = RequestCategory | "all";
 
 export type MentorSentTargetKind = "teams" | "interns" | "boards" | "workout_plans";
+
+export type RequestSlotCardViewModel = {
+  targetKind: MentorSentTargetKind;
+  hint: string;
+  chipClass: string;
+  Icon: IconType;
+};
 
 export type MentorSentFilter = "all" | MentorSentTargetKind;
 
@@ -38,16 +69,17 @@ export type RequestViewToggleOption = {
   Icon: IconType;
 };
 
-export type RequestsEmptyStateProps = {
-  direction: RequestInboxDirection;
-  categoryFilter: RequestCategoryFilter;
-  mentorSentFilter: MentorSentFilter;
-};
-
 export type EmptyStateActionLink = {
   to: string;
   label: string;
   className: string;
+};
+
+export type RequestsEmptyCardProps = {
+  scopeLabel: string;
+  body: string;
+  showActionLinks: boolean;
+  actionLinks: readonly EmptyStateActionLink[];
 };
 
 export type RequestInboxRow = {
@@ -61,11 +93,4 @@ export type RequestInboxRow = {
   status: RequestStatus;
   createdLabel: string;
   counterpartAvatarUrl?: string | null;
-};
-
-export type RequestsOverviewStats = {
-  pending: number;
-  accepted: number;
-  declined: number;
-  needsResponse: number;
 };

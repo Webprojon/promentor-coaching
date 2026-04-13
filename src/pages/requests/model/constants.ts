@@ -19,11 +19,10 @@ import type {
   RequestInboxRow,
   RequestInboxDirection,
   RequestViewToggleOption,
-  RequestsOverviewStats,
-  RequestsPillFilterOption,
+  RequestsTabFilterOption,
 } from "@/pages/requests/model/types";
 
-export const REQUEST_CATEGORY_FILTER_ORDER: RequestCategoryFilter[] = [
+const REQUEST_CATEGORY_FILTER_ORDER: RequestCategoryFilter[] = [
   "all",
   "team_join",
   "mentorship",
@@ -32,25 +31,24 @@ export const REQUEST_CATEGORY_FILTER_ORDER: RequestCategoryFilter[] = [
 
 export const REQUEST_DEFAULT_CATEGORY_FILTER: RequestCategoryFilter = "all";
 
-export const REQUESTS_SUMMARY_STRIP_ITEMS: {
-  overviewKey: keyof RequestsOverviewStats;
-  label: string;
-  sub: string;
-}[] = [
-  { overviewKey: "pending", label: "Pending", sub: "all directions" },
-  { overviewKey: "accepted", label: "Accepted", sub: "cleared path" },
-  { overviewKey: "declined", label: "Declined", sub: "closed out" },
-  {
-    overviewKey: "needsResponse",
-    label: "Needs you",
-    sub: "incoming · pending",
-  },
-];
-
 export const REQUEST_VIEW_TOGGLE_OPTIONS: RequestViewToggleOption[] = [
   { value: "sent", label: "Sent", Icon: RiSendPlaneLine },
   { value: "received", label: "Received", Icon: RiInboxArchiveLine },
 ];
+
+const REQUESTS_PATH_PREFIX = "/requests" as const;
+
+export function requestsPathForDirection(
+  direction: RequestInboxDirection,
+): string {
+  return `${REQUESTS_PATH_PREFIX}/${direction}`;
+}
+
+export function isRequestInboxDirection(
+  value: string,
+): value is RequestInboxDirection {
+  return value === "sent" || value === "received";
+}
 
 export const REQUEST_VIEW_TOGGLE_BUTTON_CLASS =
   "flex items-center justify-center gap-2 cursor-pointer rounded-lg px-4 py-3 text-sm font-semibold transition sm:justify-start sm:px-5";
@@ -101,7 +99,7 @@ export const REQUEST_CATEGORY_META: Record<
   },
 };
 
-export const REQUEST_CATEGORY_FILTER_OPTIONS: RequestsPillFilterOption<RequestCategoryFilter>[] =
+export const REQUEST_CATEGORY_FILTER_OPTIONS: RequestsTabFilterOption<RequestCategoryFilter>[] =
   REQUEST_CATEGORY_FILTER_ORDER.map((key) => {
     if (key === "all") {
       return {
@@ -131,7 +129,7 @@ export const EMPTY_STATE_MESSAGE_BY_DIRECTION: Record<
     "When someone targets you or your team, their request will land here for review.",
 };
 
-export const MENTOR_SENT_FILTER_ORDER: MentorSentFilter[] = [
+const MENTOR_SENT_FILTER_ORDER: MentorSentFilter[] = [
   "all",
   "teams",
   "interns",
@@ -193,7 +191,7 @@ export const MENTOR_SENT_KIND_META: Record<
   },
 };
 
-export const MENTOR_SENT_FILTER_OPTIONS: RequestsPillFilterOption<MentorSentFilter>[] =
+export const MENTOR_SENT_FILTER_OPTIONS: RequestsTabFilterOption<MentorSentFilter>[] =
   MENTOR_SENT_FILTER_ORDER.map((key) => {
     if (key === "all") {
       return {
