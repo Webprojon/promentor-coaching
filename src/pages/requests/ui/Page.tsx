@@ -7,13 +7,14 @@ import {
 } from "@/pages/requests/model/constants";
 import { useRequestsPage } from "@/pages/requests/model/useRequestsPage";
 import type { RequestInboxDirection } from "@/pages/requests/model/types";
-import { RequestSuggestionCard } from "@/pages/requests/ui/components/received/RequestSuggestionCard";
-import { RequestModal } from "@/pages/requests/ui/components/sent/RequestModal";
-import { RequestSlotCard } from "@/pages/requests/ui/components/sent/RequestSlotCard";
-import { RequestCard } from "@/pages/requests/ui/components/sent/RequestCard";
-import { RequestsEmptyCard } from "@/pages/requests/ui/components/RequestsEmptyCard";
-import { RequestsTabFilter } from "@/pages/requests/ui/components/RequestsTabFilter";
-import { RequestsViewNav } from "@/pages/requests/ui/components/RequestsViewNav";
+import {
+  RequestCard,
+  RequestSendModal,
+  RequestSlotCard,
+  RequestsEmptyCard,
+  RequestsTabFilter,
+  RequestsViewNav,
+} from "@/pages/requests/ui/components";
 import { PageForShell } from "@/shared/ui";
 
 function RequestsPageContent({ direction }: { direction: RequestInboxDirection }) {
@@ -34,7 +35,7 @@ function RequestsPageContent({ direction }: { direction: RequestInboxDirection }
   const gridItems =
     direction === "received"
       ? receivedCardRows.map((viewModel) => (
-          <RequestSuggestionCard key={viewModel.id} viewModel={viewModel} />
+          <RequestCard key={viewModel.id} viewModel={viewModel} />
         ))
       : [
           ...mentorSentCardRows.map((viewModel) => (
@@ -83,7 +84,7 @@ function RequestsPageContent({ direction }: { direction: RequestInboxDirection }
       )}
 
       {createModalKind ? (
-        <RequestModal
+        <RequestSendModal
           open
           targetKind={createModalKind}
           onClose={() => setCreateModalKind(null)}

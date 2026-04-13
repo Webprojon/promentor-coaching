@@ -7,6 +7,7 @@ type ModalAction = {
   onClick: () => void;
   disabled?: boolean;
   variant?: "contained" | "outlined" | "text";
+  color?: "error" | "success" | "primary" | "secondary" | "inherit";
 };
 
 type ModalProps = {
@@ -78,6 +79,7 @@ export function Modal({
                 <Button
                   type="button"
                   variant={secondaryAction.variant ?? "outlined"}
+                  color={secondaryAction.color}
                   onClick={secondaryAction.onClick}
                   disabled={secondaryAction.disabled}
                 >
@@ -88,6 +90,7 @@ export function Modal({
                 <Button
                   type="button"
                   variant={primaryAction.variant ?? "contained"}
+                  color={primaryAction.color}
                   onClick={primaryAction.onClick}
                   disabled={primaryAction.disabled}
                 >

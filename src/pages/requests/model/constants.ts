@@ -245,7 +245,7 @@ export const MOCK_MENTOR_SENT_REQUESTS: MentorSentRequestRow[] = [
     targetLabel: "Core Delivery Guild",
     counterpartName: "Leads: Mara Chen",
     summary:
-      "Propose a lighter pre-planning packet so async updates stay under five minutes.",
+      "Propose a lighter pre-planning packet so async updates stay under five minutes. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae cum similique blanditiis officia? Earum, dolorum asperiores. Eveniet perferendis doloremque corporis quidem consectetur officia, laborum alias unde ut nihil rem iure incidunt magnam consequatur voluptatem esse explicabo ratione fugiat. Quibusdam animi suscipit magni tempore quidem rerum. Vero dolor eum maxime neque illo aperiam sed ipsam quibusdam molestias enim fuga veritatis omnis distinctio assumenda atque nulla temporibus, ex odio. Incidunt iusto reprehenderit molestiae quia ratione quam, sequi dolore a similique doloribus velit nemo architecto magni harum, suscipit quisquam nam eos amet cum et! Porro numquam fuga, animi eum quisquam dolor laudantium cum.",
     createdLabel: "6h ago",
   },
   {
@@ -288,7 +288,7 @@ export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
     title: "Join request for your team",
     targetLabel: "Core Delivery · your team",
     counterpartName: "Samira Ortiz",
-    summary: "Interested in pairing on release train rituals and risk boards.",
+    summary: "Interested in pairing on release train rituals and risk boards. Propose a lighter pre-planning packet so async updates stay under five minutes. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae cum similique blanditiis officia? Earum, dolorum asperiores. Eveniet perferendis doloremque corporis quidem consectetur officia, laborum alias unde ut nihil rem iure incidunt magnam consequatur voluptatem esse explicabo ratione fugiat.",
     status: "Pending",
     createdLabel: "5h ago",
   },

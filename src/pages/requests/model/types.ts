@@ -15,14 +15,14 @@ type RequestCardSharedFields = {
 
 export type RequestSuggestionCardViewModel = RequestCardSharedFields & {
   CategoryIcon: IconType;
-  showMentorActions: boolean;
-  relationLabel: string;
+  direction: RequestInboxDirection;
   counterpartAvatarUrl?: string | null;
   status: RequestStatus;
   statusBadgeClass: string;
 };
 
 export type RequestSentCardViewModel = RequestCardSharedFields & {
+  targetKind: MentorSentTargetKind;
   KindIcon: IconType;
   mentorName: string;
   mentorAvatarUrl?: string | null;

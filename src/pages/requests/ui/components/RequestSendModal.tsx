@@ -6,7 +6,7 @@ import { useRequestModalForm } from "@/pages/requests/model/useRequestsPage";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { Modal } from "@/shared/ui";
 
-type RequestModalProps = {
+type RequestSendModalProps = {
   open: boolean;
   targetKind: MentorSentTargetKind;
   onClose: () => void;
@@ -18,11 +18,11 @@ const SELECT_CLASS =
 const TEXTAREA_CLASS =
   "min-h-28 w-full rounded-lg border border-white/20 bg-(--pm-surface) px-3 py-2 text-sm text-slate-100 outline-none transition-all placeholder:pm-text-muted focus:border-(--pm-accent-cyan) focus:ring-2 focus:ring-cyan-500/25";
 
-export function RequestModal({
+export function RequestSendModal({
   open,
   targetKind,
   onClose,
-}: RequestModalProps) {
+}: RequestSendModalProps) {
   const meta = MENTOR_SENT_KIND_META[targetKind];
 
   const {

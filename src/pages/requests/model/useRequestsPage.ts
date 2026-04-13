@@ -43,9 +43,7 @@ function toRequestSuggestionCardViewModel(
     id: row.id,
     ...cardShellFromMeta(meta),
     CategoryIcon: meta.Icon,
-    showMentorActions:
-      row.direction === "received" && row.status === "Pending",
-    relationLabel: row.direction === "sent" ? "To" : "From",
+    direction: row.direction,
     counterpartName: row.counterpartName,
     counterpartAvatarUrl: row.counterpartAvatarUrl,
     title: row.title,
@@ -63,6 +61,7 @@ function toRequestSentCardViewModel(
   const meta = MENTOR_SENT_KIND_META[row.targetKind];
   return {
     id: row.id,
+    targetKind: row.targetKind,
     ...cardShellFromMeta(meta),
     KindIcon: meta.Icon,
     mentorName: MOCK_CURRENT_MENTOR_SENDER.name,
