@@ -1,21 +1,27 @@
 import type { IconType } from "react-icons";
 import {
   RiInboxArchiveLine,
+  RiLayoutGridLine,
   RiLightbulbLine,
+  RiPlantLine,
+  RiRunLine,
   RiSendPlaneLine,
   RiTeamLine,
   RiUserStarLine,
 } from "react-icons/ri";
 import type {
   EmptyStateActionLink,
+  MentorSentFilter,
+  MentorSentRequestRow,
+  MentorSentTargetKind,
   RequestCategory,
   RequestCategoryFilter,
-  RequestCategoryFilterOption,
   RequestInboxRow,
   RequestInboxDirection,
   RequestViewToggleOption,
   RequestsOverviewStats,
-} from "@/pages/mentorship-requests/model/types";
+  RequestsPillFilterOption,
+} from "@/pages/requests/model/types";
 
 export const REQUEST_CATEGORY_FILTER_ORDER: RequestCategoryFilter[] = [
   "all",
@@ -95,8 +101,8 @@ export const REQUEST_CATEGORY_META: Record<
   },
 };
 
-export const REQUEST_CATEGORY_FILTER_OPTIONS: RequestCategoryFilterOption[] = [
-  ...REQUEST_CATEGORY_FILTER_ORDER.map((key) => {
+export const REQUEST_CATEGORY_FILTER_OPTIONS: RequestsPillFilterOption<RequestCategoryFilter>[] =
+  REQUEST_CATEGORY_FILTER_ORDER.map((key) => {
     if (key === "all") {
       return {
         value: key,
@@ -113,18 +119,98 @@ export const REQUEST_CATEGORY_FILTER_OPTIONS: RequestCategoryFilterOption[] = [
       Icon: meta.Icon,
       activeClassName: `${meta.chipClass} shadow-[0_0_20px_rgba(34,211,238,0.08)]`,
     };
-  }),
-];
+  });
 
 export const EMPTY_STATE_MESSAGE_BY_DIRECTION: Record<
   RequestInboxDirection,
   string
 > = {
   sent:
-    "Send a join request from Explore Teams, ask a mentor from Mentors, or share a suggestion from the hub.",
+    "Share concise requests with your teams, interns, boards, and workout plans. They land in one place until responses sync from the server.",
   received:
     "When someone targets you or your team, their request will land here for review.",
 };
+
+export const MENTOR_SENT_FILTER_ORDER: MentorSentFilter[] = [
+  "all",
+  "teams",
+  "interns",
+  "boards",
+  "workout_plans",
+];
+
+export const MENTOR_SENT_DEFAULT_FILTER: MentorSentFilter = "all";
+
+export const MENTOR_SENT_DELIVERED_BADGE_CLASS =
+  "border-slate-500/45 bg-slate-500/10 text-slate-200 shadow-[0_0_16px_rgba(148,163,184,0.12)]";
+
+export const MENTOR_SENT_KIND_META: Record<
+  MentorSentTargetKind,
+  {
+    label: string;
+    shortLabel: string;
+    hint: string;
+    Icon: IconType;
+    cardAccentClass: string;
+    chipClass: string;
+  }
+> = {
+  teams: {
+    label: "Teams",
+    shortLabel: "Team",
+    hint: "Requests visible to your team leads and members.",
+    Icon: RiTeamLine,
+    cardAccentClass:
+      "border-l-4 border-l-cyan-400/80 bg-linear-to-br from-cyan-500/12 via-slate-900/70 to-slate-950/80",
+    chipClass: "border-cyan-400/35 bg-cyan-500/12 text-cyan-100",
+  },
+  interns: {
+    label: "Interns",
+    shortLabel: "Intern",
+    hint: "Requests for your intern cohort and mentors-of-record.",
+    Icon: RiPlantLine,
+    cardAccentClass:
+      "border-l-4 border-l-emerald-400/75 bg-linear-to-br from-emerald-500/12 via-slate-900/70 to-slate-950/80",
+    chipClass: "border-emerald-400/35 bg-emerald-500/12 text-emerald-100",
+  },
+  boards: {
+    label: "Boards",
+    shortLabel: "Board",
+    hint: "Requests tied to delivery boards and rituals.",
+    Icon: RiLayoutGridLine,
+    cardAccentClass:
+      "border-l-4 border-l-indigo-400/80 bg-linear-to-br from-indigo-500/12 via-slate-900/70 to-slate-950/80",
+    chipClass: "border-indigo-400/35 bg-indigo-500/12 text-indigo-100",
+  },
+  workout_plans: {
+    label: "Workout plans",
+    shortLabel: "Workout",
+    hint: "Training-load and recovery requests for shared plans.",
+    Icon: RiRunLine,
+    cardAccentClass:
+      "border-l-4 border-l-fuchsia-400/75 bg-linear-to-br from-fuchsia-500/12 via-slate-900/70 to-slate-950/80",
+    chipClass: "border-fuchsia-400/35 bg-fuchsia-500/12 text-fuchsia-100",
+  },
+};
+
+export const MENTOR_SENT_FILTER_OPTIONS: RequestsPillFilterOption<MentorSentFilter>[] =
+  MENTOR_SENT_FILTER_ORDER.map((key) => {
+    if (key === "all") {
+      return {
+        value: key,
+        label: "All",
+        activeClassName: "border-cyan-400/50 bg-cyan-500/15 text-cyan-100",
+      };
+    }
+    const meta = MENTOR_SENT_KIND_META[key];
+    return {
+      value: key,
+      label: meta.label,
+      hint: meta.hint,
+      Icon: meta.Icon,
+      activeClassName: `${meta.chipClass} shadow-[0_0_20px_rgba(34,211,238,0.08)]`,
+    };
+  });
 
 export const EMPTY_STATE_ACTION_LINKS: EmptyStateActionLink[] = [
   {
@@ -147,44 +233,56 @@ export const EMPTY_STATE_ACTION_LINKS: EmptyStateActionLink[] = [
   },
 ];
 
-export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
+export const MOCK_CURRENT_MENTOR_SENDER = {
+  name: "Alex Kim",
+  avatarUrl:
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face",
+} as const;
+
+export const MOCK_MENTOR_SENT_REQUESTS: MentorSentRequestRow[] = [
   {
-    id: "s1",
-    category: "team_join",
-    direction: "sent",
-    title: "Join · Design Systems Guild",
-    targetLabel: "Design Systems Guild",
+    id: "ms-teams-1",
+    targetKind: "teams",
+    title: "Request · Sprint hygiene",
+    targetLabel: "Core Delivery Guild",
     counterpartName: "Leads: Mara Chen",
     summary:
-      "Want to help with token rollout and Figma libraries — ~6h/week, Tue/Thu evenings.",
-    status: "Pending",
-    createdLabel: "2d ago",
+      "Propose a lighter pre-planning packet so async updates stay under five minutes.",
+    createdLabel: "6h ago",
   },
   {
-    id: "s2",
-    category: "mentorship",
-    direction: "sent",
-    title: "Mentorship · Product discovery",
-    targetLabel: "Jordan Lee",
-    counterpartName: "Jordan Lee",
+    id: "ms-interns-1",
+    targetKind: "interns",
+    title: "Request · Portfolio reviews",
+    targetLabel: "Summer cohort · design",
+    counterpartName: "Cohort anchor: Jordan Lee",
     summary:
-      "Looking for structured critique on interview scripts and synthesis habits.",
-    status: "Accepted",
-    createdLabel: "1w ago",
-    counterpartAvatarUrl:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=128&h=128&fit=crop&crop=face",
+      "Offer a rotating critique lane for figma files before final sign-off.",
+    createdLabel: "1d ago",
   },
   {
-    id: "s3",
-    category: "suggestion",
-    direction: "sent",
-    title: "Suggestion · Mobile guild",
-    targetLabel: "Mobile Platform Guild",
-    counterpartName: "Mobile Platform Guild",
-    summary: "Propose shorter async standup template for distributed members.",
-    status: "Declined",
+    id: "ms-boards-1",
+    targetKind: "boards",
+    title: "Request · Risk radar",
+    targetLabel: "Release train board",
+    counterpartName: "Facilitator: Samira Ortiz",
+    summary:
+      "Tighten the “at risk” column so blocked work bubbles up without noise.",
     createdLabel: "3d ago",
   },
+  {
+    id: "ms-workout-1",
+    targetKind: "workout_plans",
+    title: "Request · Deload micro-cycle",
+    targetLabel: "Team resilience plan",
+    counterpartName: "Shared with: mobile guild",
+    summary:
+      "Slot a down week after major launches — swap two hard sessions for mobility.",
+    createdLabel: "1w ago",
+  },
+];
+
+export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [
   {
     id: "r1",
     category: "team_join",

@@ -1,19 +1,19 @@
-import { Avatar, Button, Typography } from "@promentorapp/ui-kit";
-import { REQUEST_CATEGORY_META } from "@/pages/mentorship-requests/model/constants";
-import type { RequestInboxRow } from "@/pages/mentorship-requests/model/types";
-import { REQUEST_STATUS_BADGE_CLASS } from "@/shared/model/constants";
+import { Avatar, Typography } from "@promentorapp/ui-kit";
+import {
+  MENTOR_SENT_DELIVERED_BADGE_CLASS,
+  MENTOR_SENT_KIND_META,
+  MOCK_CURRENT_MENTOR_SENDER,
+} from "@/pages/requests/model/constants";
+import type { MentorSentRequestRow } from "@/pages/requests/model/types";
 import { Badge } from "@/shared/ui";
 
-type RequestInboxCardProps = {
-  row: RequestInboxRow;
+type MentorSentRequestCardProps = {
+  row: MentorSentRequestRow;
 };
 
-export function RequestInboxCard({ row }: RequestInboxCardProps) {
-  const meta = REQUEST_CATEGORY_META[row.category];
-  const CategoryIcon = meta.Icon;
-  const showMentorActions =
-    row.direction === "received" && row.status === "Pending";
-  const relationLabel = row.direction === "sent" ? "To" : "From";
+export function MentorSentRequestCard({ row }: MentorSentRequestCardProps) {
+  const meta = MENTOR_SENT_KIND_META[row.targetKind];
+  const KindIcon = meta.Icon;
 
   return (
     <article
@@ -23,8 +23,8 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
         <div className="flex min-w-0 flex-1 items-start gap-3">
           <Avatar
             user={{
-              name: row.counterpartName,
-              avatarUrl: row.counterpartAvatarUrl,
+              name: MOCK_CURRENT_MENTOR_SENDER.name,
+              avatarUrl: MOCK_CURRENT_MENTOR_SENDER.avatarUrl,
             }}
             size="md"
           />
@@ -34,11 +34,11 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
                 toneClassName={`${meta.chipClass} gap-1 border`}
                 className="inline-flex items-center"
               >
-                <CategoryIcon className="text-sm" aria-hidden />
+                <KindIcon className="text-sm" aria-hidden />
                 {meta.shortLabel}
               </Badge>
-              <Badge toneClassName={REQUEST_STATUS_BADGE_CLASS[row.status]}>
-                {row.status}
+              <Badge toneClassName={MENTOR_SENT_DELIVERED_BADGE_CLASS}>
+                Delivered
               </Badge>
             </div>
             <Typography
@@ -49,7 +49,7 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
             </Typography>
             <Typography component="p" className="mt-1 text-xs text-slate-400">
               <Typography component="span" className="text-slate-500">
-                {relationLabel}:
+                To:
               </Typography>{" "}
               <Typography component="span" className="text-slate-300">
                 {row.counterpartName}
@@ -75,17 +75,6 @@ export function RequestInboxCard({ row }: RequestInboxCardProps) {
       >
         {row.summary}
       </Typography>
-
-      {showMentorActions && (
-        <div className="mt-4 flex flex-wrap justify-end gap-2 border-t border-white/10 pt-4">
-          <Button type="button" variant="outlined" color="error">
-            Decline
-          </Button>
-          <Button type="button" variant="contained" color="success">
-            Accept
-          </Button>
-        </div>
-      )}
     </article>
   );
 }

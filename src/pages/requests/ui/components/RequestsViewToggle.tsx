@@ -2,8 +2,8 @@ import { Button, Typography } from "@promentorapp/ui-kit";
 import {
   REQUEST_VIEW_TOGGLE_BUTTON_CLASS,
   REQUEST_VIEW_TOGGLE_OPTIONS,
-} from "@/pages/mentorship-requests/model/constants";
-import type { RequestInboxDirection } from "@/pages/mentorship-requests/model/types";
+} from "@/pages/requests/model/constants";
+import type { RequestInboxDirection } from "@/pages/requests/model/types";
 
 type RequestsViewToggleProps = {
   direction: RequestInboxDirection;
