@@ -1,18 +1,15 @@
-import { Typography } from "@promentorapp/ui-kit";
+import { Button, Typography } from "@promentorapp/ui-kit";
 import { RiSparkling2Line } from "react-icons/ri";
-import type { ProfileFocusArea } from "@/pages/profile/model/types";
-
-type ProfileAboutSectionProps = {
-  bio: string;
-  focusAreas: ProfileFocusArea[];
-};
+import type { ProfileAboutSectionProps } from "@/pages/profile/model/types";
 
 export function ProfileAboutSection({
-  bio,
-  focusAreas,
+  draftBio,
+  isChanged,
+  onDraftBioChange,
+  onSave,
 }: ProfileAboutSectionProps) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-slate-900/55 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm">
+    <section className="rounded-lg border border-white/10 bg-slate-900/55 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm transition">
       <div className="flex items-center gap-2">
         <RiSparkling2Line className="text-lg text-cyan-300/90" aria-hidden />
         <Typography
@@ -22,30 +19,20 @@ export function ProfileAboutSection({
           About you
         </Typography>
       </div>
-      <Typography
-        component="p"
-        className="mt-3 text-sm leading-relaxed text-slate-300"
-      >
-        {bio}
-      </Typography>
-      <Typography
-        component="p"
-        className="mt-5 text-xs font-semibold uppercase tracking-wider text-slate-500"
-      >
-        Focus areas
-      </Typography>
-      <ul className="mt-2 flex flex-wrap gap-2">
-        {focusAreas.map((area) => (
-          <li key={area.label}>
-            <Typography
-              component="span"
-              className="inline-flex rounded-lg border border-cyan-500/25 bg-cyan-500/10 px-3 py-1.5 text-xs! font-medium text-cyan-100/95"
-            >
-              {area.label}
-            </Typography>
-          </li>
-        ))}
-      </ul>
+      <textarea
+        value={draftBio}
+        aria-label="About you"
+        placeholder="Tell us about yourself"
+        onChange={(event) => onDraftBioChange(event.target.value)}
+        className="mt-2 min-h-20 w-full resize-none overflow-y-auto text-sm text-slate-200 outline-none transition placeholder:text-slate-500 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      />
+      {isChanged ? (
+        <div className="mt-2">
+          <Button type="button" variant="contained" onClick={onSave}>
+            Save
+          </Button>
+        </div>
+      ) : null}
     </section>
   );
 }

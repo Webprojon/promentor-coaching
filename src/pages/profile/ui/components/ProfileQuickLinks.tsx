@@ -13,7 +13,7 @@ type ProfileQuickLinksProps = {
 
 export function ProfileQuickLinks({ links }: ProfileQuickLinksProps) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-linear-to-b from-slate-900/70 to-slate-950/80 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm">
+    <section className="rounded-lg border border-white/10 bg-linear-to-b from-slate-900/70 to-slate-950/80 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm">
       <Typography
         component="h3"
         className="text-sm! font-bold uppercase tracking-wider text-slate-400"
@@ -30,7 +30,7 @@ export function ProfileQuickLinks({ links }: ProfileQuickLinksProps) {
             <li key={item.id}>
               <Link
                 to={item.to}
-                className="group flex items-start gap-3 rounded-xl border border-white/5 bg-white/3 p-3 transition hover:border-cyan-400/30 hover:bg-cyan-500/10"
+                className="group flex items-start gap-3 rounded-lg border border-white/5 bg-white/3 p-3 transition hover:border-cyan-400/30 hover:bg-cyan-500/10"
               >
                 <Typography
                   component="span"
