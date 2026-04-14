@@ -47,10 +47,7 @@ function RequestViewModalCard({
               <div className="flex flex-wrap items-center gap-2">{badges}</div>
 
               <div className="mt-2 flex items-center gap-1">
-                <Typography
-                  component="span"
-                  className="text-xs text-slate-500"
-                >
+                <Typography component="span" className="text-xs text-slate-500">
                   {relationLabel}
                 </Typography>
                 <Typography

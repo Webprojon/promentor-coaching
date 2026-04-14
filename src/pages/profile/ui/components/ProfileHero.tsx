@@ -1,11 +1,8 @@
 import { Avatar, Button, Typography } from "@promentorapp/ui-kit";
-import {
-  RiCalendarScheduleLine,
-  RiEdit2Line,
-} from "react-icons/ri";
+import { RiCalendarScheduleLine, RiEdit2Line } from "react-icons/ri";
 import { Badge } from "@/shared/ui";
 import type { ProfileHeroProps } from "@/pages/profile/model/types";
- 
+
 export function ProfileHero({ header, onOpenPhotoModal }: ProfileHeroProps) {
   const { name, role, tagline, avatarUrl, memberSince } = header;
 
@@ -44,17 +41,17 @@ export function ProfileHero({ header, onOpenPhotoModal }: ProfileHeroProps) {
             >
               {tagline}
             </Typography>
-            
-              <Typography
-                component="span"
-                className="inline-flex items-center gap-1.5 text-sm text-slate-400"
-              >
-                <RiCalendarScheduleLine
-                  className="shrink-0 text-cyan-300/80"
-                  aria-hidden
-                />
-                Member since {memberSince}
-              </Typography>
+
+            <Typography
+              component="span"
+              className="inline-flex items-center gap-1.5 text-sm text-slate-400"
+            >
+              <RiCalendarScheduleLine
+                className="shrink-0 text-cyan-300/80"
+                aria-hidden
+              />
+              Member since {memberSince}
+            </Typography>
           </div>
         </div>
 

@@ -14,22 +14,27 @@ const getNameParts = (fullName: string): ProfileChangeFormValues => {
   };
 };
 
-export function useProfilePage(profileHeader: ProfileHeader): ProfilePageUiModel {
+export function useProfilePage(
+  profileHeader: ProfileHeader,
+): ProfilePageUiModel {
   const [savedBio, setSavedBio] = useState(profileHeader.bio);
   const [draftBio, setDraftBio] = useState(profileHeader.bio);
 
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
-  const [photoUrlDraft, setPhotoUrlDraft] = useState(profileHeader.avatarUrl ?? "");
+  const [photoUrlDraft, setPhotoUrlDraft] = useState(
+    profileHeader.avatarUrl ?? "",
+  );
   const [isPhotoRemoved, setIsPhotoRemoved] = useState(false);
 
   const defaultNameValues = useMemo(
     () => getNameParts(profileHeader.name),
     [profileHeader.name],
   );
-  const { register, formState, handleSubmit, reset } = useForm<ProfileChangeFormValues>({
-    defaultValues: defaultNameValues,
-    mode: "onChange",
-  });
+  const { register, formState, handleSubmit, reset } =
+    useForm<ProfileChangeFormValues>({
+      defaultValues: defaultNameValues,
+      mode: "onChange",
+    });
 
   const openPhotoModal = () => {
     setPhotoUrlDraft(profileHeader.avatarUrl ?? "");

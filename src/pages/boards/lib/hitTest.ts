@@ -16,7 +16,10 @@ function distanceToSegment(
     return Math.hypot(px - x1, py - y1);
   }
 
-  const t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)));
+  const t = Math.max(
+    0,
+    Math.min(1, ((px - x1) * dx + (py - y1) * dy) / (dx * dx + dy * dy)),
+  );
   const projX = x1 + t * dx;
   const projY = y1 + t * dy;
   return Math.hypot(px - projX, py - projY);
@@ -38,11 +41,18 @@ function isPointInsideLine(points: number[], x: number, y: number) {
 export function isObjectHit(object: DrawableObject, x: number, y: number) {
   if (object.kind === "sticker") {
     const half = object.size / 2 + HIT_TOLERANCE;
-    return x >= object.x - half && x <= object.x + half && y >= object.y - half && y <= object.y + half;
+    return (
+      x >= object.x - half &&
+      x <= object.x + half &&
+      y >= object.y - half &&
+      y <= object.y + half
+    );
   }
 
   if (object.kind === "circle") {
-    return Math.hypot(x - object.x, y - object.y) <= object.radius + HIT_TOLERANCE;
+    return (
+      Math.hypot(x - object.x, y - object.y) <= object.radius + HIT_TOLERANCE
+    );
   }
 
   if (object.kind === "rect") {

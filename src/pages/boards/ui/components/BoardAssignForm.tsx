@@ -25,15 +25,18 @@ export function BoardAssignForm() {
 
   return (
     <div className="rounded-lg border border-white/10 bg-linear-to-b from-slate-900/70 to-slate-950/80 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm sm:p-6">
-        <Typography
-          component="h2"
-          className="text-sm font-semibold uppercase tracking-wide text-slate-200"
-        >
-          Board details
-        </Typography>
-        <Typography component="p" className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-400">
-          Name the board and choose which team it belongs to.
-        </Typography>
+      <Typography
+        component="h2"
+        className="text-sm font-semibold uppercase tracking-wide text-slate-200"
+      >
+        Board details
+      </Typography>
+      <Typography
+        component="p"
+        className="mt-1 max-w-2xl text-sm leading-relaxed text-slate-400"
+      >
+        Name the board and choose which team it belongs to.
+      </Typography>
 
       <form className="mt-5 grid gap-6" onSubmit={onAssignBoard} noValidate>
         <div className="grid gap-5 md:grid-cols-2 md:items-start md:gap-6">
@@ -50,7 +53,11 @@ export function BoardAssignForm() {
 
           <div className="grid min-w-0 gap-2">
             <FormField label="Team">
-              <Select fieldSize="md" aria-label="Assign board to team" {...register("teamId")}>
+              <Select
+                fieldSize="md"
+                aria-label="Assign board to team"
+                {...register("teamId")}
+              >
                 <option value="" disabled>
                   Choose a team
                 </option>

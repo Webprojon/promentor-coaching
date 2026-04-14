@@ -125,8 +125,7 @@ export const EMPTY_STATE_MESSAGE_BY_DIRECTION: Record<
   RequestInboxDirection,
   string
 > = {
-  sent:
-    "Share concise requests with your teams, interns, boards, and workout plans. They land in one place until responses sync from the server.",
+  sent: "Share concise requests with your teams, interns, boards, and workout plans. They land in one place until responses sync from the server.",
   received:
     "When someone targets you or your team, their request will land here for review.",
 };

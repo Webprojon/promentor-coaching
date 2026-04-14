@@ -11,12 +11,8 @@ import { ProfileQuickLinks } from "@/pages/profile/ui/components/ProfileQuickLin
 import { ProfileChangeForm } from "./components/ProfileChangeForm";
 
 export default function ProfilePage() {
-  const {
-    aboutEditor,
-    profileChangeForm,
-    profilePhotoModal,
-    openPhotoModal,
-  } = useProfilePage(PROFILE_HEADER);
+  const { aboutEditor, profileChangeForm, profilePhotoModal, openPhotoModal } =
+    useProfilePage(PROFILE_HEADER);
 
   return (
     <>
@@ -25,10 +21,7 @@ export default function ProfilePage() {
         description="Review your public coach card, update contact details, and jump to the areas you use most."
         className="mb-5"
       />
-      <ProfileHero
-        header={PROFILE_HEADER}
-        onOpenPhotoModal={openPhotoModal}
-      />
+      <ProfileHero header={PROFILE_HEADER} onOpenPhotoModal={openPhotoModal} />
       <ProfilePhotoModal {...profilePhotoModal} />
 
       <div className="grid mt-6 gap-6 lg:grid-cols-12">

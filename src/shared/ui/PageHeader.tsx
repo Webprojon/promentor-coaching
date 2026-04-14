@@ -8,7 +8,12 @@ export type PageHeaderProps = {
   className?: string;
 };
 
-export function PageHeader({ title, description, actions, className }: PageHeaderProps) {
+export function PageHeader({
+  title,
+  description,
+  actions,
+  className,
+}: PageHeaderProps) {
   return (
     <div
       className={["flex flex-wrap items-start justify-between gap-3", className]
@@ -16,7 +21,10 @@ export function PageHeader({ title, description, actions, className }: PageHeade
         .join(" ")}
     >
       <div className="min-w-0 flex-1">
-        <Typography component="h1" className="text-2xl font-semibold text-white">
+        <Typography
+          component="h1"
+          className="text-2xl font-semibold text-white"
+        >
           {title}
         </Typography>
         <Typography component="p" className="mt-1 text-sm text-slate-300">
@@ -24,7 +32,9 @@ export function PageHeader({ title, description, actions, className }: PageHeade
         </Typography>
       </div>
       {actions ? (
-        <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          {actions}
+        </div>
       ) : null}
     </div>
   );

@@ -76,4 +76,3 @@ export const PROFILE_QUICK_LINKS: ProfileQuickLink[] = [
     description: "Structured practice between sessions.",
   },
 ];
-

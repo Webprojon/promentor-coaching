@@ -56,7 +56,9 @@ export function ProfilePhotoModal({
             <Avatar
               user={{
                 name,
-                avatarUrl: isPhotoRemoved ? undefined : photoUrlDraft || avatarUrl,
+                avatarUrl: isPhotoRemoved
+                  ? undefined
+                  : photoUrlDraft || avatarUrl,
               }}
               size="lg"
             />
@@ -71,7 +73,10 @@ export function ProfilePhotoModal({
 
         <div className="grid gap-3">
           <div className="rounded-lg border border-white/15 p-4">
-            <Typography component="p" className="text-sm! font-semibold text-slate-100">
+            <Typography
+              component="p"
+              className="text-sm! font-semibold text-slate-100"
+            >
               Choose photo source
             </Typography>
             <div className="mt-3 grid gap-2 sm:grid-cols-2">
@@ -104,7 +109,10 @@ export function ProfilePhotoModal({
           </div>
 
           <div className="rounded-lg border border-white/15 p-4">
-            <Typography component="p" className="mb-2 text-sm! font-semibold text-slate-100">
+            <Typography
+              component="p"
+              className="mb-2 text-sm! font-semibold text-slate-100"
+            >
               Or paste image URL
             </Typography>
             <input

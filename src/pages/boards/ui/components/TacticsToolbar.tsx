@@ -19,7 +19,11 @@ import {
 import { useBoardsTactics } from "@/pages/boards/model/useBoardsTactics";
 import type { ToolKind } from "@/pages/boards/model/types";
 
-const DRAW_TOOLS: Array<{ value: ToolKind; label: string; icon: ComponentType<{ className?: string }> }> = [
+const DRAW_TOOLS: Array<{
+  value: ToolKind;
+  label: string;
+  icon: ComponentType<{ className?: string }>;
+}> = [
   { value: "select", label: "Select", icon: LuMousePointer2 },
   { value: "line", label: "Line", icon: LuMinus },
   { value: "arrow", label: "Arrow", icon: LuArrowUpRight },
@@ -28,14 +32,22 @@ const DRAW_TOOLS: Array<{ value: ToolKind; label: string; icon: ComponentType<{ 
   { value: "eraser", label: "Eraser", icon: LuEraser },
 ];
 
-const STICKER_TOOLS: Array<{ value: ToolKind; label: string; icon: ComponentType<{ className?: string }> }> = [
+const STICKER_TOOLS: Array<{
+  value: ToolKind;
+  label: string;
+  icon: ComponentType<{ className?: string }>;
+}> = [
   { value: "puck", label: "Puck", icon: LuRadio },
   { value: "cone", label: "Cone", icon: LuTriangle },
   { value: "ball", label: "Ball", icon: IoIosFootball },
   { value: "player", label: "Player", icon: LuUserRound },
 ];
 
-function getToolButtonClass(tool: ToolKind, value: ToolKind, palette: "draw" | "sticker") {
+function getToolButtonClass(
+  tool: ToolKind,
+  value: ToolKind,
+  palette: "draw" | "sticker",
+) {
   if (tool === value) {
     return palette === "draw"
       ? "border-cyan-300/70 bg-cyan-400/10 text-cyan-100"
@@ -123,7 +135,10 @@ export function TacticsToolbar() {
             className="w-24 accent-cyan-400"
             onChange={(event) => setStrokeWidth(Number(event.target.value))}
           />
-          <Typography component="span" className="w-2 text-right text-xs text-slate-200">
+          <Typography
+            component="span"
+            className="w-2 text-right text-xs text-slate-200"
+          >
             {strokeWidth}
           </Typography>
         </div>

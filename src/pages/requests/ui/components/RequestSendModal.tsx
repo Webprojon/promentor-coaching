@@ -40,8 +40,9 @@ export function RequestSendModal({
       className={`rounded-lg border px-4 py-3 text-sm leading-relaxed text-slate-300 ${meta.chipClass}`}
     >
       <Typography component="p">
-        You are sending a <span className="font-semibold text-white">request</span>{" "}
-        scoped to <span className="font-semibold text-white">{meta.label}</span>. Keep it
+        You are sending a{" "}
+        <span className="font-semibold text-white">request</span> scoped to{" "}
+        <span className="font-semibold text-white">{meta.label}</span>. Keep it
         clear and actionable.
       </Typography>
     </div>

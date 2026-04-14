@@ -1,4 +1,8 @@
-import type { BoardType, StickerKind, ToolKind } from "@/pages/boards/model/types";
+import type {
+  BoardType,
+  StickerKind,
+  ToolKind,
+} from "@/pages/boards/model/types";
 
 export const TACTICS_BOARD_STORAGE_KEY = "tactics-board-storage";
 
@@ -18,7 +22,12 @@ export const PLAYER_MODAL_WIDTH = 176;
 export const PLAYER_MODAL_HEIGHT = 132;
 export const PLAYER_MODAL_PADDING = 12;
 
-export const STICKER_TOOL_VALUES: readonly StickerKind[] = ["puck", "cone", "ball", "player"];
+export const STICKER_TOOL_VALUES: readonly StickerKind[] = [
+  "puck",
+  "cone",
+  "ball",
+  "player",
+];
 
 export const BOARD_VARIANTS: ReadonlyArray<{
   value: BoardType;
@@ -26,5 +35,9 @@ export const BOARD_VARIANTS: ReadonlyArray<{
   accentClassName: string;
 }> = [
   { value: "hockey", label: "Hockey board", accentClassName: "text-rose-200" },
-  { value: "football", label: "Football board", accentClassName: "text-emerald-200" },
+  {
+    value: "football",
+    label: "Football board",
+    accentClassName: "text-emerald-200",
+  },
 ];

@@ -24,8 +24,14 @@ function createId() {
 
 function getModalPosition(x: number, y: number, width: number, height: number) {
   return {
-    modalX: Math.max(PLAYER_MODAL_PADDING, Math.min(x + PLAYER_MODAL_PADDING, width - PLAYER_MODAL_WIDTH)),
-    modalY: Math.max(PLAYER_MODAL_PADDING, Math.min(y + PLAYER_MODAL_PADDING, height - PLAYER_MODAL_HEIGHT)),
+    modalX: Math.max(
+      PLAYER_MODAL_PADDING,
+      Math.min(x + PLAYER_MODAL_PADDING, width - PLAYER_MODAL_WIDTH),
+    ),
+    modalY: Math.max(
+      PLAYER_MODAL_PADDING,
+      Math.min(y + PLAYER_MODAL_PADDING, height - PLAYER_MODAL_HEIGHT),
+    ),
   };
 }
 
@@ -95,7 +101,12 @@ export function TacticsCanvas() {
     const sticker = toStickerKind(tool);
     if (sticker) {
       if (sticker === "player") {
-        const { modalX, modalY } = getModalPosition(point.x, point.y, width, height);
+        const { modalX, modalY } = getModalPosition(
+          point.x,
+          point.y,
+          width,
+          height,
+        );
         setPendingPlayer({
           x: point.x,
           y: point.y,
@@ -170,7 +181,12 @@ export function TacticsCanvas() {
     if (draftObject.kind === "line" || draftObject.kind === "arrow") {
       setDraftObject({
         ...draftObject,
-        points: [draftObject.points[0], draftObject.points[1], point.x, point.y],
+        points: [
+          draftObject.points[0],
+          draftObject.points[1],
+          point.x,
+          point.y,
+        ],
       });
       return;
     }
@@ -190,7 +206,10 @@ export function TacticsCanvas() {
 
     setDraftObject({
       ...draftObject,
-      radius: Math.max(1, Math.hypot(point.x - draftObject.x, point.y - draftObject.y)),
+      radius: Math.max(
+        1,
+        Math.hypot(point.x - draftObject.x, point.y - draftObject.y),
+      ),
     });
   };
 
@@ -212,7 +231,11 @@ export function TacticsCanvas() {
         onMouseUp={handlePointerUp}
       >
         <Layer listening={false}>
-          <BoardBackground boardType={boardType} width={width} height={height} />
+          <BoardBackground
+            boardType={boardType}
+            width={width}
+            height={height}
+          />
         </Layer>
         <Layer>
           {objects.map(renderDrawableObject)}
@@ -241,7 +264,10 @@ export function TacticsCanvas() {
             setPlayerNameDraft("");
           }}
         >
-          <Typography component="p" className="text-xs font-medium uppercase tracking-wide text-slate-300">
+          <Typography
+            component="p"
+            className="text-xs font-medium uppercase tracking-wide text-slate-300"
+          >
             Player name
           </Typography>
           <input

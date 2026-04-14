@@ -54,7 +54,9 @@ export function SendRequestFlow({
           placeholder="e.g. Tue/Thu evening, 6h weekly"
           className={SHARED_TEXT_FIELD_CLASS}
           value={draft.weeklyAvailability}
-          onChange={(event) => onChange("weeklyAvailability", event.target.value)}
+          onChange={(event) =>
+            onChange("weeklyAvailability", event.target.value)
+          }
         />
         <FormField label="Note (optional)">
           <Textarea

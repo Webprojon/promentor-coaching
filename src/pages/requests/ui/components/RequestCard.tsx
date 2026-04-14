@@ -151,9 +151,7 @@ export function RequestCard({
         open={detailOpen}
         viewModel={viewModel}
         onClose={() => setDetailOpen(false)}
-        onEditSent={
-          isSentCardViewModel(viewModel) ? handleSentEdit : undefined
-        }
+        onEditSent={isSentCardViewModel(viewModel) ? handleSentEdit : undefined}
         onDeleteSent={
           isSentCardViewModel(viewModel) ? handleSentDelete : undefined
         }

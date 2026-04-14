@@ -15,10 +15,7 @@ export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 };
 
 export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  function Textarea(
-    { className, minHeight = "md", ...props },
-    ref,
-  ) {
+  function Textarea({ className, minHeight = "md", ...props }, ref) {
     const merged = [TEXTAREA_BASE_CLASS, MIN_HEIGHT_CLASS[minHeight], className]
       .filter(Boolean)
       .join(" ");

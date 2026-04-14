@@ -48,7 +48,9 @@ export function RequestsTabFilter<T extends string>({
                   : REQUEST_CATEGORY_FILTER_INACTIVE_BUTTON_CLASS
               }`}
             >
-              {Icon ? <Icon className="text-base opacity-90" aria-hidden /> : null}
+              {Icon ? (
+                <Icon className="text-base opacity-90" aria-hidden />
+              ) : null}
               {option.label}
             </Button>
           );

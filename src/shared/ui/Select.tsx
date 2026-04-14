@@ -24,11 +24,7 @@ export type SelectProps = Omit<
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
   function Select({ className, fieldSize = "md", children, ...props }, ref) {
-    const merged = [
-      SELECT_BASE_CLASS,
-      FIELD_SIZE_CLASS[fieldSize],
-      className,
-    ]
+    const merged = [SELECT_BASE_CLASS, FIELD_SIZE_CLASS[fieldSize], className]
       .filter(Boolean)
       .join(" ");
 

@@ -12,4 +12,3 @@ export const TEAM_STATUS_BADGE_CLASS: Record<TeamStatus, string> = {
   Active: "border-emerald-400/40 bg-emerald-500/15 text-emerald-200",
   Pending: "border-amber-400/40 bg-amber-500/15 text-amber-200",
 };
-

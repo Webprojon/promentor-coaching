@@ -46,18 +46,68 @@ function HockeyBackground({ width, height }: Omit<Props, "boardType">) {
         strokeWidth={3}
       />
 
-      <Line points={[leftEndLine, topInset, leftEndLine, bottomInset]} stroke={red} strokeWidth={1.5} />
-      <Line points={[rightEndLine, topInset, rightEndLine, bottomInset]} stroke={red} strokeWidth={1.5} />
+      <Line
+        points={[leftEndLine, topInset, leftEndLine, bottomInset]}
+        stroke={red}
+        strokeWidth={1.5}
+      />
+      <Line
+        points={[rightEndLine, topInset, rightEndLine, bottomInset]}
+        stroke={red}
+        strokeWidth={1.5}
+      />
 
-      <Line points={[centerX, topInset, centerX, bottomInset]} stroke={red} strokeWidth={4} />
-      <Line points={[leftZone, topInset, leftZone, bottomInset]} stroke={blue} strokeWidth={4} />
-      <Line points={[rightZone, topInset, rightZone, bottomInset]} stroke={blue} strokeWidth={4} />
-      <Circle x={centerX} y={centerY} radius={height * 0.12} stroke={blue} strokeWidth={2} />
+      <Line
+        points={[centerX, topInset, centerX, bottomInset]}
+        stroke={red}
+        strokeWidth={4}
+      />
+      <Line
+        points={[leftZone, topInset, leftZone, bottomInset]}
+        stroke={blue}
+        strokeWidth={4}
+      />
+      <Line
+        points={[rightZone, topInset, rightZone, bottomInset]}
+        stroke={blue}
+        strokeWidth={4}
+      />
+      <Circle
+        x={centerX}
+        y={centerY}
+        radius={height * 0.12}
+        stroke={blue}
+        strokeWidth={2}
+      />
 
-      <Circle x={width * 0.22} y={height * 0.24} radius={faceoffRadius} stroke={red} strokeWidth={2} />
-      <Circle x={width * 0.22} y={height * 0.76} radius={faceoffRadius} stroke={red} strokeWidth={2} />
-      <Circle x={width * 0.78} y={height * 0.24} radius={faceoffRadius} stroke={red} strokeWidth={2} />
-      <Circle x={width * 0.78} y={height * 0.76} radius={faceoffRadius} stroke={red} strokeWidth={2} />
+      <Circle
+        x={width * 0.22}
+        y={height * 0.24}
+        radius={faceoffRadius}
+        stroke={red}
+        strokeWidth={2}
+      />
+      <Circle
+        x={width * 0.22}
+        y={height * 0.76}
+        radius={faceoffRadius}
+        stroke={red}
+        strokeWidth={2}
+      />
+      <Circle
+        x={width * 0.78}
+        y={height * 0.24}
+        radius={faceoffRadius}
+        stroke={red}
+        strokeWidth={2}
+      />
+      <Circle
+        x={width * 0.78}
+        y={height * 0.76}
+        radius={faceoffRadius}
+        stroke={red}
+        strokeWidth={2}
+      />
 
       <Rect
         x={leftEndLine - goalWidth * 0.5}
@@ -79,16 +129,33 @@ function HockeyBackground({ width, height }: Omit<Props, "boardType">) {
       />
 
       <Line
-        points={[leftEndLine, centerY - creaseRadius, leftEndLine + creaseRadius * 0.9, centerY - creaseRadius, leftEndLine + creaseRadius * 0.9, centerY + creaseRadius, leftEndLine, centerY + creaseRadius]}
+        points={[
+          leftEndLine,
+          centerY - creaseRadius,
+          leftEndLine + creaseRadius * 0.9,
+          centerY - creaseRadius,
+          leftEndLine + creaseRadius * 0.9,
+          centerY + creaseRadius,
+          leftEndLine,
+          centerY + creaseRadius,
+        ]}
         stroke={red}
         strokeWidth={1.5}
       />
       <Line
-        points={[rightEndLine, centerY - creaseRadius, rightEndLine - creaseRadius * 0.9, centerY - creaseRadius, rightEndLine - creaseRadius * 0.9, centerY + creaseRadius, rightEndLine, centerY + creaseRadius]}
+        points={[
+          rightEndLine,
+          centerY - creaseRadius,
+          rightEndLine - creaseRadius * 0.9,
+          centerY - creaseRadius,
+          rightEndLine - creaseRadius * 0.9,
+          centerY + creaseRadius,
+          rightEndLine,
+          centerY + creaseRadius,
+        ]}
         stroke={red}
         strokeWidth={1.5}
       />
-
     </Group>
   );
 }
@@ -121,14 +188,52 @@ function FootballBackground({ width, height }: Omit<Props, "boardType">) {
         strokeWidth={2}
         cornerRadius={BOARD_FIELD_CORNER_RADIUS_PX}
       />
-      <Line points={[centerX, 10, centerX, height - 10]} stroke={line} strokeWidth={2} />
-      <Circle x={centerX} y={centerY} radius={height * 0.14} stroke={line} strokeWidth={2} />
+      <Line
+        points={[centerX, 10, centerX, height - 10]}
+        stroke={line}
+        strokeWidth={2}
+      />
+      <Circle
+        x={centerX}
+        y={centerY}
+        radius={height * 0.14}
+        stroke={line}
+        strokeWidth={2}
+      />
       <Circle x={centerX} y={centerY} radius={4} fill={line} />
 
-      <Rect x={8} y={penaltyTop} width={width * 0.16} height={penaltyHeight} stroke={line} strokeWidth={2} />
-      <Rect x={width - width * 0.16 - 8} y={penaltyTop} width={width * 0.16} height={penaltyHeight} stroke={line} strokeWidth={2} />
-      <Rect x={8} y={smallBoxTop} width={width * 0.08} height={smallBoxHeight} stroke={line} strokeWidth={2} />
-      <Rect x={width - width * 0.08 - 8} y={smallBoxTop} width={width * 0.08} height={smallBoxHeight} stroke={line} strokeWidth={2} />
+      <Rect
+        x={8}
+        y={penaltyTop}
+        width={width * 0.16}
+        height={penaltyHeight}
+        stroke={line}
+        strokeWidth={2}
+      />
+      <Rect
+        x={width - width * 0.16 - 8}
+        y={penaltyTop}
+        width={width * 0.16}
+        height={penaltyHeight}
+        stroke={line}
+        strokeWidth={2}
+      />
+      <Rect
+        x={8}
+        y={smallBoxTop}
+        width={width * 0.08}
+        height={smallBoxHeight}
+        stroke={line}
+        strokeWidth={2}
+      />
+      <Rect
+        x={width - width * 0.08 - 8}
+        y={smallBoxTop}
+        width={width * 0.08}
+        height={smallBoxHeight}
+        stroke={line}
+        strokeWidth={2}
+      />
 
       <Circle x={width * 0.13} y={centerY} radius={3} fill={line} />
       <Circle x={width * 0.87} y={centerY} radius={3} fill={line} />

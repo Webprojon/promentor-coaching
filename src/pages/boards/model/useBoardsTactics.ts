@@ -8,7 +8,11 @@ import {
   DEFAULT_TOOL,
   TACTICS_BOARD_STORAGE_KEY,
 } from "@/pages/boards/model/constants";
-import type { BoardType, DrawableObject, ToolKind } from "@/pages/boards/model/types";
+import type {
+  BoardType,
+  DrawableObject,
+  ToolKind,
+} from "@/pages/boards/model/types";
 
 type DraftObject = DrawableObject | null;
 
@@ -81,7 +85,9 @@ export const useBoardsTactics = create<TacticsBoardState>()(
 
           const indexFromStart = state.objects.length - 1 - targetIndex;
           return {
-            objects: state.objects.filter((_, index) => index !== indexFromStart),
+            objects: state.objects.filter(
+              (_, index) => index !== indexFromStart,
+            ),
             history: [...state.history, snapshot(state)],
             future: [],
           };

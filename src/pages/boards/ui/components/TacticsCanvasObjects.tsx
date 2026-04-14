@@ -1,6 +1,18 @@
-import { Arrow, Circle, Group, Line, Rect, RegularPolygon, Text } from "react-konva";
+import {
+  Arrow,
+  Circle,
+  Group,
+  Line,
+  Rect,
+  RegularPolygon,
+  Text,
+} from "react-konva";
 import { STICKER_TOOL_VALUES } from "@/pages/boards/model/constants";
-import type { DrawableObject, StickerKind, ToolKind } from "@/pages/boards/model/types";
+import type {
+  DrawableObject,
+  StickerKind,
+  ToolKind,
+} from "@/pages/boards/model/types";
 
 export function toStickerKind(tool: ToolKind): StickerKind | null {
   return STICKER_TOOL_VALUES.find((value) => value === tool) ?? null;
@@ -20,12 +32,45 @@ function renderSticker(object: Extract<DrawableObject, { kind: "sticker" }>) {
   if (object.sticker === "ball") {
     return (
       <Group key={object.id}>
-        <Circle x={centerX} y={centerY} radius={half} fill="#ffffff" stroke="#0f172a" strokeWidth={2} />
-        <RegularPolygon x={centerX} y={centerY} sides={5} radius={half * 0.3} fill="#111827" />
-        <Circle x={centerX - half * 0.5} y={centerY - half * 0.18} radius={half * 0.12} fill="#111827" />
-        <Circle x={centerX + half * 0.5} y={centerY - half * 0.18} radius={half * 0.12} fill="#111827" />
-        <Circle x={centerX - half * 0.28} y={centerY + half * 0.45} radius={half * 0.1} fill="#111827" />
-        <Circle x={centerX + half * 0.28} y={centerY + half * 0.45} radius={half * 0.1} fill="#111827" />
+        <Circle
+          x={centerX}
+          y={centerY}
+          radius={half}
+          fill="#ffffff"
+          stroke="#0f172a"
+          strokeWidth={2}
+        />
+        <RegularPolygon
+          x={centerX}
+          y={centerY}
+          sides={5}
+          radius={half * 0.3}
+          fill="#111827"
+        />
+        <Circle
+          x={centerX - half * 0.5}
+          y={centerY - half * 0.18}
+          radius={half * 0.12}
+          fill="#111827"
+        />
+        <Circle
+          x={centerX + half * 0.5}
+          y={centerY - half * 0.18}
+          radius={half * 0.12}
+          fill="#111827"
+        />
+        <Circle
+          x={centerX - half * 0.28}
+          y={centerY + half * 0.45}
+          radius={half * 0.1}
+          fill="#111827"
+        />
+        <Circle
+          x={centerX + half * 0.28}
+          y={centerY + half * 0.45}
+          radius={half * 0.1}
+          fill="#111827"
+        />
       </Group>
     );
   }
@@ -58,7 +103,12 @@ function renderSticker(object: Extract<DrawableObject, { kind: "sticker" }>) {
           </Group>
         ) : null}
 
-        <Circle x={centerX} y={centerY - half * 0.45} radius={half * 0.22} fill={object.stroke} />
+        <Circle
+          x={centerX}
+          y={centerY - half * 0.45}
+          radius={half * 0.22}
+          fill={object.stroke}
+        />
         <Line
           points={[
             centerX,
@@ -78,7 +128,12 @@ function renderSticker(object: Extract<DrawableObject, { kind: "sticker" }>) {
           lineJoin="round"
         />
         <Line
-          points={[centerX - half * 0.45, centerY + half * 0.05, centerX + half * 0.45, centerY + half * 0.05]}
+          points={[
+            centerX - half * 0.45,
+            centerY + half * 0.05,
+            centerX + half * 0.45,
+            centerY + half * 0.05,
+          ]}
           stroke={object.stroke}
           strokeWidth={2.2}
           lineCap="round"

@@ -41,7 +41,11 @@ export type RequestInboxDirection = "sent" | "received";
 
 export type RequestCategoryFilter = RequestCategory | "all";
 
-export type MentorSentTargetKind = "teams" | "interns" | "boards" | "workout_plans";
+export type MentorSentTargetKind =
+  | "teams"
+  | "interns"
+  | "boards"
+  | "workout_plans";
 
 export type MentorSentRequestSendOption = {
   value: string;

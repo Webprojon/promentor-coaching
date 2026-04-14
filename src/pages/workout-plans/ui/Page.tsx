@@ -13,13 +13,18 @@ export default function WorkoutPlansPage() {
   const eventsService = useState(() => createEventsServicePlugin())[0];
 
   const calendar = useCalendarApp({
-    views: [createViewDay(), createViewWeek(), createViewMonthGrid(), createViewMonthAgenda()],
+    views: [
+      createViewDay(),
+      createViewWeek(),
+      createViewMonthGrid(),
+      createViewMonthAgenda(),
+    ],
     events: [
       {
-        id: '1',
-        title: 'Event 1',
-        start: Temporal.PlainDate.from('2023-12-16'),
-        end: Temporal.PlainDate.from('2023-12-16'),
+        id: "1",
+        title: "Event 1",
+        start: Temporal.PlainDate.from("2023-12-16"),
+        end: Temporal.PlainDate.from("2023-12-16"),
       },
     ],
     plugins: [eventsService],

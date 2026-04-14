@@ -17,7 +17,11 @@ import {
 } from "@/pages/requests/ui/components";
 import { PageHeader } from "@/shared/ui";
 
-function RequestsPageContent({ direction }: { direction: RequestInboxDirection }) {
+function RequestsPageContent({
+  direction,
+}: {
+  direction: RequestInboxDirection;
+}) {
   const {
     receivedCategoryFilter,
     setReceivedCategoryFilter,
@@ -99,9 +103,7 @@ function RequestsPageContent({ direction }: { direction: RequestInboxDirection }
 export default function RequestsPage() {
   const { direction: directionParam } = useParams<{ direction: string }>();
   if (!directionParam || !isRequestInboxDirection(directionParam)) {
-    return (
-      <Navigate to={requestsPathForDirection("sent")} replace />
-    );
+    return <Navigate to={requestsPathForDirection("sent")} replace />;
   }
   return <RequestsPageContent direction={directionParam} />;
 }

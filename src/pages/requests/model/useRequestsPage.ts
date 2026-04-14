@@ -24,7 +24,8 @@ import type {
 } from "@/pages/requests/model/types";
 import { REQUEST_STATUS_BADGE_CLASS } from "@/shared/model/constants";
 
-type CategoryMeta = (typeof REQUEST_CATEGORY_META)[keyof typeof REQUEST_CATEGORY_META];
+type CategoryMeta =
+  (typeof REQUEST_CATEGORY_META)[keyof typeof REQUEST_CATEGORY_META];
 type MentorKindMeta = (typeof MENTOR_SENT_KIND_META)[MentorSentTargetKind];
 
 function cardShellFromMeta(meta: CategoryMeta | MentorKindMeta) {
@@ -93,8 +94,7 @@ export function useRequestModalForm(onClose: () => void) {
   const [detail, setDetail] = useState("");
   const [extra, setExtra] = useState("");
 
-  const canSubmit =
-    primaryPick.trim().length > 0 && detail.trim().length > 0;
+  const canSubmit = primaryPick.trim().length > 0 && detail.trim().length > 0;
 
   return {
     primaryPick,
@@ -113,8 +113,9 @@ export function useRequestModalForm(onClose: () => void) {
 export function useRequestsPage(direction: RequestInboxDirection) {
   const [receivedCategoryFilter, setReceivedCategoryFilter] =
     useState<RequestCategoryFilter>(REQUEST_DEFAULT_CATEGORY_FILTER);
-  const [mentorSentFilter, setMentorSentFilter] =
-    useState<MentorSentFilter>(MENTOR_SENT_DEFAULT_FILTER);
+  const [mentorSentFilter, setMentorSentFilter] = useState<MentorSentFilter>(
+    MENTOR_SENT_DEFAULT_FILTER,
+  );
 
   const [createModalKind, setCreateModalKind] =
     useState<MentorSentTargetKind | null>(null);
