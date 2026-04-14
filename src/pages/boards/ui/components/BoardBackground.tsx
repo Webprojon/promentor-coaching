@@ -1,4 +1,5 @@
 import { Circle, Group, Line, Rect } from "react-konva";
+import { BOARD_FIELD_CORNER_RADIUS_PX } from "@/pages/boards/model/constants";
 import type { BoardType } from "@/pages/boards/model/types";
 
 type Props = {
@@ -27,14 +28,21 @@ function HockeyBackground({ width, height }: Omit<Props, "boardType">) {
 
   return (
     <Group>
-      <Rect x={0} y={0} width={width} height={height} fill="#f8fafc" cornerRadius={28} />
+      <Rect
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        fill="#f8fafc"
+        cornerRadius={BOARD_FIELD_CORNER_RADIUS_PX}
+      />
       <Rect
         x={4}
         y={4}
         width={width - 8}
         height={height - 8}
         stroke="#111827"
-        cornerRadius={26}
+        cornerRadius={BOARD_FIELD_CORNER_RADIUS_PX}
         strokeWidth={3}
       />
 
@@ -96,8 +104,23 @@ function FootballBackground({ width, height }: Omit<Props, "boardType">) {
 
   return (
     <Group>
-      <Rect x={0} y={0} width={width} height={height} fill="#15803d" cornerRadius={22} />
-      <Rect x={8} y={8} width={width - 16} height={height - 16} stroke={line} strokeWidth={2} cornerRadius={16} />
+      <Rect
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        fill="#15803d"
+        cornerRadius={BOARD_FIELD_CORNER_RADIUS_PX}
+      />
+      <Rect
+        x={8}
+        y={8}
+        width={width - 16}
+        height={height - 16}
+        stroke={line}
+        strokeWidth={2}
+        cornerRadius={BOARD_FIELD_CORNER_RADIUS_PX}
+      />
       <Line points={[centerX, 10, centerX, height - 10]} stroke={line} strokeWidth={2} />
       <Circle x={centerX} y={centerY} radius={height * 0.14} stroke={line} strokeWidth={2} />
       <Circle x={centerX} y={centerY} radius={4} fill={line} />

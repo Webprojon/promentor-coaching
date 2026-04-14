@@ -7,6 +7,8 @@ export const DEFAULT_TOOL: ToolKind = "select";
 export const DEFAULT_STROKE = "#ef4444";
 export const DEFAULT_STROKE_WIDTH = 3;
 
+export const BOARD_FIELD_CORNER_RADIUS_PX = 8;
+
 export const CANVAS_MIN_HEIGHT = 420;
 export const CANVAS_ASPECT_RATIO = 2;
 export const STICKER_BASE_SIZE = 28;

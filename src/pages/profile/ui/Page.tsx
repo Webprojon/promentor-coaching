@@ -2,6 +2,7 @@ import {
   PROFILE_HEADER,
   PROFILE_QUICK_LINKS,
 } from "@/pages/profile/model/constants";
+import { PageHeader } from "@/shared/ui";
 import { useProfilePage } from "@/pages/profile/model/useProfilePage";
 import { ProfileAboutSection } from "@/pages/profile/ui/components/ProfileAboutSection";
 import { ProfileHero } from "@/pages/profile/ui/components/ProfileHero";
@@ -19,6 +20,11 @@ export default function ProfilePage() {
 
   return (
     <>
+      <PageHeader
+        title="Profile"
+        description="Review your public coach card, update contact details, and jump to the areas you use most."
+        className="mb-5"
+      />
       <ProfileHero
         header={PROFILE_HEADER}
         onOpenPhotoModal={openPhotoModal}

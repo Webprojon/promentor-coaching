@@ -15,6 +15,7 @@ import {
   RequestsTabFilter,
   RequestsViewNav,
 } from "@/pages/requests/ui/components";
+import { PageHeader } from "@/shared/ui";
 
 function RequestsPageContent({ direction }: { direction: RequestInboxDirection }) {
   const {
@@ -55,6 +56,11 @@ function RequestsPageContent({ direction }: { direction: RequestInboxDirection }
 
   return (
     <>
+      <PageHeader
+        title="Requests"
+        description="Move between sent and received mentor traffic, filter the list, and open a card for full context."
+        className="mb-5"
+      />
       <RequestsViewNav />
 
       {direction === "received" ? (

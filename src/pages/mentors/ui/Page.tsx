@@ -1,4 +1,4 @@
-import { Modal } from "@/shared/ui";
+import { Modal, PageHeader } from "@/shared/ui";
 import { SendRequestFlow } from "@/features/send-request-flow";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
 import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
@@ -20,6 +20,11 @@ export default function MentorsPage() {
 
   return (
     <>
+      <PageHeader
+        title="Mentors"
+        description="Browse mentors, compare focus areas, and send structured mentorship requests."
+        className="mb-5"
+      />
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {rows.map((mentor) => (
           <MentorCard

@@ -1,7 +1,7 @@
 import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
 import { SendRequestFlow } from "@/features/send-request-flow";
-import { Modal } from "@/shared/ui";
+import { Modal, PageHeader } from "@/shared/ui";
 
 export default function ExploreTeamsPage() {
   const {
@@ -20,6 +20,11 @@ export default function ExploreTeamsPage() {
 
   return (
     <>
+      <PageHeader
+        title="Explore teams"
+        description="Discover teams that are open to requests and start a short join conversation."
+        className="mb-5"
+      />
       <ExploreTeamTable rows={rows} onRequestClick={onRequestClick} />
 
       <Modal

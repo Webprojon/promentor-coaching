@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { PageHeader } from "@/shared/ui";
 import { ScheduleXCalendar, useCalendarApp } from "@schedule-x/react";
 import {
   createViewDay,
@@ -9,7 +10,7 @@ import {
 import { createEventsServicePlugin } from "@schedule-x/events-service";
 
 export default function WorkoutPlansPage() {
-  const eventsService = useState(() => createEventsServicePlugin())[0]
+  const eventsService = useState(() => createEventsServicePlugin())[0];
 
   const calendar = useCalendarApp({
     views: [createViewDay(), createViewWeek(), createViewMonthGrid(), createViewMonthAgenda()],
@@ -21,8 +22,16 @@ export default function WorkoutPlansPage() {
         end: Temporal.PlainDate.from('2023-12-16'),
       },
     ],
-    plugins: [eventsService]
-  })
+    plugins: [eventsService],
+  });
 
-  return <ScheduleXCalendar calendarApp={calendar} />
+  return (
+    <section className="space-y-5">
+      <PageHeader
+        title="Workout plans"
+        description="Lay out training sessions on the calendar. Events are sample data until scheduling is wired up."
+      />
+      <ScheduleXCalendar calendarApp={calendar} />
+    </section>
+  );
 }

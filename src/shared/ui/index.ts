@@ -3,6 +3,8 @@ export { Badge } from "@/shared/ui/Badge";
 export { FormField } from "@/shared/ui/FormField";
 export { MemberAvatarStack } from "@/shared/ui/MemberAvatarStack";
 export { Modal } from "@/shared/ui/Modal";
+export { PageHeader } from "@/shared/ui/PageHeader";
+export type { PageHeaderProps } from "@/shared/ui/PageHeader";
 export type { ModalAction } from "@/shared/ui/Modal";
 export { Select } from "@/shared/ui/Select";
 export type { SelectProps } from "@/shared/ui/Select";
