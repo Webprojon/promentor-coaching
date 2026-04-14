@@ -7,6 +7,7 @@ import SuggestionPage from "@/pages/suggestion";
 import TeamsPage from "@/pages/teams";
 import WorkoutPlansPage from "@/pages/workout-plans";
 import Header from "@/widgets/header";
+import Layout from "@/widgets/layout";
 import AuthSessionBoundary from "@/app/AuthSessionBoundary";
 import { AppBackground } from "@/shared/ui";
 import ProfilePage from "@/pages/profile";
@@ -18,25 +19,27 @@ export default function App() {
     <BrowserRouter>
       <AppBackground>
         <Header />
-        <AuthSessionBoundary>
-          <Routes>
-            <Route path="/" element={<Navigate to="/teams" replace />} />
-            <Route path="/teams" element={<TeamsPage />} />
-            <Route path="/boards" element={<BoardsPage />} />
-            <Route path="/workout-plans" element={<WorkoutPlansPage />} />
-            <Route path="/explore-teams" element={<ExploreTeamsPage />} />
-            <Route path="/mentors" element={<MentorsPage />} />
-            <Route path="/suggestion" element={<SuggestionPage />} />
-            <Route
-              path="/requests"
-              element={
-                <Navigate to={requestsPathForDirection("sent")} replace />
-              }
-            />
-            <Route path="/requests/:direction" element={<RequestsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-          </Routes>
-        </AuthSessionBoundary>
+        <Layout>
+          <AuthSessionBoundary>
+            <Routes>
+              <Route path="/" element={<Navigate to="/teams" replace />} />
+              <Route path="/teams" element={<TeamsPage />} />
+              <Route path="/boards" element={<BoardsPage />} />
+              <Route path="/workout-plans" element={<WorkoutPlansPage />} />
+              <Route path="/explore-teams" element={<ExploreTeamsPage />} />
+              <Route path="/mentors" element={<MentorsPage />} />
+              <Route path="/suggestion" element={<SuggestionPage />} />
+              <Route
+                path="/requests"
+                element={
+                  <Navigate to={requestsPathForDirection("sent")} replace />
+                }
+              />
+              <Route path="/requests/:direction" element={<RequestsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+            </Routes>
+          </AuthSessionBoundary>
+        </Layout>
       </AppBackground>
     </BrowserRouter>
   );

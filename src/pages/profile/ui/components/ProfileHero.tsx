@@ -10,7 +10,7 @@ export function ProfileHero({ header, onOpenPhotoModal }: ProfileHeroProps) {
   const { name, role, tagline, avatarUrl, memberSince } = header;
 
   return (
-    <section className="relative mt-6 overflow-hidden rounded-lg border border-white/10 bg-linear-to-br from-cyan-500/15 via-slate-900/80 to-indigo-500/12 shadow-[0_12px_40px_rgba(2,6,23,0.45)] backdrop-blur-sm p-4">
+    <section className="relative overflow-hidden rounded-lg border border-white/10 bg-linear-to-br from-cyan-500/15 via-slate-900/80 to-indigo-500/12 shadow-[0_12px_40px_rgba(2,6,23,0.45)] backdrop-blur-sm p-4">
       <div
         className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-cyan-400/15 blur-3xl"
         aria-hidden

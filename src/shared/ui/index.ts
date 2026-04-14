@@ -4,7 +4,6 @@ export { FormField } from "@/shared/ui/FormField";
 export { MemberAvatarStack } from "@/shared/ui/MemberAvatarStack";
 export { Modal } from "@/shared/ui/Modal";
 export type { ModalAction } from "@/shared/ui/Modal";
-export { default as PageForShell } from "@/shared/ui/PageForShell";
 export { Select } from "@/shared/ui/Select";
 export type { SelectProps } from "@/shared/ui/Select";
 export { Table } from "@/shared/ui/Table";

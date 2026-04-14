@@ -3,7 +3,7 @@ import { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
 import { TeamCreatorSection } from "@/pages/teams/ui/components/TeamCreatorSection";
 import { TeamTable } from "@/pages/teams/ui/components/TeamTable";
 import { EmptyState } from "@/pages/teams/ui/components/EmptyState";
-import { Modal, PageForShell } from "@/shared/ui";
+import { Modal } from "@/shared/ui";
 
 export default function TeamsPage() {
   const {
@@ -18,11 +18,8 @@ export default function TeamsPage() {
   } = useTeamsPage();
 
   return (
-    <PageForShell
-      title="Team management"
-      description="Build and manage your teams, invite members, and keep delivery aligned."
-    >
-      <section className="mt-6 flex flex-col gap-6">
+    <>
+      <section className="flex flex-col gap-6">
         <div className="flex justify-end">
           <Button type="button" variant="contained" onClick={openCreator}>
             Create Team
@@ -50,6 +47,6 @@ export default function TeamsPage() {
       >
         <TeamCreatorSection {...teamCreatorSectionProps} />
       </Modal>
-    </PageForShell>
+    </>
   );
 }

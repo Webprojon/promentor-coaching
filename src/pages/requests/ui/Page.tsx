@@ -15,7 +15,6 @@ import {
   RequestsTabFilter,
   RequestsViewNav,
 } from "@/pages/requests/ui/components";
-import { PageForShell } from "@/shared/ui";
 
 function RequestsPageContent({ direction }: { direction: RequestInboxDirection }) {
   const {
@@ -55,10 +54,7 @@ function RequestsPageContent({ direction }: { direction: RequestInboxDirection }
         ];
 
   return (
-    <PageForShell
-      title="Requests"
-      description="Received keeps joins, mentorship asks, and suggestions awaiting your answer — members often share suggestions with mentors out of respect. Sent is for your own requests to teams, interns, boards, and workout plans."
-    >
+    <>
       <RequestsViewNav />
 
       {direction === "received" ? (
@@ -90,7 +86,7 @@ function RequestsPageContent({ direction }: { direction: RequestInboxDirection }
           onClose={() => setCreateModalKind(null)}
         />
       ) : null}
-    </PageForShell>
+    </>
   );
 }
 

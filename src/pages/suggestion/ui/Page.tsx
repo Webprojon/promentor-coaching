@@ -1,4 +1,3 @@
-import { PageForShell } from "@/shared/ui";
 import { useSuggestionPage } from "@/pages/suggestion/model/useSuggestionPage";
 import JoinedTeamsPanel from "@/pages/suggestion/ui/components/JoinedTeamsPanel";
 import SuggestionComposer from "@/pages/suggestion/ui/components/SuggestionComposer";
@@ -8,11 +7,8 @@ export default function SuggestionPage() {
   const state = useSuggestionPage();
 
   return (
-    <PageForShell
-      title="Suggestion Hub"
-      description="Send focused suggestions to teams you already joined and track what gets reviewed or applied."
-    >
-      <section className="mt-6 grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
+    <>
+      <section className="grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
         <JoinedTeamsPanel
           joinedTeams={state.joinedTeams}
           selectedTeamId={state.selectedTeamId}
@@ -30,6 +26,6 @@ export default function SuggestionPage() {
       </section>
 
       <SuggestionHistory history={state.history} />
-    </PageForShell>
+    </>
   );
 }

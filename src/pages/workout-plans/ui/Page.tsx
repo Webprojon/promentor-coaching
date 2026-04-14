@@ -1,4 +1,3 @@
-import { PageForShell } from "@/shared/ui";
 import { useState } from "react";
 import { ScheduleXCalendar, useCalendarApp } from "@schedule-x/react";
 import {
@@ -25,14 +24,5 @@ export default function WorkoutPlansPage() {
     plugins: [eventsService]
   })
 
-  return (
-    <PageForShell
-      title="Workout Plans"
-      description="Define focused learning routines with measurable sessions and clear outcomes for each learner path."
-    >
-      <div className="mt-6">
-        <ScheduleXCalendar calendarApp={calendar} />
-      </div>
-    </PageForShell>
-  );
+  return <ScheduleXCalendar calendarApp={calendar} />
 }

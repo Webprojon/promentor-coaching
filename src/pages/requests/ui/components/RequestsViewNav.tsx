@@ -8,7 +8,7 @@ import {
 
 export function RequestsViewNav() {
   return (
-    <section className="mt-6 rounded-lg sm:inline-flex sm:flex-row">
+    <section className="rounded-lg sm:inline-flex sm:flex-row">
       <Typography component="div" className="grid gap-2 sm:grid-cols-2">
         {REQUEST_VIEW_TOGGLE_OPTIONS.map(({ value, label, Icon }) => (
           <NavLink

@@ -1,7 +1,7 @@
 import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
 import { SendRequestFlow } from "@/features/send-request-flow";
-import { Modal, PageForShell } from "@/shared/ui";
+import { Modal } from "@/shared/ui";
 
 export default function ExploreTeamsPage() {
   const {
@@ -19,13 +19,8 @@ export default function ExploreTeamsPage() {
   } = useExploreTeamsPage();
 
   return (
-    <PageForShell
-      title="Explore Teams"
-      description="Find active teams, compare fit, and send structured join requests with clear goals and availability."
-    >
-      <section className="mt-6">
-        <ExploreTeamTable rows={rows} onRequestClick={onRequestClick} />
-      </section>
+    <>
+      <ExploreTeamTable rows={rows} onRequestClick={onRequestClick} />
 
       <Modal
         open={isWizardOpen}
@@ -50,6 +45,6 @@ export default function ExploreTeamsPage() {
           onChange={onChangeDraft}
         />
       </Modal>
-    </PageForShell>
+    </>
   );
 }

@@ -1,4 +1,4 @@
-import { Modal, PageForShell } from "@/shared/ui";
+import { Modal } from "@/shared/ui";
 import { SendRequestFlow } from "@/features/send-request-flow";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
 import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
@@ -19,11 +19,8 @@ export default function MentorsPage() {
   } = useMentorsPage();
 
   return (
-    <PageForShell
-      title="Mentors"
-      description="Compare mentors by expertise and availability, then send a structured mentorship request."
-    >
-      <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <>
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {rows.map((mentor) => (
           <MentorCard
             key={mentor.id}
@@ -56,6 +53,6 @@ export default function MentorsPage() {
           onChange={onChangeDraft}
         />
       </Modal>
-    </PageForShell>
+    </>
   );
 }
