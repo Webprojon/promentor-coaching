@@ -18,7 +18,7 @@ export default function AuthSessionBoundary({
 
   if (isHydrating) {
     return (
-      <div className="mt-4 rounded-xl border border-cyan-300/30 bg-cyan-300/10 p-4 text-sm text-cyan-100">
+      <div className="rounded-lg border border-cyan-300/30 bg-cyan-300/10 p-4 text-sm text-cyan-100">
         <Typography
           component="p"
           variantStyle="body"
@@ -35,7 +35,7 @@ export default function AuthSessionBoundary({
   }
 
   return (
-    <div className="mt-4 rounded-xl border border-amber-300/30 bg-amber-300/10 p-4 text-sm text-amber-100">
+    <div className="rounded-lg border border-amber-300/30 bg-amber-300/10 p-4 text-sm text-amber-100">
       <Typography
         component="p"
         variantStyle="body"
