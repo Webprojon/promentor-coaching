@@ -17,6 +17,7 @@ const REQUEST_ACTION_LABEL: Partial<
   Pending: "Pending",
   Accepted: "Joined",
 };
+const MEMBER_AVATAR_MAX_VISIBLE = 3;
 
 export function ExploreTeamTable({
   rows,
@@ -45,7 +46,8 @@ export function ExploreTeamTable({
             id={id}
             avatarUrls={memberAvatars}
             totalCount={membersCount}
-            ariaLabel={`${teamName}: ${membersCount} members, ${Math.min(memberAvatars.length, 3)} shown${membersCount > 3 ? `, ${membersCount - 3} more` : ""}`}
+            maxVisible={MEMBER_AVATAR_MAX_VISIBLE}
+            ariaLabel={`${teamName}: ${membersCount} members, ${Math.min(memberAvatars.length, MEMBER_AVATAR_MAX_VISIBLE)} shown${membersCount > MEMBER_AVATAR_MAX_VISIBLE ? `, ${membersCount - MEMBER_AVATAR_MAX_VISIBLE} more` : ""}`}
           />
         </td>
         <td className="px-4 py-3 text-sm">

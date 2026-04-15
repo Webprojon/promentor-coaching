@@ -156,7 +156,7 @@ export function Modal({
               className="inline-flex h-8 w-8 items-center cursor-pointer justify-center rounded-full text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
               aria-label="Close modal"
             >
-              x
+              <span aria-hidden="true">&times;</span>
             </button>
           </div>
 

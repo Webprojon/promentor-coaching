@@ -46,6 +46,7 @@ export function Table<T>({
             {columns.map((column) => (
               <th
                 key={column.key}
+                scope="col"
                 className={`p-4 text-xs font-semibold uppercase tracking-wide text-white/90 ${column.className ?? ""}`}
               >
                 {column.label}

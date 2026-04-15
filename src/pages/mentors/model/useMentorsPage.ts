@@ -1,14 +1,16 @@
 import { useState } from "react";
 import type { RequestDraft } from "@/features/send-request-flow/model/types";
+import {
+  canProceedWizardStep,
+  FIRST_WIZARD_STEP,
+  getNextWizardStep,
+  getPreviousWizardStep,
+} from "@/features/send-request-flow/model/utils";
 import { MENTOR_ROWS } from "@/pages/mentors/model/constants";
 import type { Mentor, WizardStep } from "@/pages/mentors/model/types";
 import {
-  canProceedWizardStep,
   createEmptyMentorDraft,
-  FIRST_WIZARD_STEP,
   getMentorActionStatus,
-  getNextWizardStep,
-  getPreviousWizardStep,
 } from "@/pages/mentors/model/utils";
 
 const updateMentorStatus = (

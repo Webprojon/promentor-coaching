@@ -16,6 +16,19 @@ const SuggestionPage = lazy(() => import("@/pages/suggestion"));
 const RequestsPage = lazy(() => import("@/pages/requests"));
 const ProfilePage = lazy(() => import("@/pages/profile"));
 
+function RouteLoadingFallback() {
+  return (
+    <section
+      className="rounded-lg border border-white/15 bg-slate-900/40 p-4 text-sm text-slate-200"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      Loading page...
+    </section>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -23,7 +36,7 @@ export default function App() {
         <Header />
         <Layout>
           <AuthSessionBoundary>
-            <Suspense fallback={null}>
+            <Suspense fallback={<RouteLoadingFallback />}>
               <Routes>
                 <Route path="/" element={<Navigate to="/teams" replace />} />
                 <Route path="/teams" element={<TeamsPage />} />

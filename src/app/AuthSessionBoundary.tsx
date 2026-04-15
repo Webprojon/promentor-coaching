@@ -6,6 +6,22 @@ import {
   useHostAuthSession,
 } from "@/features/auth";
 
+function AuthSessionStatus({
+  text,
+  className,
+}: {
+  text: string;
+  className: string;
+}) {
+  return (
+    <section className={className} aria-live="polite" aria-atomic="true">
+      <Typography component="p" variantStyle="body">
+        {text}
+      </Typography>
+    </section>
+  );
+}
+
 export default function AuthSessionBoundary({
   children,
 }: {
@@ -16,11 +32,10 @@ export default function AuthSessionBoundary({
 
   if (isHydrating) {
     return (
-      <div className="rounded-lg border border-cyan-300/30 bg-cyan-300/10 p-4 text-sm text-cyan-100">
-        <Typography component="p" variantStyle="body" className="text-cyan-100">
-          {AUTH_SESSION_HYDRATING_TEXT}
-        </Typography>
-      </div>
+      <AuthSessionStatus
+        text={AUTH_SESSION_HYDRATING_TEXT}
+        className="rounded-lg border border-cyan-300/30 bg-cyan-300/10 p-4 text-sm text-cyan-100"
+      />
     );
   }
 
@@ -29,10 +44,9 @@ export default function AuthSessionBoundary({
   }
 
   return (
-    <div className="rounded-lg border border-amber-300/30 bg-amber-300/10 p-4 text-sm text-amber-100">
-      <Typography component="p" variantStyle="body" className="text-amber-100">
-        {AUTH_SESSION_WAITING_TEXT}
-      </Typography>
-    </div>
+    <AuthSessionStatus
+      text={AUTH_SESSION_WAITING_TEXT}
+      className="rounded-lg border border-amber-300/30 bg-amber-300/10 p-4 text-sm text-amber-100"
+    />
   );
 }

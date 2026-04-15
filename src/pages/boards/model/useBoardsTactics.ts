@@ -15,6 +15,7 @@ import type {
 } from "@/pages/boards/model/types";
 
 type DraftObject = DrawableObject | null;
+const MAX_HISTORY_SNAPSHOTS = 100;
 
 type TacticsBoardState = {
   boardType: BoardType;
@@ -42,6 +43,24 @@ function snapshot(state: TacticsBoardState) {
   return [...state.objects];
 }
 
+function appendSnapshot(
+  snapshots: DrawableObject[][],
+  nextSnapshot: DrawableObject[],
+) {
+  const next = [...snapshots, nextSnapshot];
+  return next.length > MAX_HISTORY_SNAPSHOTS
+    ? next.slice(next.length - MAX_HISTORY_SNAPSHOTS)
+    : next;
+}
+
+function prependSnapshot(
+  snapshots: DrawableObject[][],
+  nextSnapshot: DrawableObject[],
+) {
+  const next = [nextSnapshot, ...snapshots];
+  return next.slice(0, MAX_HISTORY_SNAPSHOTS);
+}
+
 export const useBoardsTactics = create<TacticsBoardState>()(
   persist(
     (set) => ({
@@ -62,7 +81,7 @@ export const useBoardsTactics = create<TacticsBoardState>()(
       commitObject: (value) =>
         set((state) => ({
           objects: [...state.objects, value],
-          history: [...state.history, snapshot(state)],
+          history: appendSnapshot(state.history, snapshot(state)),
           future: [],
           draftObject: null,
         })),
@@ -70,7 +89,7 @@ export const useBoardsTactics = create<TacticsBoardState>()(
         set((state) => ({
           objects: [],
           draftObject: null,
-          history: [...state.history, snapshot(state)],
+          history: appendSnapshot(state.history, snapshot(state)),
           future: [],
         })),
       eraseObjectAt: (x, y) =>
@@ -88,7 +107,7 @@ export const useBoardsTactics = create<TacticsBoardState>()(
             objects: state.objects.filter(
               (_, index) => index !== indexFromStart,
             ),
-            history: [...state.history, snapshot(state)],
+            history: appendSnapshot(state.history, snapshot(state)),
             future: [],
           };
         }),
@@ -102,7 +121,7 @@ export const useBoardsTactics = create<TacticsBoardState>()(
           return {
             objects: prev,
             history: state.history.slice(0, -1),
-            future: [snapshot(state), ...state.future],
+            future: prependSnapshot(state.future, snapshot(state)),
             draftObject: null,
           };
         }),
@@ -115,7 +134,7 @@ export const useBoardsTactics = create<TacticsBoardState>()(
 
           return {
             objects: next,
-            history: [...state.history, snapshot(state)],
+            history: appendSnapshot(state.history, snapshot(state)),
             future: state.future.slice(1),
             draftObject: null,
           };
