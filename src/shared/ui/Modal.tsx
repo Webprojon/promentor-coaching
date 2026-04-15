@@ -1,8 +1,18 @@
 import { Button } from "@promentorapp/ui-kit";
-import { type MouseEvent, type ReactNode, useEffect } from "react";
+import {
+  type MouseEvent,
+  type ReactNode,
+  useEffect,
+  useId,
+  useRef,
+} from "react";
 import { createPortal } from "react-dom";
 
+let openModalCount = 0;
+let originalBodyOverflow: string | null = null;
+
 export type ModalAction = {
+  id?: string;
   label: string;
   onClick: () => void;
   disabled?: boolean;
@@ -29,14 +39,82 @@ export function Modal({
   secondaryAction,
   footerActions,
 }: ModalProps) {
+  const titleId = useId();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
+
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    if (!open) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+
+    if (openModalCount === 0) {
+      originalBodyOverflow = document.body.style.overflow;
+    }
+    openModalCount += 1;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onCloseRef.current();
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+
+      const focusableElements = Array.from(
+        dialog.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => !element.hasAttribute("disabled"));
+
+      if (focusableElements.length === 0) {
+        event.preventDefault();
+        return;
+      }
+
+      const firstElement = focusableElements[0];
+      const lastElement = focusableElements[focusableElements.length - 1];
+      const activeElement = document.activeElement as HTMLElement | null;
+
+      if (event.shiftKey && activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      } else if (!event.shiftKey && activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+
+    requestAnimationFrame(() => {
+      const dialog = dialogRef.current;
+      if (!dialog) return;
+      const firstFocusable = dialog.querySelector<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      );
+      firstFocusable?.focus();
+    });
+
     return () => {
-      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKeyDown);
+      openModalCount = Math.max(0, openModalCount - 1);
+      if (openModalCount === 0) {
+        document.body.style.overflow = originalBodyOverflow ?? "";
+        originalBodyOverflow = null;
+      }
+      previouslyFocused?.focus();
     };
   }, [open]);
 
   if (typeof document === "undefined") return null;
+  if (!open) return null;
 
   const hasCustomFooter = Boolean(footerActions?.length);
   const hasLegacyFooter =
@@ -50,9 +128,7 @@ export function Modal({
   };
 
   return createPortal(
-    <div
-      className={`fixed inset-0 z-1300 transition-opacity duration-200 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
-    >
+    <div className="fixed inset-0 z-1300 transition-opacity duration-200 opacity-100">
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
         onClick={onClose}
@@ -63,11 +139,17 @@ export function Modal({
         onClick={onOutsideClick}
       >
         <div
-          className={`w-full max-w-3xl overflow-hidden rounded-lg border border-white/20 bg-slate-900/80 shadow-[0_18px_60px_rgba(2,6,23,0.65)] backdrop-blur-md transition-all duration-200 ${open ? "scale-100 opacity-100" : "scale-95 opacity-0"}`}
+          ref={dialogRef}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          className="w-full max-w-3xl overflow-hidden rounded-lg border border-white/20 bg-slate-900/80 shadow-[0_18px_60px_rgba(2,6,23,0.65)] backdrop-blur-md transition-all duration-200 scale-100 opacity-100"
           onClick={(event) => event.stopPropagation()}
         >
           <div className="flex items-center justify-between border-b border-white/20 px-5 py-4">
-            <h2 className="text-lg font-semibold text-white">{title}</h2>
+            <h2 id={titleId} className="text-lg font-semibold text-white">
+              {title}
+            </h2>
             <button
               type="button"
               onClick={onClose}
@@ -85,7 +167,7 @@ export function Modal({
               {hasCustomFooter
                 ? (footerActions ?? []).map((action, index) => (
                     <Button
-                      key={`${action.label}-${index}`}
+                      key={action.id ?? `${action.label}-${index}`}
                       type="button"
                       variant={action.variant ?? "outlined"}
                       color={action.color}

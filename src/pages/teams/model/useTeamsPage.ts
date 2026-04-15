@@ -9,6 +9,16 @@ import {
   type CreateTeamFormValues,
 } from "@/pages/teams/model/teamCreatorSchema";
 
+const createManualMemberId = () => {
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
+    return `manual-member-${crypto.randomUUID()}`;
+  }
+  return `manual-member-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+};
+
 export function useTeamsPage() {
   const [isCreatorOpen, setIsCreatorOpen] = useState(false);
   const [selectedMemberIds, setSelectedMemberIds] = useState<string[]>([]);
@@ -65,7 +75,7 @@ export function useTeamsPage() {
   const addManualMember = manualMemberForm.handleSubmit((values) => {
     const normalizedEmail = values.memberEmail.trim().toLowerCase();
     const manualMember = {
-      id: `manual-member-${crypto.randomUUID()}`,
+      id: createManualMemberId(),
       name: values.memberName.trim(),
       avatarUrl: `https://i.pravatar.cc/64?u=${encodeURIComponent(normalizedEmail)}`,
     };

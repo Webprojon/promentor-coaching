@@ -17,6 +17,8 @@ import {
 } from "@/pages/requests/ui/components";
 import { PageHeader } from "@/shared/ui";
 
+const normalizeIdPart = (id: string) => id.replace(/[^a-zA-Z0-9-_]/g, "-");
+
 function RequestsPageContent({
   direction,
 }: {
@@ -69,25 +71,71 @@ function RequestsPageContent({
 
       {direction === "received" ? (
         <RequestsTabFilter
+          idBase="requests-received-category"
           value={receivedCategoryFilter}
           onChange={setReceivedCategoryFilter}
           options={REQUEST_CATEGORY_FILTER_OPTIONS}
         />
       ) : (
         <RequestsTabFilter
+          idBase="requests-sent-category"
           value={mentorSentFilter}
           onChange={setMentorSentFilter}
           options={MENTOR_SENT_FILTER_OPTIONS}
         />
       )}
 
-      {isGridEmpty ? (
-        <RequestsEmptyCard {...emptyCard} />
-      ) : (
-        <section className="mt-6 grid gap-4 md:grid-cols-2">
-          {gridItems}
-        </section>
-      )}
+      {direction === "received"
+        ? REQUEST_CATEGORY_FILTER_OPTIONS.map((option) => {
+            const optionIdPart = normalizeIdPart(option.value);
+            const panelId = `requests-received-category-panel-${optionIdPart}`;
+            const tabId = `requests-received-category-tab-${optionIdPart}`;
+            const isActive = receivedCategoryFilter === option.value;
+
+            return (
+              <section
+                key={option.value}
+                id={panelId}
+                role="tabpanel"
+                aria-labelledby={tabId}
+                hidden={!isActive}
+              >
+                {isActive &&
+                  (isGridEmpty ? (
+                    <RequestsEmptyCard {...emptyCard} />
+                  ) : (
+                    <section className="mt-6 grid gap-4 md:grid-cols-2">
+                      {gridItems}
+                    </section>
+                  ))}
+              </section>
+            );
+          })
+        : MENTOR_SENT_FILTER_OPTIONS.map((option) => {
+            const optionIdPart = normalizeIdPart(option.value);
+            const panelId = `requests-sent-category-panel-${optionIdPart}`;
+            const tabId = `requests-sent-category-tab-${optionIdPart}`;
+            const isActive = mentorSentFilter === option.value;
+
+            return (
+              <section
+                key={option.value}
+                id={panelId}
+                role="tabpanel"
+                aria-labelledby={tabId}
+                hidden={!isActive}
+              >
+                {isActive &&
+                  (isGridEmpty ? (
+                    <RequestsEmptyCard {...emptyCard} />
+                  ) : (
+                    <section className="mt-6 grid gap-4 md:grid-cols-2">
+                      {gridItems}
+                    </section>
+                  ))}
+              </section>
+            );
+          })}
 
       {createModalKind ? (
         <RequestSendModal

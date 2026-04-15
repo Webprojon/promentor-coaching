@@ -3,6 +3,11 @@ import type {
   RequestDraft,
   WizardStep,
 } from "@/features/send-request-flow/model/types";
+import {
+  canProceedWizardStep,
+  getNextWizardStep,
+  getPreviousWizardStep,
+} from "@/features/send-request-flow/model/utils";
 import { EXPLORE_TEAM_ROWS } from "@/pages/explore-teams/model/constants";
 import type { ExploreTeam } from "@/pages/explore-teams/model/types";
 
@@ -57,21 +62,11 @@ export function useExploreTeamsPage() {
     onCloseWizard();
   };
 
-  const goNext = () =>
-    setWizardStep((previous) =>
-      previous < 3 ? ((previous + 1) as WizardStep) : previous,
-    );
+  const goNext = () => setWizardStep((previous) => getNextWizardStep(previous));
   const goBack = () =>
-    setWizardStep((previous) =>
-      previous > 1 ? ((previous - 1) as WizardStep) : previous,
-    );
+    setWizardStep((previous) => getPreviousWizardStep(previous));
 
-  const canGoNext =
-    (wizardStep === 1 && draft.goal.trim().length > 0) ||
-    (wizardStep === 2 &&
-      draft.reason.trim().length > 0 &&
-      draft.weeklyAvailability.trim().length > 0) ||
-    wizardStep === 3;
+  const canGoNext = canProceedWizardStep(wizardStep, draft);
 
   return {
     rows,

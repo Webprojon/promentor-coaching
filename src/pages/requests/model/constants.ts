@@ -161,17 +161,20 @@ export function mentorSentRequestViewModalFooterActions(
   const { onClose, onEditSent, onDeleteSent } = handlers;
   return [
     {
+      id: "request-view-cancel",
       label: MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS.cancel,
       onClick: onClose,
       variant: "outlined",
     },
     {
+      id: "request-view-edit",
       label: MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS.edit,
       onClick: () => onEditSent?.(),
       variant: "outlined",
       disabled: !onEditSent,
     },
     {
+      id: "request-view-delete",
       label: MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS.delete,
       onClick: () => onDeleteSent?.(),
       variant: "outlined",

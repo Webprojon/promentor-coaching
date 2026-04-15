@@ -6,16 +6,20 @@ import {
 import type { RequestsTabFilterOption } from "@/pages/requests/model/types";
 
 type RequestsTabFilterProps<T extends string> = {
+  idBase: string;
   value: T;
   onChange: (value: T) => void;
   options: readonly RequestsTabFilterOption<T>[];
 };
 
 export function RequestsTabFilter<T extends string>({
+  idBase,
   value,
   onChange,
   options,
 }: RequestsTabFilterProps<T>) {
+  const normalizeIdPart = (id: string) => id.replace(/[^a-zA-Z0-9-_]/g, "-");
+
   return (
     <section className="mt-7">
       <Typography
@@ -33,13 +37,18 @@ export function RequestsTabFilter<T extends string>({
         {options.map((option) => {
           const isActive = value === option.value;
           const Icon = option.Icon;
+          const optionIdPart = normalizeIdPart(option.value);
+          const tabId = `${idBase}-tab-${optionIdPart}`;
+          const panelId = `${idBase}-panel-${optionIdPart}`;
 
           return (
             <Button
               key={option.value}
               type="button"
+              id={tabId}
               role="tab"
               aria-selected={isActive}
+              aria-controls={panelId}
               onClick={() => onChange(option.value)}
               title={option.hint}
               className={`${REQUEST_CATEGORY_FILTER_BASE_BUTTON_CLASS} ${

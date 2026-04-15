@@ -11,6 +11,8 @@ type TableProps<T> = {
   rows: readonly T[];
   getRowKey: (row: T) => string;
   renderRow: (row: T) => ReactNode;
+  caption?: string;
+  captionClassName?: string;
   className?: string;
   headClassName?: string;
   rowClassName?: string;
@@ -27,6 +29,8 @@ export function Table<T>({
   rows,
   getRowKey,
   renderRow,
+  caption,
+  captionClassName,
   className,
   headClassName = DEFAULT_HEAD_CLASSNAME,
   rowClassName = DEFAULT_ROW_CLASSNAME,
@@ -34,6 +38,9 @@ export function Table<T>({
   return (
     <section className={className ?? DEFAULT_WRAPPER_CLASSNAME}>
       <table className="w-full table-fixed border-collapse">
+        {caption ? (
+          <caption className={captionClassName ?? "sr-only"}>{caption}</caption>
+        ) : null}
         <thead className={headClassName}>
           <tr>
             {columns.map((column) => (
