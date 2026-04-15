@@ -17,8 +17,8 @@ function HeaderLink({ to, label }: { to: string; label: string }) {
       to={to}
       className={({ isActive }) =>
         isActive
-          ? "rounded-md border border-cyan-300/40 bg-cyan-300/15 px-3 py-1.5 text-sm font-medium text-cyan-100"
-          : "rounded-md border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+          ? "rounded-md border border-cyan-300/40 bg-cyan-300/15 px-3 py-1.5 text-sm font-medium text-cyan-100 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+          : "rounded-md border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200 transition hover:bg-white/10 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
       }
     >
       {label}

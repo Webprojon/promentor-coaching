@@ -19,7 +19,7 @@ type TableProps<T> = {
 };
 
 const DEFAULT_WRAPPER_CLASSNAME =
-  "overflow-hidden rounded-lg border bg-slate-800/10 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.35)]";
+  "overflow-x-auto overflow-y-hidden rounded-lg border bg-slate-800/10 border-white/10 shadow-[0_10px_40px_rgba(0,0,0,0.35)]";
 
 const DEFAULT_HEAD_CLASSNAME = "bg-slate-800/80";
 const DEFAULT_ROW_CLASSNAME = "border-t border-white/10 hover:bg-slate-800/30";
@@ -37,7 +37,7 @@ export function Table<T>({
 }: TableProps<T>) {
   return (
     <section className={className ?? DEFAULT_WRAPPER_CLASSNAME}>
-      <table className="w-full table-fixed border-collapse">
+      <table className="w-full min-w-max border-collapse">
         {caption ? (
           <caption className={captionClassName ?? "sr-only"}>{caption}</caption>
         ) : null}
