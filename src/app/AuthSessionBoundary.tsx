@@ -6,13 +6,11 @@ import {
   useHostAuthSession,
 } from "@/features/auth";
 
-type AuthSessionBoundaryProps = {
-  children: ReactNode;
-};
-
 export default function AuthSessionBoundary({
   children,
-}: AuthSessionBoundaryProps) {
+}: {
+  children: ReactNode;
+}) {
   const { session, isBridgeAvailable, isHydrating } = useHostAuthSession();
   const showGuestState = isBridgeAvailable && !session.isAuthenticated;
 
