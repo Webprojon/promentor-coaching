@@ -5,6 +5,8 @@ type MemberAvatarStackProps = {
   avatarUrls: string[];
   totalCount: number;
   maxVisible?: number;
+  memberNames?: string[];
+  ariaLabel?: string;
 };
 
 export function MemberAvatarStack({
@@ -12,19 +14,32 @@ export function MemberAvatarStack({
   avatarUrls,
   totalCount,
   maxVisible = 3,
+  memberNames,
+  ariaLabel,
 }: MemberAvatarStackProps) {
   const visible = avatarUrls.slice(0, maxVisible);
   const overflow = Math.max(totalCount - maxVisible, 0);
+  const visibleCount = visible.length;
+  const resolvedAriaLabel =
+    ariaLabel ??
+    `${totalCount} members, ${visibleCount} shown${overflow > 0 ? `, ${overflow} more` : ""}`;
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center" aria-label={resolvedAriaLabel}>
       <div className="flex">
         {visible.map((avatarUrl, index) => (
           <div
             key={`${id}-avatar-${index}`}
             className={index > 0 ? "-ml-2" : ""}
+            aria-hidden="true"
           >
-            <Avatar user={{ name: "Member", avatarUrl }} size="sm" />
+            <Avatar
+              user={{
+                name: memberNames?.[index] ?? `Member ${index + 1}`,
+                avatarUrl,
+              }}
+              size="sm"
+            />
           </div>
         ))}
       </div>

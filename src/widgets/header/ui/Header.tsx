@@ -17,8 +17,8 @@ function HeaderLink({ to, label }: { to: string; label: string }) {
       to={to}
       className={({ isActive }) =>
         isActive
-          ? "rounded-md border border-cyan-300/40 bg-cyan-300/15 px-3 py-1.5 text-sm font-medium text-cyan-100"
-          : "rounded-md border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200 transition hover:bg-white/10"
+          ? "rounded-md border border-cyan-300/40 bg-cyan-300/15 px-3 py-1.5 text-sm font-medium text-cyan-100 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
+          : "rounded-md border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-slate-200 transition hover:bg-white/10 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950"
       }
     >
       {label}
@@ -26,9 +26,15 @@ function HeaderLink({ to, label }: { to: string; label: string }) {
   );
 }
 
-function LinkGroup({ links }: { links: HeaderNavLink[] }) {
+function LinkGroup({
+  links,
+  ariaLabel,
+}: {
+  links: HeaderNavLink[];
+  ariaLabel: string;
+}) {
   return (
-    <nav className="flex flex-wrap items-center gap-2">
+    <nav className="flex flex-wrap items-center gap-2" aria-label={ariaLabel}>
       {links.map((link) => (
         <HeaderLink key={link.to} to={link.to} label={link.label} />
       ))}
@@ -64,7 +70,10 @@ export default function Header() {
           </Typography>
         ) : links && user ? (
           <>
-            <LinkGroup links={links} />
+            <LinkGroup
+              links={links}
+              ariaLabel={isMentor ? "Mentor navigation" : "Member navigation"}
+            />
             <Typography
               component="span"
               className="rounded-md border border-cyan-300/30 bg-cyan-300/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-cyan-200"
@@ -74,8 +83,8 @@ export default function Header() {
           </>
         ) : (
           <>
-            <LinkGroup links={mentorLinks} />
-            <LinkGroup links={regularUserLinks} />
+            <LinkGroup links={mentorLinks} ariaLabel="Mentor navigation" />
+            <LinkGroup links={regularUserLinks} ariaLabel="Member navigation" />
           </>
         )}
       </div>

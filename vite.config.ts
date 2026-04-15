@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
           "./ExploreTeamsPage": "./src/pages/explore-teams/index.tsx",
           "./MentorsPage": "./src/pages/mentors/index.tsx",
           "./SuggestionPage": "./src/pages/suggestion/index.tsx",
-          "./RequestsPage": "./src/pages/mentorship-requests/index.tsx",
+          "./RequestsPage": "./src/pages/requests/index.tsx",
           "./ProfilePage": "./src/pages/profile/index.tsx",
         },
         shared: [

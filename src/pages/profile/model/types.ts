@@ -1,10 +1,5 @@
-import type { IconType } from "react-icons";
-
-export type ProfileIdeaTeaser = {
-  icon: IconType;
-  title: string;
-  body: string;
-};
+import type { BaseSyntheticEvent } from "react";
+import type { UseFormRegister } from "react-hook-form";
 
 export type ProfileHeader = {
   name: string;
@@ -14,22 +9,6 @@ export type ProfileHeader = {
   avatarUrl?: string | null;
   memberSince: string;
   timezone: string;
-};
-
-export type ProfileStat = {
-  label: string;
-  value: string;
-  sublabel: string;
-};
-
-export type ProfileFocusArea = {
-  label: string;
-};
-
-export type ProfileMilestone = {
-  title: string;
-  date: string;
-  complete: boolean;
 };
 
 export type ProfileQuickLinkId =
@@ -47,7 +26,43 @@ export type ProfileQuickLink = {
   id: ProfileQuickLinkId;
 };
 
-export type ProfileWeekDay = {
-  label: string;
-  intensity: 0 | 1 | 2 | 3;
+export type ProfileChangeFormValues = {
+  firstName: string;
+  lastName: string;
+};
+
+export type ProfileHeroProps = {
+  header: ProfileHeader;
+  onOpenPhotoModal: () => void;
+};
+
+export type ProfilePhotoModalProps = {
+  open: boolean;
+  onClose: () => void;
+  name: string;
+  avatarUrl?: string | null;
+  photoUrlDraft: string;
+  isPhotoRemoved: boolean;
+  onPhotoUrlChange: (value: string) => void;
+  onRemovePhoto: () => void;
+};
+
+export type ProfileAboutSectionProps = {
+  draftBio: string;
+  isChanged: boolean;
+  onDraftBioChange: (value: string) => void;
+  onSave: () => void;
+};
+
+export type ProfileChangeFormProps = {
+  register: UseFormRegister<ProfileChangeFormValues>;
+  canSave: boolean;
+  onSubmit: (event?: BaseSyntheticEvent) => Promise<void>;
+};
+
+export type ProfilePageUiModel = {
+  aboutEditor: ProfileAboutSectionProps;
+  profileChangeForm: ProfileChangeFormProps;
+  profilePhotoModal: ProfilePhotoModalProps;
+  openPhotoModal: () => void;
 };

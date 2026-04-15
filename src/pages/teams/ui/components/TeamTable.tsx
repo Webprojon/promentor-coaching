@@ -8,6 +8,7 @@ import { Badge, MemberAvatarStack, Table } from "@/shared/ui";
 export function TeamTable({ rows }: TeamTableProps) {
   return (
     <Table
+      caption="Teams list with status, members, and actions."
       columns={TABLE_COLUMNS}
       rows={rows}
       getRowKey={(row) => row.id}

@@ -1,5 +1,6 @@
 import { Typography } from "@promentorapp/ui-kit";
 import type { JoinedTeamsPanelProps } from "@/pages/suggestion/model/types";
+import { FormField, Select } from "@/shared/ui";
 
 export default function JoinedTeamsPanel({
   joinedTeams,
@@ -14,7 +15,7 @@ export default function JoinedTeamsPanel({
   ];
 
   return (
-    <aside className="rounded-lg border border-white/10 bg-slate-900/55 p-4">
+    <aside className="rounded-lg border border-white/10 bg-cyan-900/10 p-4">
       <Typography
         component="h2"
         className="text-sm font-semibold uppercase tracking-wide text-slate-300"
@@ -23,20 +24,20 @@ export default function JoinedTeamsPanel({
       </Typography>
 
       <div className="mt-3 grid gap-3">
-        <label className="grid gap-1 text-sm text-slate-300">
-          Team
-          <select
-            className="h-10 rounded-lg border border-white/15 bg-slate-900/70 px-3 text-sm text-slate-100 outline-none"
+        <FormField label="Team">
+          <Select
+            fieldSize="sm"
             value={selectedTeamId}
             onChange={(event) => onTeamChange(event.target.value)}
+            aria-label="Choose team"
           >
             {joinedTeams.map((team) => (
               <option key={team.id} value={team.id}>
                 {team.name}
               </option>
             ))}
-          </select>
-        </label>
+          </Select>
+        </FormField>
         <div className="mt-3 text-sm text-slate-300">
           {teamMetaRows.map((row, index) => (
             <p key={row.label} className={index > 0 ? "mt-2" : undefined}>
