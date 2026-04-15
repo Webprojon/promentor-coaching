@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 import { RiArrowDownSLine } from "react-icons/ri";
 
 const SELECT_BASE_CLASS =
-  "w-full cursor-pointer rounded-lg border border-white/20 bg-(--pm-surface) text-sm text-slate-100 outline-none transition-all focus:border-(--pm-accent-cyan) focus:ring-2 focus:ring-cyan-500/25 disabled:cursor-not-allowed disabled:opacity-50 appearance-none [&_option]:bg-slate-950 [&_option]:text-slate-200";
+  "w-full cursor-pointer rounded-lg border border-white/20 text-sm pm-text-primary invalid:pm-text-muted outline-none transition-all focus:border-[var(--pm-accent-cyan)] focus:ring-2 focus:ring-cyan-500/25 disabled:cursor-not-allowed disabled:opacity-50 appearance-none [&_option]:bg-slate-900 [&_option]:pm-text-primary [&_option[value='']]:pm-text-muted";
 
 const FIELD_SIZE_CLASS = {
   md: "h-12 pl-3 pr-10",
