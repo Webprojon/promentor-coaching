@@ -8,7 +8,7 @@ export function ProfileChangeForm({
   onSubmit,
 }: ProfileChangeFormProps) {
   return (
-    <section className="rounded-lg border border-white/10 bg-linear-to-br from-indigo-500/10 via-slate-900/70 to-slate-950/80 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm transition">
+    <section className="rounded-lg bg-indigo-900/10 border border-white/10 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] transition">
       <div className="flex items-center gap-2">
         <RiEdit2Line className="text-lg text-indigo-300/90" aria-hidden />
         <Typography
@@ -26,14 +26,14 @@ export function ProfileChangeForm({
           label="First name"
           aria-label="First name"
           placeholder="Enter first name"
-          className="h-12! border-white/20"
+          className="border-white/20"
           {...register("firstName")}
         />
         <TextField
           label="Last name"
           aria-label="Last name"
           placeholder="Enter last name"
-          className="h-12! border-white/20"
+          className="border-white/20"
           {...register("lastName")}
         />
         <div className="pt-1">

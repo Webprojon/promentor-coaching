@@ -15,7 +15,7 @@ export default function JoinedTeamsPanel({
   ];
 
   return (
-    <aside className="rounded-lg border border-white/10 bg-slate-900/55 p-4">
+    <aside className="rounded-lg border border-white/10 bg-cyan-900/10 p-4">
       <Typography
         component="h2"
         className="text-sm font-semibold uppercase tracking-wide text-slate-300"

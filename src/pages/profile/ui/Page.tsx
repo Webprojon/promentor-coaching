@@ -8,6 +8,7 @@ import { ProfileAboutSection } from "@/pages/profile/ui/components/ProfileAboutS
 import { ProfileHero } from "@/pages/profile/ui/components/ProfileHero";
 import { ProfilePhotoModal } from "@/pages/profile/ui/components/ProfilePhotoModal";
 import { ProfileQuickLinks } from "@/pages/profile/ui/components/ProfileQuickLinks";
+import { ProfileDangerZone } from "@/pages/profile/ui/components/ProfileDangerZone";
 import { ProfileChangeForm } from "./components/ProfileChangeForm";
 
 export default function ProfilePage() {
@@ -29,8 +30,9 @@ export default function ProfilePage() {
           <ProfileAboutSection {...aboutEditor} />
           <ProfileChangeForm {...profileChangeForm} />
         </div>
-        <div className="lg:col-span-7 xl:col-span-8">
+        <div className="flex flex-col gap-6 lg:col-span-7 xl:col-span-8">
           <ProfileQuickLinks links={PROFILE_QUICK_LINKS} />
+          <ProfileDangerZone />
         </div>
       </div>
     </>

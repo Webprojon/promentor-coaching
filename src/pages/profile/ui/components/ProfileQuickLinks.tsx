@@ -13,7 +13,7 @@ type ProfileQuickLinksProps = {
 
 export function ProfileQuickLinks({ links }: ProfileQuickLinksProps) {
   return (
-    <section className="rounded-lg border border-white/10 bg-linear-to-b from-slate-900/70 to-slate-950/80 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm">
+    <section className="rounded-lg border border-white/10 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)]">
       <Typography
         component="h3"
         className="text-sm! font-bold uppercase tracking-wider text-slate-400"

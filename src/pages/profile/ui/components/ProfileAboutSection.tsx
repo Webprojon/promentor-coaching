@@ -9,7 +9,7 @@ export function ProfileAboutSection({
   onSave,
 }: ProfileAboutSectionProps) {
   return (
-    <section className="rounded-lg border border-white/10 bg-slate-900/55 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] backdrop-blur-sm transition">
+    <section className="rounded-lg bg-cyan-900/15 border border-white/10 p-5 shadow-[0_12px_30px_rgba(2,6,23,0.35)] transition">
       <div className="flex items-center gap-2">
         <RiSparkling2Line className="text-lg text-cyan-300/90" aria-hidden />
         <Typography
