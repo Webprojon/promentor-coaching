@@ -1,3 +1,4 @@
+import "@schedule-x/theme-default/dist/index.css";
 import { useState } from "react";
 import { PageHeader } from "@/shared/ui";
 import { ScheduleXCalendar, useCalendarApp } from "@schedule-x/react";
