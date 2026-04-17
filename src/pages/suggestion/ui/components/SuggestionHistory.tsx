@@ -6,7 +6,7 @@ import { Badge } from "@/shared/ui";
 
 export default function SuggestionHistory({ history }: SuggestionHistoryProps) {
   return (
-    <section className="mt-4 rounded-lg border border-white/10 bg-slate-900/55 p-4">
+    <section className="mt-4 rounded-lg border border-white/10 bg-blue-900/5 p-4">
       {history.length > 0 ? (
         <>
           <Typography

@@ -1,5 +1,5 @@
-import { Modal, PageForShell } from "@/shared/ui";
-import { RequestFlowWizard } from "@/pages/mentorship-requests/ui/components/RequestFlowWizard";
+import { Modal, PageHeader } from "@/shared/ui";
+import { SendRequestFlow } from "@/features/send-request-flow";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
 import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
 
@@ -19,11 +19,13 @@ export default function MentorsPage() {
   } = useMentorsPage();
 
   return (
-    <PageForShell
-      title="Mentors"
-      description="Compare mentors by expertise and availability, then send a structured mentorship request."
-    >
-      <section className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <>
+      <PageHeader
+        title="Mentors"
+        description="Browse mentors, compare focus areas, and send structured mentorship requests."
+        className="mb-5"
+      />
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {rows.map((mentor) => (
           <MentorCard
             key={mentor.id}
@@ -49,13 +51,13 @@ export default function MentorsPage() {
           disabled: !canGoNext,
         }}
       >
-        <RequestFlowWizard
+        <SendRequestFlow
           step={wizardStep}
           targetLabel={draft.targetName}
           draft={draft}
           onChange={onChangeDraft}
         />
       </Modal>
-    </PageForShell>
+    </>
   );
 }

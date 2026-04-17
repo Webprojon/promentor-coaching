@@ -4,6 +4,7 @@ import {
   PRIORITY_BADGE_CLASS,
   PRIORITY_SELECTED_BORDER_CLASS,
 } from "@/pages/suggestion/model/constants";
+import { FormField, Textarea } from "@/shared/ui";
 
 export default function SuggestionComposer({
   draft,
@@ -13,7 +14,7 @@ export default function SuggestionComposer({
   onSend,
 }: SuggestionComposerProps) {
   return (
-    <article className="rounded-lg border border-white/10 bg-slate-900/55 p-4">
+    <article className="rounded-lg border border-white/10 bg-blue-900/5 p-4">
       <Typography
         component="h2"
         className="text-sm font-semibold uppercase tracking-wide text-slate-300"
@@ -29,17 +30,14 @@ export default function SuggestionComposer({
           value={draft.title}
           onChange={(event) => onDraftChange("title", event.target.value)}
         />
-        <label className="grid gap-2">
-          <Typography variantStyle="label" className="pm-text-secondary">
-            Detail
-          </Typography>
-          <textarea
-            className="min-h-28 rounded-lg border border-white/20 bg-(--pm-surface) px-3 py-2 text-sm text-slate-100 outline-none transition-all placeholder:pm-text-muted focus:border-(--pm-accent-cyan) focus:ring-2 focus:ring-cyan-500/25"
+        <FormField label="Detail">
+          <Textarea
             placeholder="Explain what should change and why."
             value={draft.detail}
             onChange={(event) => onDraftChange("detail", event.target.value)}
+            aria-label="Suggestion detail"
           />
-        </label>
+        </FormField>
 
         <div className="flex justify-between items-end mt-2">
           <div className="grid gap-2 text-sm text-slate-300">
