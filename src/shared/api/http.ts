@@ -71,21 +71,29 @@ async function rawRequest(
   });
 }
 
+let refreshInFlight: Promise<boolean> | null = null;
+
+async function refreshSession(): Promise<boolean> {
+  if (!refreshInFlight) {
+    refreshInFlight = rawRequest(AUTH_REFRESH_PATH, { method: "POST" })
+      .then((res) => res.status >= 200 && res.status < 300)
+      .catch(() => false)
+      .finally(() => {
+        refreshInFlight = null;
+      });
+  }
+
+  return refreshInFlight;
+}
+
 async function requestWithRefresh(path: string, options: RequestOptions = {}) {
   const response = await rawRequest(path, options);
   if (response.status !== 401 || SKIP_REFRESH_PATHS.has(path)) {
     return response;
   }
 
-  const refreshResponse = await rawRequest(AUTH_REFRESH_PATH, {
-    method: "POST",
-  }).catch(() => null);
-
-  if (
-    !refreshResponse ||
-    refreshResponse.status < 200 ||
-    refreshResponse.status >= 300
-  ) {
+  const refreshSucceeded = await refreshSession();
+  if (!refreshSucceeded) {
     return response;
   }
 

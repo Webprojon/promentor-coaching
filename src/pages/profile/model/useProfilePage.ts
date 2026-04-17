@@ -23,13 +23,14 @@ const msg = {
   detailsUpdated: "Profile details were updated.",
   photoRemoved: "Profile photo was removed.",
   photoUpdated: "Profile photo was updated.",
-  accountDeleted: "Account deleted.",
 } as const;
 
 export function useProfilePage(): ProfilePageUiModel {
   const { session, isHydrating } = useHostAuthSession();
   const { data: profile } = useMyProfileQuery(session, isHydrating);
-  const updateProfileMutation = useUpdateMyProfileMutation();
+  const updateBioMutation = useUpdateMyProfileMutation();
+  const updateDetailsMutation = useUpdateMyProfileMutation();
+  const updatePhotoMutation = useUpdateMyProfileMutation();
   const deleteAccountMutation = useDeleteMyAccountMutation();
 
   const [draftBioOverride, setDraftBioOverride] = useState<string | null>(null);
@@ -61,7 +62,7 @@ export function useProfilePage(): ProfilePageUiModel {
     if (!canEdit) {
       return;
     }
-    updateProfileMutation.mutate(
+    updateBioMutation.mutate(
       { about: trimToOptional(draftBio) },
       {
         onSuccess: () => {
@@ -76,7 +77,7 @@ export function useProfilePage(): ProfilePageUiModel {
     if (!canEdit) {
       return;
     }
-    updateProfileMutation.mutate(
+    updateDetailsMutation.mutate(
       {
         fullName: joinFullName(values),
         jobTitle: trimToOptional(values.jobTitle),
@@ -102,7 +103,7 @@ export function useProfilePage(): ProfilePageUiModel {
     }
 
     const removed = isPhotoRemoved;
-    updateProfileMutation.mutate(
+    updatePhotoMutation.mutate(
       {
         avatarUrl: removed ? null : trimToOptional(avatarDraftDataUrl),
       },
@@ -135,12 +136,7 @@ export function useProfilePage(): ProfilePageUiModel {
     if (!canEdit) {
       return;
     }
-    deleteAccountMutation.mutate(undefined, {
-      onSuccess: () => {
-        notifyOk(msg.accountDeleted);
-        setIsDeleteAccountModalOpen(false);
-      },
-    });
+    deleteAccountMutation.mutate();
   };
 
   return {
@@ -149,7 +145,7 @@ export function useProfilePage(): ProfilePageUiModel {
       draftBio,
       isChanged: draftBio !== savedBio,
       isDisabled: !canEdit,
-      isSaving: updateProfileMutation.isPending,
+      isSaving: updateBioMutation.isPending,
       onDraftBioChange: setDraftBioOverride,
       onSave: handleBioSave,
     },
@@ -157,7 +153,7 @@ export function useProfilePage(): ProfilePageUiModel {
       register,
       canSave: formState.isDirty && canEdit,
       isDisabled: !canEdit,
-      isSaving: updateProfileMutation.isPending,
+      isSaving: updateDetailsMutation.isPending,
       onSubmit: handleChangeFormSubmit,
     },
     profilePhotoModal: {
@@ -168,7 +164,7 @@ export function useProfilePage(): ProfilePageUiModel {
       avatarDraftDataUrl,
       isPhotoRemoved,
       isDisabled: !canEdit,
-      isSaving: updateProfileMutation.isPending,
+      isSaving: updatePhotoMutation.isPending,
       onAvatarDraftChange: (dataUrl: string) => {
         setAvatarDraftDataUrl(dataUrl);
         setIsPhotoRemoved(false);

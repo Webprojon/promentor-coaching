@@ -4,6 +4,7 @@ import {
   loadHostAuthBridge,
   type HostAuthSession,
 } from "@/features/auth";
+import { notifyOk } from "@/shared/feedback/notify";
 import { profileQueryKeys } from "@/shared/query/profileQueryKeys";
 import {
   deleteMyAccount,
@@ -58,6 +59,7 @@ export function useDeleteMyAccountMutation() {
       notifyErrorToastId: "profile-delete",
     },
     onSuccess: async () => {
+      notifyOk("Account deleted.");
       queryClient.removeQueries({ queryKey: profileQueryKeys.all });
       const bridge = await loadHostAuthBridge().catch(() => null);
       if (bridge) {

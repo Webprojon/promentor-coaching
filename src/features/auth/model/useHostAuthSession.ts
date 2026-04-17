@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type {
   HostAuthBridge,
   HostAuthSession,
@@ -16,20 +16,61 @@ const fallbackSession: HostAuthSession = {
   user: null,
 };
 
-async function loadFallbackSession(): Promise<HostAuthSession> {
-  try {
-    const profile = await fetchCurrentUser();
-    queryClient.setQueryData(profileQueryKeys.me(), profile);
-    return {
-      isAuthenticated: true,
-      user: profile,
-    };
-  } catch (error) {
-    if (error instanceof AppApiError && error.status === 401) {
-      return fallbackSession;
+const STANDALONE_AUTH_MAX_ATTEMPTS = 3;
+const STANDALONE_AUTH_BASE_DELAY_MS = 400;
+
+type LoadFallbackSessionResult =
+  | { ok: true; session: HostAuthSession }
+  | { ok: false; error: unknown };
+
+function isRetryableStandaloneAuthError(error: unknown): boolean {
+  if (error instanceof AppApiError) {
+    if (error.status === 401) {
+      return false;
     }
-    return fallbackSession;
+    if (error.status === 0) {
+      return true;
+    }
+    return error.status >= 500 && error.status < 600;
   }
+  return false;
+}
+
+async function loadFallbackSession(): Promise<LoadFallbackSessionResult> {
+  let lastError: unknown;
+
+  for (let attempt = 0; attempt < STANDALONE_AUTH_MAX_ATTEMPTS; attempt++) {
+    try {
+      const profile = await fetchCurrentUser();
+      queryClient.setQueryData(profileQueryKeys.me(), profile);
+      return {
+        ok: true,
+        session: {
+          isAuthenticated: true,
+          user: profile,
+        },
+      };
+    } catch (error) {
+      lastError = error;
+      if (error instanceof AppApiError && error.status === 401) {
+        return { ok: true, session: fallbackSession };
+      }
+
+      const canRetry =
+        attempt < STANDALONE_AUTH_MAX_ATTEMPTS - 1 &&
+        isRetryableStandaloneAuthError(error);
+      if (canRetry) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, STANDALONE_AUTH_BASE_DELAY_MS * (attempt + 1)),
+        );
+        continue;
+      }
+
+      return { ok: false, error: lastError };
+    }
+  }
+
+  return { ok: false, error: lastError };
 }
 
 let bridgeLoadPromise: Promise<HostAuthBridge | null> | null = null;
@@ -68,18 +109,27 @@ export function useHostAuthSession() {
   const [session, setSession] = useState<HostAuthSession>(fallbackSession);
   const [isBridgeAvailable, setIsBridgeAvailable] = useState(false);
   const [isHydrating, setIsHydrating] = useState(true);
+  const [standaloneAuthError, setStandaloneAuthError] = useState<unknown>(null);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
-    let isMounted = true;
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
     let unsubscribe: (() => void) | null = null;
 
     void loadHostAuthBridge().then((bridge) => {
-      if (!isMounted) {
+      if (!mountedRef.current) {
         return;
       }
 
       if (bridge) {
         setIsBridgeAvailable(true);
+        setStandaloneAuthError(null);
         const initialSession = bridge.getSession();
         if (initialSession.isAuthenticated && initialSession.user) {
           const profile = normalizeCurrentUser(initialSession.user);
@@ -95,23 +145,53 @@ export function useHostAuthSession() {
         return;
       }
 
-      void loadFallbackSession().then((nextSession) => {
-        if (!isMounted) {
+      void loadFallbackSession().then((result) => {
+        if (!mountedRef.current) {
           return;
         }
 
-        setSession(nextSession);
+        if (result.ok) {
+          setStandaloneAuthError(null);
+          setSession(result.session);
+        } else {
+          setStandaloneAuthError(result.error);
+        }
         setIsHydrating(false);
       });
     });
 
     return () => {
-      isMounted = false;
       if (unsubscribe) {
         unsubscribe();
       }
     };
   }, []);
 
-  return { session, isBridgeAvailable, isHydrating };
+  const retryStandaloneAuthLoad = useCallback(() => {
+    if (isBridgeAvailable) {
+      return;
+    }
+    setStandaloneAuthError(null);
+    setIsHydrating(true);
+    void loadFallbackSession().then((result) => {
+      if (!mountedRef.current) {
+        return;
+      }
+      if (result.ok) {
+        setStandaloneAuthError(null);
+        setSession(result.session);
+      } else {
+        setStandaloneAuthError(result.error);
+      }
+      setIsHydrating(false);
+    });
+  }, [isBridgeAvailable]);
+
+  return {
+    session,
+    isBridgeAvailable,
+    isHydrating,
+    standaloneAuthError,
+    retryStandaloneAuthLoad,
+  };
 }
