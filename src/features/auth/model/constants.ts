@@ -3,3 +3,5 @@ export const AUTH_SESSION_WAITING_TEXT =
 
 export const AUTH_SESSION_HYDRATING_TEXT =
   "Syncing authentication state with the host app...";
+
+export const HOST_APP_LOGIN_REDIRECT_PATH = "/login/mentor" as const;

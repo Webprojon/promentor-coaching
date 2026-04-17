@@ -3,15 +3,38 @@ import type {
   HostAuthBridge,
   HostAuthSession,
 } from "@/features/auth/model/types";
+import {
+  fetchCurrentUser,
+  normalizeCurrentUser,
+} from "@/shared/api/current-user";
+import { AppApiError } from "@/shared/api/errors";
+import { profileQueryKeys } from "@/shared/query/profileQueryKeys";
+import { queryClient } from "@/shared/query/queryClient";
 
 const fallbackSession: HostAuthSession = {
   isAuthenticated: false,
   user: null,
 };
 
+async function loadFallbackSession(): Promise<HostAuthSession> {
+  try {
+    const profile = await fetchCurrentUser();
+    queryClient.setQueryData(profileQueryKeys.me(), profile);
+    return {
+      isAuthenticated: true,
+      user: profile,
+    };
+  } catch (error) {
+    if (error instanceof AppApiError && error.status === 401) {
+      return fallbackSession;
+    }
+    return fallbackSession;
+  }
+}
+
 let bridgeLoadPromise: Promise<HostAuthBridge | null> | null = null;
 
-async function loadHostAuthBridge(): Promise<HostAuthBridge | null> {
+export async function loadHostAuthBridge(): Promise<HostAuthBridge | null> {
   if (!bridgeLoadPromise) {
     bridgeLoadPromise = import("shell/authBridge")
       .then((module) => {
@@ -58,13 +81,28 @@ export function useHostAuthSession() {
       if (bridge) {
         setIsBridgeAvailable(true);
         const initialSession = bridge.getSession();
+        if (initialSession.isAuthenticated && initialSession.user) {
+          const profile = normalizeCurrentUser(initialSession.user);
+          if (profile) {
+            queryClient.setQueryData(profileQueryKeys.me(), profile);
+          }
+        }
         setSession(initialSession);
         unsubscribe = bridge.subscribe((nextSession) => {
           setSession(nextSession);
         });
+        setIsHydrating(false);
+        return;
       }
 
-      setIsHydrating(false);
+      void loadFallbackSession().then((nextSession) => {
+        if (!isMounted) {
+          return;
+        }
+
+        setSession(nextSession);
+        setIsHydrating(false);
+      });
     });
 
     return () => {
