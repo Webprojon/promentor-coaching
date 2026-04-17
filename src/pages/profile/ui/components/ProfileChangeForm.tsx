@@ -5,6 +5,8 @@ import type { ProfileChangeFormProps } from "@/pages/profile/model/types";
 export function ProfileChangeForm({
   register,
   canSave,
+  isDisabled,
+  isSaving,
   onSubmit,
 }: ProfileChangeFormProps) {
   return (
@@ -27,6 +29,7 @@ export function ProfileChangeForm({
           aria-label="First name"
           placeholder="Enter first name"
           className="border-white/20"
+          disabled={isDisabled || isSaving}
           {...register("firstName")}
         />
         <TextField
@@ -34,11 +37,24 @@ export function ProfileChangeForm({
           aria-label="Last name"
           placeholder="Enter last name"
           className="border-white/20"
+          disabled={isDisabled || isSaving}
           {...register("lastName")}
         />
+        <TextField
+          label="Job title"
+          aria-label="Job title"
+          placeholder="Enter job title"
+          className="border-white/20"
+          disabled={isDisabled || isSaving}
+          {...register("jobTitle")}
+        />
         <div className="pt-1">
-          <Button type="submit" variant="contained" disabled={!canSave}>
-            Save Changes
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!canSave || isDisabled || isSaving}
+          >
+            {isSaving ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </form>

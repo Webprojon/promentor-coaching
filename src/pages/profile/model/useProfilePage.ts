@@ -1,91 +1,202 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useHostAuthSession } from "@/features/auth";
+import {
+  updateMyProfileMutationOptions,
+  useDeleteMyAccountMutation,
+  useMyProfileQuery,
+  useUpdateMyProfileMutation,
+} from "@/features/profile/api";
+import {
+  buildProfileHeader,
+  joinFullName,
+  splitFullNameToForm,
+  trimToOptional,
+} from "@/pages/profile/model/profilePageUtils";
 import type {
   ProfileChangeFormValues,
-  ProfileHeader,
   ProfilePageUiModel,
 } from "@/pages/profile/model/types";
+import { notifyOk } from "@/shared/feedback/notify";
 
-const getNameParts = (fullName: string): ProfileChangeFormValues => {
-  const [firstName = "", ...rest] = fullName.trim().split(" ");
-  return {
-    firstName,
-    lastName: rest.join(" "),
-  };
-};
+const msg = {
+  bioSaved: "Your about section was saved.",
+  detailsUpdated: "Profile details were updated.",
+  photoRemoved: "Profile photo was removed.",
+  photoUpdated: "Profile photo was updated.",
+} as const;
 
-export function useProfilePage(
-  profileHeader: ProfileHeader,
-): ProfilePageUiModel {
-  const [savedBio, setSavedBio] = useState(profileHeader.bio);
-  const [draftBio, setDraftBio] = useState(profileHeader.bio);
-
-  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
-  const [photoUrlDraft, setPhotoUrlDraft] = useState(
-    profileHeader.avatarUrl ?? "",
+export function useProfilePage(): ProfilePageUiModel {
+  const { session, isHydrating } = useHostAuthSession();
+  const { data: profile } = useMyProfileQuery(session, isHydrating);
+  const updateBioMutation = useUpdateMyProfileMutation(
+    updateMyProfileMutationOptions.bio,
   );
+  const updateDetailsMutation = useUpdateMyProfileMutation(
+    updateMyProfileMutationOptions.details,
+  );
+  const updatePhotoMutation = useUpdateMyProfileMutation(
+    updateMyProfileMutationOptions.photo,
+  );
+  const deleteAccountMutation = useDeleteMyAccountMutation();
+
+  const [draftBioOverride, setDraftBioOverride] = useState<string | null>(null);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
+  const [avatarDraftDataUrl, setAvatarDraftDataUrl] = useState("");
   const [isPhotoRemoved, setIsPhotoRemoved] = useState(false);
 
-  const defaultNameValues = useMemo(
-    () => getNameParts(profileHeader.name),
-    [profileHeader.name],
-  );
+  const fullName = profile?.fullName ?? "";
+  const jobTitle = profile?.jobTitle;
+
   const { register, formState, handleSubmit, reset } =
     useForm<ProfileChangeFormValues>({
-      defaultValues: defaultNameValues,
+      defaultValues: splitFullNameToForm(fullName, jobTitle),
       mode: "onChange",
     });
 
-  const openPhotoModal = () => {
-    setPhotoUrlDraft(profileHeader.avatarUrl ?? "");
-    setIsPhotoRemoved(false);
-    setIsPhotoModalOpen(true);
-  };
+  useEffect(() => {
+    reset(splitFullNameToForm(fullName, jobTitle));
+  }, [fullName, jobTitle, reset]);
 
-  const closePhotoModal = () => {
-    setIsPhotoModalOpen(false);
-  };
-
-  const handlePhotoUrlChange = (value: string) => {
-    setPhotoUrlDraft(value);
-    setIsPhotoRemoved(false);
-  };
-
-  const handleRemovePhoto = () => {
-    setPhotoUrlDraft("");
-    setIsPhotoRemoved(true);
-  };
+  const canEdit = session.isAuthenticated && Boolean(profile);
+  const savedBio = profile?.about ?? "";
+  const draftBio = draftBioOverride ?? savedBio;
+  const profileHeader = useMemo(() => buildProfileHeader(profile), [profile]);
 
   const handleBioSave = () => {
-    setSavedBio(draftBio);
+    if (!canEdit) {
+      return;
+    }
+    updateBioMutation.mutate(
+      { about: trimToOptional(draftBio) },
+      {
+        onSuccess: () => {
+          notifyOk(msg.bioSaved);
+          setDraftBioOverride(null);
+        },
+      },
+    );
   };
 
-  const handleChangeFormSubmit = handleSubmit(async (values) => {
-    reset(values);
+  const handleChangeFormSubmit = handleSubmit((values) => {
+    if (!canEdit) {
+      return;
+    }
+    updateDetailsMutation.mutate(
+      {
+        fullName: joinFullName(values),
+        jobTitle: trimToOptional(values.jobTitle),
+      },
+      {
+        onSuccess: (updated) => {
+          notifyOk(msg.detailsUpdated);
+          reset(splitFullNameToForm(updated.fullName, updated.jobTitle));
+        },
+      },
+    );
   });
 
+  const handlePhotoSave = () => {
+    if (!canEdit) {
+      return;
+    }
+
+    const hasNewPhoto = Boolean(avatarDraftDataUrl.trim());
+    if (!isPhotoRemoved && !hasNewPhoto) {
+      setIsPhotoModalOpen(false);
+      return;
+    }
+
+    const removed = isPhotoRemoved;
+    updatePhotoMutation.mutate(
+      {
+        avatarUrl: removed ? null : trimToOptional(avatarDraftDataUrl),
+      },
+      {
+        onSuccess: () => {
+          notifyOk(removed ? msg.photoRemoved : msg.photoUpdated);
+          setIsPhotoModalOpen(false);
+          setAvatarDraftDataUrl("");
+          setIsPhotoRemoved(false);
+        },
+      },
+    );
+  };
+
+  const openDeleteAccountModal = () => {
+    if (!canEdit) {
+      return;
+    }
+    setIsDeleteAccountModalOpen(true);
+  };
+
+  const closeDeleteAccountModal = () => {
+    if (deleteAccountMutation.isPending) {
+      return;
+    }
+    setIsDeleteAccountModalOpen(false);
+  };
+
+  const confirmDeleteAccount = () => {
+    if (!canEdit) {
+      return;
+    }
+    deleteAccountMutation.mutate();
+  };
+
   return {
+    header: profileHeader,
     aboutEditor: {
       draftBio,
       isChanged: draftBio !== savedBio,
-      onDraftBioChange: setDraftBio,
+      isDisabled: !canEdit,
+      isSaving: updateBioMutation.isPending,
+      onDraftBioChange: setDraftBioOverride,
       onSave: handleBioSave,
     },
     profileChangeForm: {
       register,
-      canSave: formState.isDirty,
+      canSave: formState.isDirty && canEdit,
+      isDisabled: !canEdit,
+      isSaving: updateDetailsMutation.isPending,
       onSubmit: handleChangeFormSubmit,
     },
     profilePhotoModal: {
       open: isPhotoModalOpen,
-      onClose: closePhotoModal,
+      onClose: () => setIsPhotoModalOpen(false),
       name: profileHeader.name,
-      avatarUrl: profileHeader.avatarUrl,
-      photoUrlDraft,
+      avatarUrl: profile?.avatarUrl,
+      avatarDraftDataUrl,
       isPhotoRemoved,
-      onPhotoUrlChange: handlePhotoUrlChange,
-      onRemovePhoto: handleRemovePhoto,
+      isDisabled: !canEdit,
+      isSaving: updatePhotoMutation.isPending,
+      onAvatarDraftChange: (dataUrl: string) => {
+        setAvatarDraftDataUrl(dataUrl);
+        setIsPhotoRemoved(false);
+      },
+      onRemovePhoto: () => {
+        setAvatarDraftDataUrl("");
+        setIsPhotoRemoved(true);
+      },
+      onSave: handlePhotoSave,
     },
-    openPhotoModal,
+    deleteAccountModal: {
+      open: isDeleteAccountModalOpen,
+      onClose: closeDeleteAccountModal,
+      onConfirm: confirmDeleteAccount,
+      isDeleting: deleteAccountMutation.isPending,
+    },
+    dangerZone: {
+      isDisabled: !canEdit,
+      isDeleting: deleteAccountMutation.isPending,
+      onOpenDeleteConfirm: openDeleteAccountModal,
+    },
+    openPhotoModal: () => {
+      setAvatarDraftDataUrl("");
+      setIsPhotoRemoved(false);
+      setIsPhotoModalOpen(true);
+    },
   };
 }

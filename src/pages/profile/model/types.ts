@@ -5,7 +5,6 @@ export type ProfileHeader = {
   name: string;
   role: string;
   tagline: string;
-  bio: string;
   avatarUrl?: string | null;
   memberSince: string;
   timezone: string;
@@ -29,6 +28,7 @@ export type ProfileQuickLink = {
 export type ProfileChangeFormValues = {
   firstName: string;
   lastName: string;
+  jobTitle: string;
 };
 
 export type ProfileHeroProps = {
@@ -41,15 +41,20 @@ export type ProfilePhotoModalProps = {
   onClose: () => void;
   name: string;
   avatarUrl?: string | null;
-  photoUrlDraft: string;
+  avatarDraftDataUrl: string;
   isPhotoRemoved: boolean;
-  onPhotoUrlChange: (value: string) => void;
+  isDisabled: boolean;
+  isSaving: boolean;
+  onAvatarDraftChange: (dataUrl: string) => void;
   onRemovePhoto: () => void;
+  onSave: () => void;
 };
 
 export type ProfileAboutSectionProps = {
   draftBio: string;
   isChanged: boolean;
+  isDisabled: boolean;
+  isSaving: boolean;
   onDraftBioChange: (value: string) => void;
   onSave: () => void;
 };
@@ -57,12 +62,30 @@ export type ProfileAboutSectionProps = {
 export type ProfileChangeFormProps = {
   register: UseFormRegister<ProfileChangeFormValues>;
   canSave: boolean;
-  onSubmit: (event?: BaseSyntheticEvent) => Promise<void>;
+  isDisabled: boolean;
+  isSaving: boolean;
+  onSubmit: (event?: BaseSyntheticEvent) => void | Promise<void>;
+};
+
+export type ProfileDangerZoneProps = {
+  isDisabled: boolean;
+  isDeleting: boolean;
+  onOpenDeleteConfirm: () => void;
+};
+
+export type ProfileDeleteAccountModalProps = {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  isDeleting: boolean;
 };
 
 export type ProfilePageUiModel = {
+  header: ProfileHeader;
   aboutEditor: ProfileAboutSectionProps;
   profileChangeForm: ProfileChangeFormProps;
   profilePhotoModal: ProfilePhotoModalProps;
+  deleteAccountModal: ProfileDeleteAccountModalProps;
+  dangerZone: ProfileDangerZoneProps;
   openPhotoModal: () => void;
 };

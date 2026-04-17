@@ -13,17 +13,19 @@ import type {
   ProfileQuickLinkId,
 } from "@/pages/profile/model/types";
 
-export const PROFILE_AVATAR_IMAGE_URL =
-  "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=256&h=256&fit=crop&crop=face";
+export const PROFILE_DELETE_ACCOUNT_CONSEQUENCES = [
+  "Your profile, preferences, and saved content will be removed.",
+  "You may lose access to teams, sessions, and history tied to this account.",
+  "This action cannot be reversed.",
+] as const;
 
-export const PROFILE_HEADER: ProfileHeader = {
-  name: "Alex Morgan",
-  role: "Learner · Product cohort",
+export const PROFILE_HEADER_FALLBACK: ProfileHeader = {
+  name: "Your profile",
+  role: "Learner",
   tagline: "Turning weekly coaching into shipped outcomes.",
-  bio: "Focused on facilitation, async communication, and keeping mentorship requests crisp. Open to peer swaps on discovery and roadmap storytelling.",
-  avatarUrl: PROFILE_AVATAR_IMAGE_URL,
-  memberSince: "Mar 2025",
-  timezone: "Asia/Tashkent · UTC+5",
+  avatarUrl: null,
+  memberSince: "Recently joined",
+  timezone: "UTC+5",
 };
 
 export const PROFILE_QUICK_LINK_ICONS: Record<ProfileQuickLinkId, IconType> = {

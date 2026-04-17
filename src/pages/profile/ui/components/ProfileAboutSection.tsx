@@ -5,6 +5,8 @@ import type { ProfileAboutSectionProps } from "@/pages/profile/model/types";
 export function ProfileAboutSection({
   draftBio,
   isChanged,
+  isDisabled,
+  isSaving,
   onDraftBioChange,
   onSave,
 }: ProfileAboutSectionProps) {
@@ -23,13 +25,21 @@ export function ProfileAboutSection({
         value={draftBio}
         aria-label="About you"
         placeholder="Tell us about yourself"
+        disabled={isDisabled || isSaving}
         onChange={(event) => onDraftBioChange(event.target.value)}
         className="mt-2 min-h-20 w-full resize-none overflow-y-auto text-sm text-slate-200 outline-none transition placeholder:text-slate-500 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       />
       {isChanged ? (
         <div className="mt-2">
-          <Button type="button" variant="contained" onClick={onSave}>
-            Save
+          <Button
+            type="button"
+            variant="contained"
+            disabled={isDisabled || isSaving}
+            onClick={() => {
+              void onSave();
+            }}
+          >
+            {isSaving ? "Saving..." : "Save"}
           </Button>
         </div>
       ) : null}

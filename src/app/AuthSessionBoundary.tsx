@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import { Typography } from "@promentorapp/ui-kit";
+import { Button, Typography } from "@promentorapp/ui-kit";
 import {
   AUTH_SESSION_HYDRATING_TEXT,
   AUTH_SESSION_WAITING_TEXT,
   useHostAuthSession,
 } from "@/features/auth";
+import { getErrorMessage } from "@/shared/api/errors";
 
 function AuthSessionStatus({
   text,
@@ -27,7 +28,14 @@ export default function AuthSessionBoundary({
 }: {
   children: ReactNode;
 }) {
-  const { session, isBridgeAvailable, isHydrating } = useHostAuthSession();
+  const {
+    session,
+    isBridgeAvailable,
+    isHydrating,
+    isStandaloneAuthRetrying,
+    standaloneAuthError,
+    retryStandaloneAuthLoad,
+  } = useHostAuthSession();
   const showGuestState = isBridgeAvailable && !session.isAuthenticated;
 
   if (isHydrating) {
@@ -36,6 +44,37 @@ export default function AuthSessionBoundary({
         text={AUTH_SESSION_HYDRATING_TEXT}
         className="rounded-lg border border-cyan-300/30 bg-cyan-300/10 p-4 text-sm text-cyan-100"
       />
+    );
+  }
+
+  if (standaloneAuthError && !isBridgeAvailable) {
+    return (
+      <section
+        className="rounded-lg border border-red-300/30 bg-red-300/10 p-4 text-sm text-red-100"
+        aria-live="assertive"
+        aria-atomic="true"
+        aria-busy={isStandaloneAuthRetrying}
+      >
+        <Typography component="p" variantStyle="body" className="mb-3">
+          We could not verify your session with the server. You may be offline,
+          or the service may be temporarily unavailable.
+        </Typography>
+        <Typography
+          component="p"
+          variantStyle="body"
+          className="mb-4 opacity-90"
+        >
+          {getErrorMessage(standaloneAuthError)}
+        </Typography>
+        <Button
+          variant="outlined"
+          type="button"
+          disabled={isStandaloneAuthRetrying}
+          onClick={retryStandaloneAuthLoad}
+        >
+          {isStandaloneAuthRetrying ? "Retrying…" : "Try again"}
+        </Button>
+      </section>
     );
   }
 
