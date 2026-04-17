@@ -9,7 +9,9 @@ export {
   pushProfileToHostBridge,
   updateMyProfile,
 } from "@/features/profile/api/profileRequests";
+export type { UseUpdateMyProfileMutationOptions } from "@/features/profile/api/profileQueries";
 export {
+  updateMyProfileMutationOptions,
   useDeleteMyAccountMutation,
   useMyProfileQuery,
   useUpdateMyProfileMutation,

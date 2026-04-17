@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHostAuthSession } from "@/features/auth";
 import {
+  updateMyProfileMutationOptions,
   useDeleteMyAccountMutation,
   useMyProfileQuery,
   useUpdateMyProfileMutation,
@@ -28,9 +29,15 @@ const msg = {
 export function useProfilePage(): ProfilePageUiModel {
   const { session, isHydrating } = useHostAuthSession();
   const { data: profile } = useMyProfileQuery(session, isHydrating);
-  const updateBioMutation = useUpdateMyProfileMutation();
-  const updateDetailsMutation = useUpdateMyProfileMutation();
-  const updatePhotoMutation = useUpdateMyProfileMutation();
+  const updateBioMutation = useUpdateMyProfileMutation(
+    updateMyProfileMutationOptions.bio,
+  );
+  const updateDetailsMutation = useUpdateMyProfileMutation(
+    updateMyProfileMutationOptions.details,
+  );
+  const updatePhotoMutation = useUpdateMyProfileMutation(
+    updateMyProfileMutationOptions.photo,
+  );
   const deleteAccountMutation = useDeleteMyAccountMutation();
 
   const [draftBioOverride, setDraftBioOverride] = useState<string | null>(null);

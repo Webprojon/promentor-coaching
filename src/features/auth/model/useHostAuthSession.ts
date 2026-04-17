@@ -18,6 +18,7 @@ const fallbackSession: HostAuthSession = {
 
 const STANDALONE_AUTH_MAX_ATTEMPTS = 3;
 const STANDALONE_AUTH_BASE_DELAY_MS = 400;
+const STANDALONE_AUTH_429_MIN_DELAY_MS = 2_500;
 
 type LoadFallbackSessionResult =
   | { ok: true; session: HostAuthSession }
@@ -31,15 +32,28 @@ function isRetryableStandaloneAuthError(error: unknown): boolean {
     if (error.status === 0) {
       return true;
     }
+    if (error.status === 429) {
+      return true;
+    }
     return error.status >= 500 && error.status < 600;
   }
   return false;
 }
 
+function getStandaloneAuthRetryDelayMs(error: unknown, attempt: number): number {
+  const base = STANDALONE_AUTH_BASE_DELAY_MS * (attempt + 1);
+  if (error instanceof AppApiError && error.status === 429) {
+    return Math.max(base * 3, STANDALONE_AUTH_429_MIN_DELAY_MS);
+  }
+  return base;
+}
+
 async function loadFallbackSession(): Promise<LoadFallbackSessionResult> {
   let lastError: unknown;
 
-  for (let attempt = 0; attempt < STANDALONE_AUTH_MAX_ATTEMPTS; attempt++) {
+  const runAttempt = async (
+    attempt: number,
+  ): Promise<LoadFallbackSessionResult> => {
     try {
       const profile = await fetchCurrentUser();
       queryClient.setQueryData(profileQueryKeys.me(), profile);
@@ -61,16 +75,16 @@ async function loadFallbackSession(): Promise<LoadFallbackSessionResult> {
         isRetryableStandaloneAuthError(error);
       if (canRetry) {
         await new Promise((resolve) =>
-          setTimeout(resolve, STANDALONE_AUTH_BASE_DELAY_MS * (attempt + 1)),
+          setTimeout(resolve, getStandaloneAuthRetryDelayMs(error, attempt)),
         );
-        continue;
+        return runAttempt(attempt + 1);
       }
 
       return { ok: false, error: lastError };
     }
-  }
+  };
 
-  return { ok: false, error: lastError };
+  return runAttempt(0);
 }
 
 let bridgeLoadPromise: Promise<HostAuthBridge | null> | null = null;
@@ -110,6 +124,8 @@ export function useHostAuthSession() {
   const [isBridgeAvailable, setIsBridgeAvailable] = useState(false);
   const [isHydrating, setIsHydrating] = useState(true);
   const [standaloneAuthError, setStandaloneAuthError] = useState<unknown>(null);
+  const [isStandaloneAuthRetrying, setIsStandaloneAuthRetrying] =
+    useState(false);
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -171,19 +187,18 @@ export function useHostAuthSession() {
     if (isBridgeAvailable) {
       return;
     }
-    setStandaloneAuthError(null);
-    setIsHydrating(true);
+    setIsStandaloneAuthRetrying(true);
     void loadFallbackSession().then((result) => {
       if (!mountedRef.current) {
         return;
       }
+      setIsStandaloneAuthRetrying(false);
       if (result.ok) {
         setStandaloneAuthError(null);
         setSession(result.session);
       } else {
         setStandaloneAuthError(result.error);
       }
-      setIsHydrating(false);
     });
   }, [isBridgeAvailable]);
 
@@ -191,6 +206,7 @@ export function useHostAuthSession() {
     session,
     isBridgeAvailable,
     isHydrating,
+    isStandaloneAuthRetrying,
     standaloneAuthError,
     retryStandaloneAuthLoad,
   };

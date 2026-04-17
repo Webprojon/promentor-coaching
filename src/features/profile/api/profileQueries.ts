@@ -35,13 +35,27 @@ export function useMyProfileQuery(
   });
 }
 
-export function useUpdateMyProfileMutation() {
+export type UseUpdateMyProfileMutationOptions = {
+  notifyErrorToastId?: string;
+};
+
+export const updateMyProfileMutationOptions = {
+  bio: { notifyErrorToastId: "profile-patch-bio" },
+  details: { notifyErrorToastId: "profile-patch-details" },
+  photo: { notifyErrorToastId: "profile-patch-photo" },
+} as const satisfies Record<string, UseUpdateMyProfileMutationOptions>;
+
+export function useUpdateMyProfileMutation(
+  options: UseUpdateMyProfileMutationOptions = {},
+) {
   const queryClient = useQueryClient();
+  const notifyErrorToastId =
+    options.notifyErrorToastId ?? "profile-patch";
 
   return useMutation({
     mutationFn: updateMyProfile,
     meta: {
-      notifyErrorToastId: "profile-patch",
+      notifyErrorToastId,
     },
     onSuccess: async (profile) => {
       queryClient.setQueryData(profileQueryKeys.me(), profile);

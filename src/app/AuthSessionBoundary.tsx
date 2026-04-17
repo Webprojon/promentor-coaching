@@ -32,6 +32,7 @@ export default function AuthSessionBoundary({
     session,
     isBridgeAvailable,
     isHydrating,
+    isStandaloneAuthRetrying,
     standaloneAuthError,
     retryStandaloneAuthLoad,
   } = useHostAuthSession();
@@ -52,6 +53,7 @@ export default function AuthSessionBoundary({
         className="rounded-lg border border-red-300/30 bg-red-300/10 p-4 text-sm text-red-100"
         aria-live="assertive"
         aria-atomic="true"
+        aria-busy={isStandaloneAuthRetrying}
       >
         <Typography component="p" variantStyle="body" className="mb-3">
           We could not verify your session with the server. You may be offline,
@@ -67,9 +69,10 @@ export default function AuthSessionBoundary({
         <Button
           variant="outlined"
           type="button"
+          disabled={isStandaloneAuthRetrying}
           onClick={retryStandaloneAuthLoad}
         >
-          Try again
+          {isStandaloneAuthRetrying ? "Retrying…" : "Try again"}
         </Button>
       </section>
     );
