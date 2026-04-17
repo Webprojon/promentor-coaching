@@ -49,8 +49,7 @@ export function useUpdateMyProfileMutation(
   options: UseUpdateMyProfileMutationOptions = {},
 ) {
   const queryClient = useQueryClient();
-  const notifyErrorToastId =
-    options.notifyErrorToastId ?? "profile-patch";
+  const notifyErrorToastId = options.notifyErrorToastId ?? "profile-patch";
 
   return useMutation({
     mutationFn: updateMyProfile,

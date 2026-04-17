@@ -40,7 +40,10 @@ function isRetryableStandaloneAuthError(error: unknown): boolean {
   return false;
 }
 
-function getStandaloneAuthRetryDelayMs(error: unknown, attempt: number): number {
+function getStandaloneAuthRetryDelayMs(
+  error: unknown,
+  attempt: number,
+): number {
   const base = STANDALONE_AUTH_BASE_DELAY_MS * (attempt + 1);
   if (error instanceof AppApiError && error.status === 429) {
     return Math.max(base * 3, STANDALONE_AUTH_429_MIN_DELAY_MS);
