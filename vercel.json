@@ -2,5 +2,8 @@
   "installCommand": "pnpm install",
   "buildCommand": "pnpm build",
   "outputDirectory": "dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "env": {
+    "VITE_SHELL_REMOTE_URL": "https://promentor-alpha.vercel.app/assets/remoteEntry.js"
+  }
 }
