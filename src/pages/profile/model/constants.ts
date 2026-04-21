@@ -3,7 +3,6 @@ import {
   RiCompass3Line,
   RiLayoutGridLine,
   RiMailSendLine,
-  RiRunLine,
   RiTeamLine,
   RiUserStarLine,
 } from "react-icons/ri";
@@ -34,7 +33,6 @@ export const PROFILE_QUICK_LINK_ICONS: Record<ProfileQuickLinkId, IconType> = {
   requests: RiMailSendLine,
   explore: RiCompass3Line,
   boards: RiLayoutGridLine,
-  workouts: RiRunLine,
 };
 
 export const PROFILE_QUICK_LINK_ICON_CLASSNAME =
@@ -70,11 +68,5 @@ export const PROFILE_QUICK_LINKS: ProfileQuickLink[] = [
     to: "/boards",
     label: "Boards",
     description: "Visualize progress and commitments.",
-  },
-  {
-    id: "workouts",
-    to: "/workout-plans",
-    label: "Workout plans",
-    description: "Structured practice between sessions.",
   },
 ];

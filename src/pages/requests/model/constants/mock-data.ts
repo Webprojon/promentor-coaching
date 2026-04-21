@@ -34,15 +34,6 @@ export const MOCK_MENTOR_SENT_REQUESTS: MentorSentRequestRow[] = [
       'Tighten the "at risk" column so blocked work bubbles up without noise.',
     createdLabel: "3d ago",
   },
-  {
-    id: "ms-workout-1",
-    targetKind: "workout_plans",
-    title: "Request · Deload micro-cycle",
-    counterpartName: "Shared with: mobile guild",
-    summary:
-      "Slot a down week after major launches - swap two hard sessions for mobility.",
-    createdLabel: "1w ago",
-  },
 ];
 
 export const MOCK_REQUEST_INBOX: RequestInboxRow[] = [

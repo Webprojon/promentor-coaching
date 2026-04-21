@@ -15,8 +15,7 @@ export type ProfileQuickLinkId =
   | "mentors"
   | "requests"
   | "explore"
-  | "boards"
-  | "workouts";
+  | "boards";
 
 export type ProfileQuickLink = {
   to: string;

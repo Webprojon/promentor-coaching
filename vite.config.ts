@@ -30,7 +30,6 @@ export default defineConfig(({ mode }) => {
         exposes: {
           "./TeamsPage": "./src/pages/teams/index.tsx",
           "./BoardsPage": "./src/pages/boards/index.tsx",
-          "./WorkoutPlansPage": "./src/pages/workout-plans/index.tsx",
           "./ExploreTeamsPage": "./src/pages/explore-teams/index.tsx",
           "./MentorsPage": "./src/pages/mentors/index.tsx",
           "./SuggestionPage": "./src/pages/suggestion/index.tsx",

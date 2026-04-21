@@ -44,8 +44,7 @@ export type RequestCategoryFilter = RequestCategory | "all";
 export type MentorSentTargetKind =
   | "teams"
   | "interns"
-  | "boards"
-  | "workout_plans";
+  | "boards";
 
 export type MentorSentRequestSendOption = {
   value: string;

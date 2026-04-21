@@ -2,7 +2,6 @@ import type { IconType } from "react-icons";
 import {
   RiLayoutGridLine,
   RiPlantLine,
-  RiRunLine,
   RiTeamLine,
 } from "react-icons/ri";
 import type {
@@ -18,7 +17,6 @@ const MENTOR_SENT_FILTER_ORDER: MentorSentFilter[] = [
   "teams",
   "interns",
   "boards",
-  "workout_plans",
 ];
 
 export const MENTOR_SENT_DEFAULT_FILTER: MentorSentFilter = "all";
@@ -105,15 +103,6 @@ export const MENTOR_SENT_KIND_META: Record<
       "border-l-4 border-l-indigo-400/80 bg-linear-to-br from-indigo-500/12 via-slate-900/70 to-slate-950/80",
     chipClass: "border-indigo-400/35 bg-indigo-500/12 text-indigo-100",
   },
-  workout_plans: {
-    label: "Workout plans",
-    shortLabel: "Workout",
-    hint: "Training-load and recovery requests for shared plans.",
-    Icon: RiRunLine,
-    cardAccentClass:
-      "border-l-4 border-l-fuchsia-400/75 bg-linear-to-br from-fuchsia-500/12 via-slate-900/70 to-slate-950/80",
-    chipClass: "border-fuchsia-400/35 bg-fuchsia-500/12 text-fuchsia-100",
-  },
 };
 
 export const MENTOR_SENT_REQUEST_SEND_FIELDSET: Record<
@@ -177,30 +166,6 @@ export const MENTOR_SENT_REQUEST_SEND_FIELDSET: Record<
     },
     detailPlaceholder:
       "Describe the tweak - fewer columns, clearer WIP limits, new signal...",
-  },
-  workout_plans: {
-    primaryLabel: "Plan",
-    primaryAriaLabel: "Choose workout plan",
-    primaryOptions: [
-      { value: "", label: "Shared plan" },
-      { value: "guild", label: "Guild resilience track" },
-      { value: "sprint", label: "Sprint surge block" },
-      { value: "recovery", label: "Recovery micro-cycle" },
-    ],
-    angleField: {
-      label: "Load focus",
-      ariaLabel: "Load focus",
-      placeholder: "e.g. Deload week, mobility emphasis",
-    },
-    detailPlaceholder:
-      "How should intensity, rest, or shared accountability shift?",
-    extraFields: [
-      {
-        label: "Time horizon",
-        ariaLabel: "Time horizon",
-        placeholder: "e.g. Next 2 micro-cycles",
-      },
-    ],
   },
 };
 
