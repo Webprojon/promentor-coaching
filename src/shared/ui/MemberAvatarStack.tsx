@@ -2,7 +2,7 @@ import { Avatar, Typography } from "@promentorapp/ui-kit";
 
 type MemberAvatarStackProps = {
   id: string;
-  avatarUrls: string[];
+  avatarUrls: (string | null)[];
   totalCount: number;
   maxVisible?: number;
   memberNames?: string[];

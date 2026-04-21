@@ -1,7 +1,8 @@
 import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
 import { SendRequestFlow } from "@/features/send-request-flow";
-import { Modal, PageHeader } from "@/shared/ui";
+import { Modal, PageHeader, TeamsEmptyState } from "@/shared/ui";
+import { Typography } from "@promentorapp/ui-kit";
 
 export default function ExploreTeamsPage() {
   const {
@@ -16,6 +17,9 @@ export default function ExploreTeamsPage() {
     goBack,
     goNext,
     canGoNext,
+    isSendingJoin,
+    isExploreLoading,
+    showExploreEmpty,
   } = useExploreTeamsPage();
 
   return (
@@ -25,7 +29,19 @@ export default function ExploreTeamsPage() {
         description="Discover teams that are open to requests and start a short join conversation."
         className="mb-5"
       />
-      <ExploreTeamTable rows={rows} onRequestClick={onRequestClick} />
+      {isExploreLoading ? (
+        <Typography component="p" variantStyle="body" className="text-slate-400">
+          Loading teams…
+        </Typography>
+      ) : showExploreEmpty ? (
+        <TeamsEmptyState description="Once a team is created, it will appear here." />
+      ) : (
+        <ExploreTeamTable
+          rows={rows}
+          onRequestClick={onRequestClick}
+          isSendingJoin={isSendingJoin}
+        />
+      )}
 
       <Modal
         open={isWizardOpen}
@@ -40,7 +56,8 @@ export default function ExploreTeamsPage() {
           label: wizardStep === 3 ? "Send request" : "Continue",
           onClick: wizardStep === 3 ? onSubmitRequest : goNext,
           variant: "contained",
-          disabled: !canGoNext,
+          disabled:
+            wizardStep === 3 ? isSendingJoin || !canGoNext : !canGoNext,
         }}
       >
         <SendRequestFlow

@@ -155,6 +155,16 @@ export function RequestCard({
         onDeleteSent={
           isSentCardViewModel(viewModel) ? handleSentDelete : undefined
         }
+        onAccept={
+          !isSentCardViewModel(viewModel)
+            ? viewModel.onMentorAccept
+            : undefined
+        }
+        onDecline={
+          !isSentCardViewModel(viewModel)
+            ? viewModel.onMentorDecline
+            : undefined
+        }
       />
     </>
   );

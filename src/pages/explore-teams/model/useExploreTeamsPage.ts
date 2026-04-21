@@ -8,8 +8,13 @@ import {
   getNextWizardStep,
   getPreviousWizardStep,
 } from "@/features/send-request-flow/model/utils";
-import { EXPLORE_TEAM_ROWS } from "@/pages/explore-teams/model/constants";
-import type { ExploreTeam } from "@/pages/explore-teams/model/types";
+import { useHostAuthSession } from "@/features/auth";
+import {
+  useCreateTeamJoinRequestMutation,
+  useExploreTeamsQuery,
+} from "@/entities/team/hooks/use-explore-teams";
+import { buildTeamJoinMessage } from "@/pages/explore-teams/model/buildTeamJoinMessage";
+import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/mapExploreTeamFromApi";
 
 const createEmptyDraft = (): RequestDraft => ({
   targetType: "team",
@@ -22,16 +27,26 @@ const createEmptyDraft = (): RequestDraft => ({
 });
 
 export function useExploreTeamsPage() {
-  const [exploreRows, setExploreRows] =
-    useState<ExploreTeam[]>(EXPLORE_TEAM_ROWS);
+  const { session, isHydrating } = useHostAuthSession();
+  const canLoad = !isHydrating && session.isAuthenticated;
+
+  const exploreQuery = useExploreTeamsQuery(canLoad);
+  const joinMutation = useCreateTeamJoinRequestMutation();
+
+  const rows = (exploreQuery.data ?? []).map(mapExploreTeamFromApi);
+
   const [wizardStep, setWizardStep] = useState<WizardStep>(1);
   const [draft, setDraft] = useState<RequestDraft>(createEmptyDraft);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const rows = exploreRows;
 
   const onRequestClick = (targetId: string) => {
-    const target = exploreRows.find((row) => row.id === targetId);
-    if (!target) return;
+    const target = rows.find((row) => row.id === targetId);
+    if (
+      !target ||
+      (target.joinUi !== "send_request" && target.joinUi !== "declined")
+    ) {
+      return;
+    }
     setDraft({
       ...createEmptyDraft(),
       targetId: target.id,
@@ -52,14 +67,16 @@ export function useExploreTeamsPage() {
   };
 
   const onSubmitRequest = () => {
-    if (!draft.targetId) return;
-
-    setExploreRows((previous) =>
-      previous.map((row) =>
-        row.id === draft.targetId ? { ...row, requestStatus: "Pending" } : row,
-      ),
+    if (!draft.targetId) {
+      return;
+    }
+    joinMutation.mutate(
+      {
+        teamId: draft.targetId,
+        body: { message: buildTeamJoinMessage(draft) },
+      },
+      { onSuccess: onCloseWizard },
     );
-    onCloseWizard();
   };
 
   const goNext = () => setWizardStep((previous) => getNextWizardStep(previous));
@@ -67,6 +84,11 @@ export function useExploreTeamsPage() {
     setWizardStep((previous) => getPreviousWizardStep(previous));
 
   const canGoNext = canProceedWizardStep(wizardStep, draft);
+
+  const isExploreLoading =
+    isHydrating || (canLoad && exploreQuery.isPending);
+  const showExploreEmpty =
+    !isExploreLoading && rows.length === 0;
 
   return {
     rows,
@@ -80,5 +102,8 @@ export function useExploreTeamsPage() {
     goNext,
     goBack,
     canGoNext,
+    isSendingJoin: joinMutation.isPending,
+    isExploreLoading,
+    showExploreEmpty,
   };
 }

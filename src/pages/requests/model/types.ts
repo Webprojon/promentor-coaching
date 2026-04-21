@@ -18,6 +18,8 @@ export type RequestSuggestionCardViewModel = RequestCardSharedFields & {
   counterpartAvatarUrl?: string | null;
   status: RequestStatus;
   statusBadgeClass: string;
+  onMentorAccept?: () => Promise<void>;
+  onMentorDecline?: () => Promise<void>;
 };
 
 export type RequestSentCardViewModel = RequestCardSharedFields & {

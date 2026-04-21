@@ -184,7 +184,11 @@ export function RequestViewModal({
   } = viewModel;
 
   const relationLabel = direction === "sent" ? "To" : "From";
-  const showMentorActions = direction === "received" && status === "Pending";
+  const showMentorActions =
+    direction === "received" &&
+    status === "Pending" &&
+    typeof onAccept === "function" &&
+    typeof onDecline === "function";
 
   return (
     <Modal
@@ -196,8 +200,10 @@ export function RequestViewModal({
           ? {
               label: "Decline",
               onClick: () => {
-                onDecline?.();
-                onClose();
+                void (async () => {
+                  await onDecline?.();
+                  onClose();
+                })();
               },
               variant: "outlined",
               color: "error",
@@ -209,8 +215,10 @@ export function RequestViewModal({
           ? {
               label: "Accept",
               onClick: () => {
-                onAccept?.();
-                onClose();
+                void (async () => {
+                  await onAccept?.();
+                  onClose();
+                })();
               },
               variant: "contained",
               color: "success",

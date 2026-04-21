@@ -25,9 +25,3 @@ export {
   EMPTY_STATE_MESSAGE_BY_DIRECTION,
   EMPTY_STATE_ACTION_LINKS,
 } from "./empty-state";
-
-export {
-  MOCK_CURRENT_MENTOR_SENDER,
-  MOCK_MENTOR_SENT_REQUESTS,
-  MOCK_REQUEST_INBOX,
-} from "./mock-data";

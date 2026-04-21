@@ -2,7 +2,6 @@ import {
   EMPTY_STATE_ACTION_LINKS,
   EMPTY_STATE_MESSAGE_BY_DIRECTION,
   MENTOR_SENT_KIND_META,
-  MOCK_CURRENT_MENTOR_SENDER,
   REQUEST_CATEGORY_META,
 } from "@/pages/requests/model/constants";
 import type {
@@ -59,8 +58,8 @@ export function toRequestSentCardViewModel(
     targetKind: row.targetKind,
     ...cardShellFromMeta(meta),
     KindIcon: meta.Icon,
-    mentorName: MOCK_CURRENT_MENTOR_SENDER.name,
-    mentorAvatarUrl: MOCK_CURRENT_MENTOR_SENDER.avatarUrl,
+    mentorName: "You",
+    mentorAvatarUrl: undefined,
     title: row.title,
     counterpartName: row.counterpartName,
     createdLabel: row.createdLabel,

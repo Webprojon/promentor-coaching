@@ -1,21 +1,26 @@
 import { useState } from "react";
+import { useHostAuthSession } from "@/features/auth";
+import {
+  useDecideTeamJoinRequestMutation,
+  useReceivedTeamJoinRequestsQuery,
+} from "@/entities/team-join-request/hooks/use-team-join-request-queries";
 import {
   MENTOR_SENT_DEFAULT_FILTER,
-  MOCK_MENTOR_SENT_REQUESTS,
-  MOCK_REQUEST_INBOX,
   REQUEST_DEFAULT_CATEGORY_FILTER,
 } from "@/pages/requests/model/constants";
 import {
   buildRequestSlotCardViewModel,
   buildRequestsEmptyCard,
-  toRequestSentCardViewModel,
   toRequestSuggestionCardViewModel,
 } from "@/pages/requests/model/mappers";
+import { mapTeamJoinInboxItemToRow } from "@/pages/requests/model/mapReceivedTeamJoin";
 import type {
   MentorSentFilter,
   MentorSentTargetKind,
   RequestCategoryFilter,
   RequestInboxDirection,
+  RequestSentCardViewModel,
+  RequestSuggestionCardViewModel,
 } from "@/pages/requests/model/types";
 
 export function useRequestModalForm(onClose: () => void) {
@@ -41,6 +46,16 @@ export function useRequestModalForm(onClose: () => void) {
 }
 
 export function useRequestsPage(direction: RequestInboxDirection) {
+  const { session, isHydrating } = useHostAuthSession();
+  const isMentor = session.user?.role === "MENTOR";
+  const authed = session.isAuthenticated;
+
+  const mentorReceivedEnabled =
+    direction === "received" && !isHydrating && authed && isMentor;
+
+  const teamJoinQuery = useReceivedTeamJoinRequestsQuery(mentorReceivedEnabled);
+  const decideMutation = useDecideTeamJoinRequestMutation();
+
   const [receivedCategoryFilter, setReceivedCategoryFilter] =
     useState<RequestCategoryFilter>(REQUEST_DEFAULT_CATEGORY_FILTER);
   const [mentorSentFilter, setMentorSentFilter] = useState<MentorSentFilter>(
@@ -50,32 +65,43 @@ export function useRequestsPage(direction: RequestInboxDirection) {
   const [createModalKind, setCreateModalKind] =
     useState<MentorSentTargetKind | null>(null);
 
+  const items = teamJoinQuery.data ?? [];
+  const teamJoinCards: RequestSuggestionCardViewModel[] = items.map((item) => {
+    const row = mapTeamJoinInboxItemToRow(item);
+    const base = toRequestSuggestionCardViewModel(row);
+    const pending = item.status === "PENDING";
+    return {
+      ...base,
+      onMentorAccept: pending
+        ? () =>
+            decideMutation.mutateAsync({
+              requestId: item.id,
+              action: "accept",
+            })
+        : undefined,
+      onMentorDecline: pending
+        ? () =>
+            decideMutation.mutateAsync({
+              requestId: item.id,
+              action: "reject",
+            })
+        : undefined,
+    };
+  });
+
+  const receivedShowsTeamJoin =
+    receivedCategoryFilter === "all" || receivedCategoryFilter === "team_join";
+
   const filteredReceivedRows =
-    direction !== "received"
+    direction !== "received" || !authed || !mentorReceivedEnabled
       ? []
-      : MOCK_REQUEST_INBOX.filter(
-          (r) =>
-            r.direction === "received" &&
-            (receivedCategoryFilter === "all" ||
-              r.category === receivedCategoryFilter),
-        );
+      : receivedShowsTeamJoin
+        ? teamJoinCards
+        : [];
 
-  const filteredMentorSentRows =
-    direction !== "sent"
-      ? []
-      : mentorSentFilter === "all"
-        ? MOCK_MENTOR_SENT_REQUESTS
-        : MOCK_MENTOR_SENT_REQUESTS.filter(
-            (r) => r.targetKind === mentorSentFilter,
-          );
+  const receivedCardRows = filteredReceivedRows;
 
-  const receivedCardRows = filteredReceivedRows.map(
-    toRequestSuggestionCardViewModel,
-  );
-
-  const mentorSentCardRows = filteredMentorSentRows.map(
-    toRequestSentCardViewModel,
-  );
+  const mentorSentCardRows: RequestSentCardViewModel[] = [];
 
   const slotCardViewModel = buildRequestSlotCardViewModel(
     direction,
@@ -105,5 +131,6 @@ export function useRequestsPage(direction: RequestInboxDirection) {
     setCreateModalKind,
     isGridEmpty,
     emptyCard,
+    isReceivedLoading: mentorReceivedEnabled && teamJoinQuery.isLoading,
   };
 }

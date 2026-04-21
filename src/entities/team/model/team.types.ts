@@ -34,3 +34,20 @@ export type InviteRegularUserBody = {
   fullName: string;
   email: string;
 };
+
+export type ExploreJoinUiApi =
+  | "send_request"
+  | "pending"
+  | "joined"
+  | "declined"
+  | "your_team"
+  | "ineligible"
+  | "hidden";
+
+export type ExploreTeamListItem = CoachingTeamListItem & {
+  joinUi: ExploreJoinUiApi;
+};
+
+export type CreateTeamJoinRequestBody = {
+  message?: string;
+};

@@ -10,5 +10,7 @@ export { Select } from "@/shared/ui/Select";
 export type { SelectProps } from "@/shared/ui/Select";
 export { Table } from "@/shared/ui/Table";
 export type { TableColumn } from "@/shared/ui/Table";
+export { TeamsEmptyState } from "@/shared/ui/TeamsEmptyState";
+export type { TeamsEmptyStateProps } from "@/shared/ui/TeamsEmptyState";
 export { Textarea } from "@/shared/ui/Textarea";
 export type { TextareaProps } from "@/shared/ui/Textarea";
