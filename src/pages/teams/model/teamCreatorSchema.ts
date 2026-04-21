@@ -8,11 +8,11 @@ export const createTeamSchema = z.object({
 });
 
 export const addManualMemberSchema = z.object({
-  memberName: z
+  fullName: z
     .string()
     .trim()
-    .min(2, "Member name must be at least 2 characters."),
-  memberEmail: z.string().trim().email("Enter a valid email address."),
+    .min(2, "Full name must be at least 2 characters."),
+  email: z.string().trim().email("Enter a valid email address."),
 });
 
 export type CreateTeamFormValues = z.infer<typeof createTeamSchema>;

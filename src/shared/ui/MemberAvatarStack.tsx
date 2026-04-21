@@ -27,21 +27,22 @@ export function MemberAvatarStack({
   return (
     <div className="flex items-center" aria-label={resolvedAriaLabel}>
       <div className="flex">
-        {visible.map((avatarUrl, index) => (
-          <div
-            key={`${id}-avatar-${index}`}
-            className={index > 0 ? "-ml-2" : ""}
-            aria-hidden="true"
-          >
-            <Avatar
-              user={{
-                name: memberNames?.[index] ?? `Member ${index + 1}`,
-                avatarUrl,
-              }}
-              size="sm"
-            />
-          </div>
-        ))}
+        {visible.map((avatarUrl, index) => {
+          const fromList = memberNames?.[index];
+          const label =
+            typeof fromList === "string" && fromList.trim().length > 0
+              ? fromList.trim()
+              : String.fromCodePoint(65 + (index % 26));
+          return (
+            <div
+              key={`${id}-avatar-${index}`}
+              className={index > 0 ? "-ml-2" : ""}
+              aria-hidden="true"
+            >
+              <Avatar user={{ name: label, avatarUrl }} size="sm" />
+            </div>
+          );
+        })}
       </div>
       {overflow > 0 ? (
         <Typography

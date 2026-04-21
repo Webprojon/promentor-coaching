@@ -6,7 +6,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import { AppThemeProvider } from "@promentorapp/ui-kit";
 import App from "@/app/App";
-import { queryClient } from "@/shared/query/queryClient";
+import { queryClient } from "@/shared/query/query-client";
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

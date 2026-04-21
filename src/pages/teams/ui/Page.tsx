@@ -1,9 +1,10 @@
-import { Button } from "@promentorapp/ui-kit";
+import { Button, Typography } from "@promentorapp/ui-kit";
 import { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
 import { TeamCreatorSection } from "@/pages/teams/ui/components/TeamCreatorSection";
 import { TeamTable } from "@/pages/teams/ui/components/TeamTable";
 import { EmptyState } from "@/pages/teams/ui/components/EmptyState";
 import { Modal, PageHeader } from "@/shared/ui";
+import { DeleteTeamModal } from "@/pages/teams/ui/components/DeleteTeamModal";
 
 export default function TeamsPage() {
   const {
@@ -14,6 +15,17 @@ export default function TeamsPage() {
     teamRows,
     hasTeams,
     isCreatorOpen,
+    isLoadingTeams,
+    isMentor,
+    modalTitle,
+    primaryLabel,
+    onEditTeam,
+    onDeleteTeam,
+    deletingTeamId,
+    closeDeleteTeamModal,
+    confirmDeleteTeam,
+    deleteTeamModalOpen,
+    deleteTeamModalName,
     ...teamCreatorSectionProps
   } = useTeamsPage();
 
@@ -24,26 +36,50 @@ export default function TeamsPage() {
           title="Teams"
           description="Create and manage coaching teams, memberships, and roster details."
           actions={
-            <Button type="button" variant="contained" onClick={openCreator}>
-              Create Team
-            </Button>
+            isMentor ? (
+              <Button type="button" variant="contained" onClick={openCreator}>
+                Create Team
+              </Button>
+            ) : null
           }
         />
 
-        {hasTeams ? <TeamTable rows={teamRows} /> : <EmptyState />}
+        {isLoadingTeams ? (
+          <Typography component="p" variantStyle="body" className="text-slate-400">
+            Loading teams…
+          </Typography>
+        ) : hasTeams ? (
+          <TeamTable
+            rows={teamRows}
+            showActions={isMentor}
+            onEdit={onEditTeam}
+            onDelete={onDeleteTeam}
+            deletingTeamId={deletingTeamId}
+          />
+        ) : (
+          <EmptyState />
+        )}
       </section>
+
+      <DeleteTeamModal
+        open={deleteTeamModalOpen}
+        teamName={deleteTeamModalName}
+        onClose={closeDeleteTeamModal}
+        onConfirm={confirmDeleteTeam}
+        isDeleting={deletingTeamId !== null}
+      />
 
       <Modal
         open={isCreatorOpen}
         onClose={closeCreator}
-        title="Create Team"
+        title={modalTitle}
         secondaryAction={{
           label: "Cancel",
           onClick: closeCreator,
           variant: "outlined",
         }}
         primaryAction={{
-          label: "Confirm",
+          label: primaryLabel,
           onClick: saveCreator,
           variant: "contained",
           disabled: !canSave,

@@ -1,19 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  deleteUserAccount,
+  fetchUserProfile,
+  normalizeUserProfile,
+  updateUserProfile,
+  type UserProfile,
+} from "@/entities/user/api/user-profile-api";
+import {
   HOST_APP_LOGIN_REDIRECT_PATH,
   loadHostAuthBridge,
   type HostAuthSession,
 } from "@/features/auth";
 import { notifyOk } from "@/shared/feedback/notify";
-import { profileQueryKeys } from "@/shared/query/profileQueryKeys";
-import {
-  deleteMyAccount,
-  fetchMyProfile,
-  normalizeProfile,
-  pushProfileToHostBridge,
-  updateMyProfile,
-  type Profile,
-} from "@/features/profile/api/profileRequests";
+import { profileQueryKeys } from "@/shared/query/profile-query-keys";
+
+export type { UserProfile };
 
 export function useMyProfileQuery(
   session: HostAuthSession,
@@ -21,13 +22,13 @@ export function useMyProfileQuery(
 ) {
   const isAuthenticated = session.isAuthenticated;
 
-  return useQuery<Profile>({
+  return useQuery<UserProfile>({
     queryKey: profileQueryKeys.me(),
-    queryFn: fetchMyProfile,
+    queryFn: fetchUserProfile,
     enabled: !isAuthHydrating && isAuthenticated,
     placeholderData: () =>
       isAuthenticated
-        ? (normalizeProfile(session.user) ?? undefined)
+        ? (normalizeUserProfile(session.user) ?? undefined)
         : undefined,
     meta: {
       notifyErrorToastId: "profile-query-error",
@@ -35,39 +36,42 @@ export function useMyProfileQuery(
   });
 }
 
-export type UseUpdateMyProfileMutationOptions = {
+export type UseUpdateUserProfileMutationOptions = {
   notifyErrorToastId?: string;
 };
 
-export const updateMyProfileMutationOptions = {
+export const updateUserProfileMutationOptions = {
   bio: { notifyErrorToastId: "profile-patch-bio" },
   details: { notifyErrorToastId: "profile-patch-details" },
   photo: { notifyErrorToastId: "profile-patch-photo" },
-} as const satisfies Record<string, UseUpdateMyProfileMutationOptions>;
+} as const satisfies Record<string, UseUpdateUserProfileMutationOptions>;
 
-export function useUpdateMyProfileMutation(
-  options: UseUpdateMyProfileMutationOptions = {},
+export function useUpdateUserProfileMutation(
+  options: UseUpdateUserProfileMutationOptions = {},
 ) {
   const queryClient = useQueryClient();
   const notifyErrorToastId = options.notifyErrorToastId ?? "profile-patch";
 
   return useMutation({
-    mutationFn: updateMyProfile,
+    mutationFn: updateUserProfile,
     meta: {
       notifyErrorToastId,
     },
     onSuccess: async (profile) => {
       queryClient.setQueryData(profileQueryKeys.me(), profile);
-      await pushProfileToHostBridge(profile);
+      const bridge = await loadHostAuthBridge().catch(() => null);
+      if (bridge) {
+        bridge.setSession(profile);
+      }
     },
   });
 }
 
-export function useDeleteMyAccountMutation() {
+export function useDeleteUserAccountMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deleteMyAccount,
+    mutationFn: deleteUserAccount,
     meta: {
       notifyErrorToastId: "profile-delete",
     },

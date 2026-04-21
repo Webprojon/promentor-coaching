@@ -1,26 +1,11 @@
-import axios, { AxiosError, type AxiosRequestConfig } from "axios";
-import { AppApiError, getApiErrorMessage } from "@/shared/api/errors";
+import type { AxiosRequestConfig } from "axios";
+import { apiClient } from "@/shared/api/axios-instance";
+import { AppApiError } from "@/shared/api/errors";
+import { getApiErrorMessage } from "@/shared/api/errors";
+import { axiosErrorToAppApiError } from "@/shared/api/error-handler";
+import { env } from "@/shared/config/env";
 
-function resolveApiBaseUrl(): string {
-  const fromEnv = (import.meta.env.VITE_API_URL ?? "")
-    .trim()
-    .replace(/\/$/, "");
-  if (fromEnv) {
-    return fromEnv;
-  }
-
-  if (typeof globalThis !== "undefined" && "location" in globalThis) {
-    const origin = (globalThis as unknown as { location?: { origin?: string } })
-      .location?.origin;
-    if (origin) {
-      return origin.replace(/\/$/, "");
-    }
-  }
-
-  return "";
-}
-
-const API_BASE_URL = resolveApiBaseUrl();
+const MAX_PATH_LENGTH = 8192;
 const AUTH_REFRESH_PATH = "/auth/refresh";
 const SKIP_REFRESH_PATHS = new Set([
   AUTH_REFRESH_PATH,
@@ -32,30 +17,23 @@ const SKIP_REFRESH_PATHS = new Set([
 type RequestOptions = Omit<AxiosRequestConfig, "url" | "data"> & {
   body?: unknown;
 };
-const apiClient = axios.create({
-  baseURL: API_BASE_URL || undefined,
-  withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
-function toAppApiError(error: unknown): AppApiError {
-  if (error instanceof AppApiError) {
-    return error;
+function assertSafeRelativePath(path: string): void {
+  if (typeof path !== "string") {
+    throw new AppApiError("Invalid request path", 0, null);
   }
-
-  if (error instanceof AxiosError) {
-    const status = error.response?.status ?? 0;
-    const payload = error.response?.data ?? null;
-    return new AppApiError(getApiErrorMessage(payload), status, payload);
+  if (path.length === 0 || path.length > MAX_PATH_LENGTH) {
+    throw new AppApiError("Invalid request path", 0, null);
   }
-
-  if (error instanceof Error) {
-    return new AppApiError(error.message, 0, null);
+  if (!path.startsWith("/") || path.startsWith("//")) {
+    throw new AppApiError("Invalid request path", 0, null);
   }
-
-  return new AppApiError("Request failed. Please try again.", 0, null);
+  if (path.includes("..") || path.includes("\\")) {
+    throw new AppApiError("Invalid request path", 0, null);
+  }
+  if (/[\u0000-\u001f\u007f]/.test(path)) {
+    throw new AppApiError("Invalid request path", 0, null);
+  }
 }
 
 async function rawRequest(
@@ -104,6 +82,10 @@ export async function apiRequest<T>(
   path: string,
   options: RequestOptions = {},
 ): Promise<T> {
+  assertSafeRelativePath(path);
+  if (env.isProd && !env.apiBaseUrl) {
+    throw new AppApiError("API URL is not configured", 0, null);
+  }
   try {
     const response = await requestWithRefresh(path, options);
     const payload = response.data ?? null;
@@ -118,6 +100,6 @@ export async function apiRequest<T>(
 
     return payload as T;
   } catch (error) {
-    throw toAppApiError(error);
+    throw axiosErrorToAppApiError(error);
   }
 }

@@ -6,6 +6,7 @@ export type TeamRow = {
   status: TeamStatus;
   membersCount: number;
   memberAvatars: string[];
+  memberStackNames: string[];
 };
 
 export type TeamMemberOption = {
@@ -16,6 +17,10 @@ export type TeamMemberOption = {
 
 export type TeamTableProps = {
   rows: TeamRow[];
+  showActions: boolean;
+  onEdit: (teamId: string) => void;
+  onDelete: (teamId: string) => void;
+  deletingTeamId: string | null;
 };
 
 export type FieldErrorProps = {

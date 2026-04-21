@@ -1,18 +1,11 @@
 export type {
-  Profile,
-  UpdateMyProfileInput,
-} from "@/features/profile/api/profileRequests";
+  UpdateUserProfileInput as UpdateMyProfileInput,
+  UserProfile as Profile,
+} from "@/entities/user/api/user-profile-api";
+export type { UseUpdateUserProfileMutationOptions as UseUpdateMyProfileMutationOptions } from "@/entities/user/hooks/use-user-profile";
 export {
-  deleteMyAccount,
-  fetchMyProfile,
-  normalizeProfile,
-  pushProfileToHostBridge,
-  updateMyProfile,
-} from "@/features/profile/api/profileRequests";
-export type { UseUpdateMyProfileMutationOptions } from "@/features/profile/api/profileQueries";
-export {
-  updateMyProfileMutationOptions,
-  useDeleteMyAccountMutation,
+  updateUserProfileMutationOptions as updateMyProfileMutationOptions,
+  useDeleteUserAccountMutation as useDeleteMyAccountMutation,
   useMyProfileQuery,
-  useUpdateMyProfileMutation,
-} from "@/features/profile/api/profileQueries";
+  useUpdateUserProfileMutation as useUpdateMyProfileMutation,
+} from "@/entities/user/hooks/use-user-profile";
