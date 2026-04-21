@@ -2,8 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   decideTeamJoinRequest,
   fetchReceivedTeamJoinRequests,
-} from "@/entities/team-join-request/api/team-join-request-api";
-import { teamJoinRequestQueryKeys } from "@/entities/team-join-request/model/team-join-request.keys";
+} from "@/entities/requests/api/team-join-request-api";
+import { teamJoinRequestQueryKeys } from "@/entities/requests/model/team-join-request.keys";
 import { teamQueryKeys } from "@/entities/team/model/team.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 

@@ -3,7 +3,7 @@ import { useHostAuthSession } from "@/features/auth";
 import {
   useDecideTeamJoinRequestMutation,
   useReceivedTeamJoinRequestsQuery,
-} from "@/entities/team-join-request/hooks/use-team-join-request-queries";
+} from "@/entities/requests/hooks/use-team-join-request-queries";
 import {
   MENTOR_SENT_DEFAULT_FILTER,
   REQUEST_DEFAULT_CATEGORY_FILTER,

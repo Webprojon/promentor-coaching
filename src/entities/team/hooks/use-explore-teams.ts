@@ -5,7 +5,7 @@ import {
 } from "@/entities/team/api/team-api";
 import type { CreateTeamJoinRequestBody } from "@/entities/team/model/team.types";
 import { teamQueryKeys } from "@/entities/team/model/team.keys";
-import { teamJoinRequestQueryKeys } from "@/entities/team-join-request/model/team-join-request.keys";
+import { teamJoinRequestQueryKeys } from "@/entities/requests/model/team-join-request.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 
 const STALE_MS = 30_000;

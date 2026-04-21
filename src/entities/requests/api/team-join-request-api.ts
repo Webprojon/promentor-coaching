@@ -1,4 +1,4 @@
-import type { TeamJoinRequestInboxItem } from "@/entities/team-join-request/model/team-join-request.types";
+import type { TeamJoinRequestInboxItem } from "@/entities/requests/model/team-join-request.types";
 import { apiRequest } from "@/shared/api/base-api";
 
 export async function fetchReceivedTeamJoinRequests(): Promise<
