@@ -71,15 +71,12 @@ export function RequestCard({
 
   const handleConfirmCancel = () => {
     if (!isSentCardViewModel(viewModel)) return;
-    void (async () => {
-      setIsCancelling(true);
-      try {
-        await viewModel.onCancelRequest();
-        setCancelDialogOpen(false);
-      } finally {
-        setIsCancelling(false);
-      }
-    })();
+    setIsCancelling(true);
+    void viewModel
+      .onCancelRequest()
+      .then(() => setCancelDialogOpen(false))
+      .finally(() => setIsCancelling(false))
+      .catch(() => undefined);
   };
 
   return (

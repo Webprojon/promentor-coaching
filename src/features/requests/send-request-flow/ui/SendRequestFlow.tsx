@@ -1,15 +1,18 @@
 import { TextField, Typography } from "@promentorapp/ui-kit";
+import { useFormContext, useWatch } from "react-hook-form";
 import { SEND_REQUEST_REVIEW_FIELDS } from "@/features/requests/send-request-flow/model/constants";
-import type { SendRequestFlowProps } from "@/features/requests/send-request-flow/model/types";
+import type {
+  RequestDraft,
+  SendRequestFlowProps,
+} from "@/features/requests/send-request-flow/model/types";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { FormField, Textarea } from "@/shared/ui";
 
-export function SendRequestFlow({
-  step,
-  targetLabel,
-  draft,
-  onChange,
-}: SendRequestFlowProps) {
+export function SendRequestFlow({ step }: SendRequestFlowProps) {
+  const { register, control } = useFormContext<RequestDraft>();
+  const draft = useWatch({ control }) as RequestDraft;
+  const targetLabel = draft.targetName;
+
   const REVIEW_ITEMS = SEND_REQUEST_REVIEW_FIELDS.map((field) => ({
     label: field.label,
     value:
@@ -30,8 +33,7 @@ export function SendRequestFlow({
           aria-label="Goal"
           placeholder="What do you want to achieve in the next 4 weeks?"
           className={SHARED_TEXT_FIELD_CLASS}
-          value={draft.goal}
-          onChange={(event) => onChange("goal", event.target.value)}
+          {...register("goal")}
         />
       </section>
     );
@@ -45,25 +47,20 @@ export function SendRequestFlow({
           aria-label="Reason"
           placeholder="Why is this team or mentor the best fit?"
           className={SHARED_TEXT_FIELD_CLASS}
-          value={draft.reason}
-          onChange={(event) => onChange("reason", event.target.value)}
+          {...register("reason")}
         />
         <TextField
           label="Weekly availability"
           aria-label="Weekly availability"
           placeholder="e.g. Tue/Thu evening, 6h weekly"
           className={SHARED_TEXT_FIELD_CLASS}
-          value={draft.weeklyAvailability}
-          onChange={(event) =>
-            onChange("weeklyAvailability", event.target.value)
-          }
+          {...register("weeklyAvailability")}
         />
         <FormField label="Note (optional)">
           <Textarea
             minHeight="sm"
             placeholder="Extra context for the team or mentor."
-            value={draft.note}
-            onChange={(event) => onChange("note", event.target.value)}
+            {...register("note")}
             aria-label="Optional note"
           />
         </FormField>

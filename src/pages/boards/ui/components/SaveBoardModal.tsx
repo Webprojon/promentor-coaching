@@ -77,11 +77,13 @@ export function SaveBoardModal({
     defaultValues,
   });
 
+  const defaultsSignature = `${defaultValues.boardName}\0${defaultValues.teamId}\0${defaultValues.sessionDate}`;
+
   useEffect(() => {
-    if (open) {
-      reset(defaultValues);
-    }
-  }, [open, defaultValues, reset]);
+    if (!open) return;
+    reset(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- defaultValues tracked via defaultsSignature
+  }, [open, defaultsSignature, reset]);
 
   const handleClose = () => {
     if (!isBusy) onClose();

@@ -1,4 +1,5 @@
 import { Typography } from "@promentorapp/ui-kit";
+import { FormProvider } from "react-hook-form";
 import { EmptyListingState, Modal, PageHeader } from "@/shared/ui";
 import { SendRequestFlow } from "@/features/requests/send-request-flow";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
@@ -8,11 +9,10 @@ export default function MentorsPage() {
   const {
     rows,
     wizardStep,
-    draft,
+    requestWizardForm,
     isWizardOpen,
     onMentorActionClick,
     onCloseWizard,
-    onChangeDraft,
     onSubmitRequest,
     goNext,
     goBack,
@@ -51,32 +51,29 @@ export default function MentorsPage() {
         </section>
       )}
 
-      <Modal
-        open={isWizardOpen}
-        onClose={onCloseWizard}
-        title={`Mentorship request · Step ${wizardStep}/3`}
-        secondaryAction={{
-          label: wizardStep === 1 ? "Cancel" : "Back",
-          onClick: wizardStep === 1 ? onCloseWizard : goBack,
-          variant: "outlined",
-        }}
-        primaryAction={{
-          label: wizardStep === 3 ? "Send request" : "Continue",
-          onClick: wizardStep === 3 ? onSubmitRequest : goNext,
-          variant: "contained",
-          disabled:
-            wizardStep === 3
-              ? !canGoNext || isSendingMentorship
-              : !canGoNext,
-        }}
-      >
-        <SendRequestFlow
-          step={wizardStep}
-          targetLabel={draft.targetName}
-          draft={draft}
-          onChange={onChangeDraft}
-        />
-      </Modal>
+      <FormProvider {...requestWizardForm}>
+        <Modal
+          open={isWizardOpen}
+          onClose={onCloseWizard}
+          title={`Mentorship request · Step ${wizardStep}/3`}
+          secondaryAction={{
+            label: wizardStep === 1 ? "Cancel" : "Back",
+            onClick: wizardStep === 1 ? onCloseWizard : goBack,
+            variant: "outlined",
+          }}
+          primaryAction={{
+            label: wizardStep === 3 ? "Send request" : "Continue",
+            onClick: wizardStep === 3 ? onSubmitRequest : goNext,
+            variant: "contained",
+            disabled:
+              wizardStep === 3
+                ? !canGoNext || isSendingMentorship
+                : !canGoNext,
+          }}
+        >
+          <SendRequestFlow step={wizardStep} />
+        </Modal>
+      </FormProvider>
     </>
   );
 }

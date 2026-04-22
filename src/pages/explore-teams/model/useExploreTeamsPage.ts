@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
+import { createEmptyTeamJoinRequestDraft } from "@/features/requests/send-request-flow/model/empty-drafts";
 import type {
   RequestDraft,
   WizardStep,
@@ -14,16 +16,6 @@ import { useCreateTeamJoinRequestMutation } from "@/entities/requests";
 import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
 import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/lib/map-explore-team";
 
-const createEmptyDraft = (): RequestDraft => ({
-  targetType: "team",
-  targetId: "",
-  targetName: "",
-  goal: "",
-  reason: "",
-  weeklyAvailability: "",
-  note: "",
-});
-
 export function useExploreTeamsPage() {
   const { session, isHydrating } = useHostAuthSession();
   const canLoad = !isHydrating && session.isAuthenticated;
@@ -33,9 +25,18 @@ export function useExploreTeamsPage() {
 
   const rows = (exploreQuery.data ?? []).map(mapExploreTeamFromApi);
 
+  const requestWizardForm = useForm<RequestDraft>({
+    defaultValues: createEmptyTeamJoinRequestDraft(),
+    mode: "onChange",
+  });
+
   const [wizardStep, setWizardStep] = useState<WizardStep>(1);
-  const [draft, setDraft] = useState<RequestDraft>(createEmptyDraft);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
+
+  const draft = useWatch({
+    control: requestWizardForm.control,
+    defaultValue: createEmptyTeamJoinRequestDraft(),
+  }) as RequestDraft;
 
   const onRequestClick = (targetId: string) => {
     const target = rows.find((row) => row.id === targetId);
@@ -45,8 +46,8 @@ export function useExploreTeamsPage() {
     ) {
       return;
     }
-    setDraft({
-      ...createEmptyDraft(),
+    requestWizardForm.reset({
+      ...createEmptyTeamJoinRequestDraft(),
       targetId: target.id,
       targetName: target.teamName,
     });
@@ -57,21 +58,18 @@ export function useExploreTeamsPage() {
   const onCloseWizard = () => {
     setIsWizardOpen(false);
     setWizardStep(1);
-    setDraft(createEmptyDraft());
-  };
-
-  const onChangeDraft = (field: keyof RequestDraft, value: string) => {
-    setDraft((previous) => ({ ...previous, [field]: value }));
+    requestWizardForm.reset(createEmptyTeamJoinRequestDraft());
   };
 
   const onSubmitRequest = () => {
-    if (!draft.targetId) {
+    const values = requestWizardForm.getValues();
+    if (!values.targetId) {
       return;
     }
     joinMutation.mutate(
       {
-        teamId: draft.targetId,
-        body: { message: buildRequestMessage(draft, "Team join request") },
+        teamId: values.targetId,
+        body: { message: buildRequestMessage(values, "Team join request") },
       },
       { onSuccess: onCloseWizard },
     );
@@ -91,14 +89,13 @@ export function useExploreTeamsPage() {
   return {
     rows,
     wizardStep,
-    draft,
+    requestWizardForm,
     isWizardOpen,
     onRequestClick,
     onCloseWizard,
-    onChangeDraft,
     onSubmitRequest,
-    goNext,
     goBack,
+    goNext,
     canGoNext,
     isSendingJoin: joinMutation.isPending,
     isExploreLoading,

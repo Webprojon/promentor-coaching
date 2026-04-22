@@ -1,16 +1,24 @@
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { TextField, Typography } from "@promentorapp/ui-kit";
 import {
+  type CreateMentorBroadcastRequestBody,
   useCreateMentorBroadcastRequestMutation,
   useMentorBroadcastTargetsQuery,
 } from "@/entities/requests";
 import { useTeamsListQuery } from "@/entities/teams";
 import { MENTOR_BROADCAST_ALL_INTERN_VALUE } from "@/pages/requests/model/constants/mentor-broadcast-ui";
+import {
+  type RequestSendModalFormValues,
+  requestSendModalSchema,
+} from "@/pages/requests/model/schema/request-send-modal";
 import type { MentorSentTargetKind } from "@/pages/requests/model/types";
 import {
   MENTOR_SENT_KIND_META,
   MENTOR_SENT_REQUEST_SEND_FIELDSET,
 } from "@/pages/requests/model/constants";
+import { FieldError } from "@/pages/teams/ui/components/FieldError";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { FormField, Modal, Select, Textarea } from "@/shared/ui";
 
@@ -21,6 +29,12 @@ type RequestSendModalProps = {
 };
 
 const EMPTY = "";
+
+const DEFAULT_FORM: RequestSendModalFormValues = {
+  primaryPick: "",
+  angle: "",
+  detail: "",
+};
 
 function targetKindToScope(
   k: MentorSentTargetKind,
@@ -33,6 +47,52 @@ function targetKindToScope(
     case "boards":
       return "BOARD";
   }
+}
+
+function buildCreateMentorBroadcastBody(
+  targetKind: MentorSentTargetKind,
+  values: RequestSendModalFormValues,
+  selectedLabel: string,
+): CreateMentorBroadcastRequestBody {
+  const scope = targetKindToScope(targetKind);
+  const contextLine = values.angle.trim() || undefined;
+  const bodyText = values.detail.trim();
+  const contextOpt = contextLine ? { contextLine } : {};
+
+  if (scope === "TEAM") {
+    return {
+      scope: "TEAM",
+      teamId: values.primaryPick,
+      targetLabel: selectedLabel,
+      body: bodyText,
+      ...contextOpt,
+    };
+  }
+
+  if (scope === "INTERN") {
+    if (values.primaryPick === MENTOR_BROADCAST_ALL_INTERN_VALUE) {
+      return {
+        scope: "INTERN",
+        allInterns: true,
+        body: bodyText,
+        ...contextOpt,
+      };
+    }
+    return {
+      scope: "INTERN",
+      menteeId: values.primaryPick,
+      targetLabel: selectedLabel,
+      body: bodyText,
+      ...contextOpt,
+    };
+  }
+
+  return {
+    scope,
+    targetLabel: selectedLabel,
+    body: bodyText,
+    ...contextOpt,
+  };
 }
 
 export function RequestSendModal({
@@ -54,9 +114,29 @@ export function RequestSendModal({
   );
   const boardTargets = useMentorBroadcastTargetsQuery("boards", loadBoardTargets);
 
-  const [primaryPick, setPrimaryPick] = useState(EMPTY);
-  const [angle, setAngle] = useState(EMPTY);
-  const [detail, setDetail] = useState(EMPTY);
+  const {
+    control,
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<RequestSendModalFormValues>({
+    resolver: zodResolver(requestSendModalSchema),
+    mode: "onChange",
+    defaultValues: DEFAULT_FORM,
+  });
+
+  const primaryPick = useWatch({
+    control,
+    name: "primaryPick",
+    defaultValue: DEFAULT_FORM.primaryPick,
+  });
+
+  useEffect(() => {
+    if (open) {
+      reset(DEFAULT_FORM);
+    }
+  }, [open, targetKind, reset]);
 
   const createMutation = useCreateMentorBroadcastRequestMutation();
 
@@ -95,10 +175,7 @@ export function RequestSendModal({
   const selectedLabel =
     primaryOptions.find((o) => o.value === primaryPick)?.label ?? "";
 
-  const canSubmit =
-    primaryPick.length > 0 &&
-    detail.trim().length > 0 &&
-    !createMutation.isPending;
+  const canSubmit = isValid && !createMutation.isPending;
 
   const isCompactIntro = targetKind === "interns";
   const kindIntro = isCompactIntro ? (
@@ -123,54 +200,18 @@ export function RequestSendModal({
     </div>
   );
 
-  const handleSend = () => {
-    if (!canSubmit) return;
-    const scope = targetKindToScope(targetKind);
-    const contextLine = angle.trim() || undefined;
-    const bodyText = detail.trim();
-    void (async () => {
-      try {
-        if (scope === "TEAM") {
-          await createMutation.mutateAsync({
-            scope: "TEAM",
-            teamId: primaryPick,
-            targetLabel: selectedLabel,
-            body: bodyText,
-            ...(contextLine ? { contextLine } : {}),
-          });
-        } else if (scope === "INTERN") {
-          if (primaryPick === MENTOR_BROADCAST_ALL_INTERN_VALUE) {
-            await createMutation.mutateAsync({
-              scope: "INTERN",
-              allInterns: true,
-              body: bodyText,
-              ...(contextLine ? { contextLine } : {}),
-            });
-          } else {
-            await createMutation.mutateAsync({
-              scope: "INTERN",
-              menteeId: primaryPick,
-              targetLabel: selectedLabel,
-              body: bodyText,
-              ...(contextLine ? { contextLine } : {}),
-            });
-          }
-        } else {
-          await createMutation.mutateAsync({
-            scope,
-            targetLabel: selectedLabel,
-            body: bodyText,
-            ...(contextLine ? { contextLine } : {}),
-          });
-        }
-        setPrimaryPick(EMPTY);
-        setAngle(EMPTY);
-        setDetail(EMPTY);
+  const onValidSubmit = (values: RequestSendModalFormValues) => {
+    const payload = buildCreateMentorBroadcastBody(
+      targetKind,
+      values,
+      selectedLabel,
+    );
+    createMutation.mutate(payload, {
+      onSuccess: () => {
+        reset(DEFAULT_FORM);
         onClose();
-      } catch {
-        /* toast via mutation meta */
-      }
-    })();
+      },
+    });
   };
 
   const targetsLoading =
@@ -193,7 +234,7 @@ export function RequestSendModal({
       }}
       primaryAction={{
         label: "Send request",
-        onClick: handleSend,
+        onClick: handleSubmit(onValidSubmit),
         variant: "contained",
         disabled: !canSubmit,
       }}
@@ -208,19 +249,28 @@ export function RequestSendModal({
           className={`grid ${isCompactIntro ? "mt-3 gap-3" : "mt-5 gap-4"}`}
         >
           <FormField label={fieldset.primaryLabel}>
-            <Select
-              fieldSize="md"
-              value={primaryPick}
-              onChange={(e) => setPrimaryPick(e.target.value)}
-              aria-label={fieldset.primaryAriaLabel}
-              disabled={targetsLoading}
-            >
-              {primaryOptions.map((opt) => (
-                <option key={opt.value || "__empty"} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </Select>
+            <Controller
+              name="primaryPick"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  fieldSize="md"
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                  aria-label={fieldset.primaryAriaLabel}
+                  disabled={targetsLoading}
+                >
+                  {primaryOptions.map((opt) => (
+                    <option key={opt.value || "__empty"} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            />
+            <FieldError message={errors.primaryPick?.message} />
             {targetKind === "teams" &&
             !targetsLoading &&
             primaryOptions.length <= 1 ? (
@@ -248,18 +298,17 @@ export function RequestSendModal({
             aria-label={fieldset.angleField.ariaLabel}
             placeholder={fieldset.angleField.placeholder}
             className={SHARED_TEXT_FIELD_CLASS}
-            value={angle}
-            onChange={(e) => setAngle(e.target.value)}
+            {...register("angle")}
             disabled={createMutation.isPending}
           />
           <FormField label="Request details">
             <Textarea
               placeholder={fieldset.detailPlaceholder}
-              value={detail}
-              onChange={(e) => setDetail(e.target.value)}
+              {...register("detail")}
               aria-label="Request details"
               disabled={createMutation.isPending}
             />
+            <FieldError message={errors.detail?.message} />
           </FormField>
         </div>
       </div>

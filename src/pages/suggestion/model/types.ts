@@ -1,22 +1,16 @@
+import type { Control, UseFormRegister } from "react-hook-form";
+import type { SuggestionComposerFormValues } from "@/pages/suggestion/model/schema/suggestion-composer";
+
 export type SuggestionPriority = "High" | "Medium" | "Low";
 
-export type SuggestionComposerFields = {
-  title: string;
-  detail: string;
-  priority: SuggestionPriority;
-};
-
 export type SuggestionComposerProps = {
-  fields: SuggestionComposerFields;
+  register: UseFormRegister<SuggestionComposerFormValues>;
+  control: Control<SuggestionComposerFormValues>;
   priorities: SuggestionPriority[];
   canSend: boolean;
   sendLabel: string;
   isSending: boolean;
   isEditing: boolean;
-  onFieldChange: (
-    field: keyof SuggestionComposerFields,
-    value: string,
-  ) => void;
   onSend: () => void;
   onCancelEdit: () => void;
 };

@@ -20,25 +20,22 @@ export default function SuggestionPage() {
           teams={state.teams}
           mentors={state.mentors}
           boards={state.boards}
-          teamId={state.teamId}
-          mentorId={state.mentorId}
-          boardId={state.boardId}
-          onTeamChange={state.onTeamChange}
-          onMentorChange={state.onMentorChange}
-          onBoardChange={state.onBoardChange}
-          selectionError={state.selectionError}
+          control={state.control}
+          targetError={state.targetError}
           disabled={Boolean(state.editingId)}
         />
 
         <SuggestionComposer
-          fields={state.fields}
+          register={state.register}
+          control={state.control}
           priorities={state.priorities}
           canSend={state.canSend}
           sendLabel={state.sendLabel}
           isSending={state.isSending}
           isEditing={Boolean(state.editingId)}
-          onFieldChange={state.onFieldChange}
-          onSend={state.onSend}
+          onSend={() => {
+            void state.submitSuggestion();
+          }}
           onCancelEdit={state.onCancelEdit}
         />
       </section>

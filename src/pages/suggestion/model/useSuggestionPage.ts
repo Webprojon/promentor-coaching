@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTeamsListQuery } from "@/entities/teams";
 import {
   useBoardTargetsForSuggestionQuery,
@@ -11,19 +13,18 @@ import {
 import type { UserSuggestionSent } from "@/entities/suggestion/model/suggestion.types";
 import { useHostAuthSession } from "@/features/auth/model/useHostAuthSession";
 import {
+  SUGGESTION_FORM_DEFAULT_VALUES,
+  suggestionComposerSchema,
+  type SuggestionComposerFormValues,
+} from "@/pages/suggestion/model/schema/suggestion-composer";
+import {
   SUGGESTION_PRIORITIES_UI,
   suggestionPriorityFromApi,
   suggestionPriorityToApi,
 } from "@/pages/suggestion/model/lib/suggestion-priority";
 import type {
-  SuggestionComposerFields,
   SuggestionHistoryItemVm,
-  SuggestionPriority,
 } from "@/pages/suggestion/model/types";
-
-function emptyFields(): SuggestionComposerFields {
-  return { title: "", detail: "", priority: "Medium" };
-}
 
 function targetLabelFromSent(row: UserSuggestionSent): string {
   if (row.scope === "TEAM") {
@@ -36,9 +37,6 @@ function targetLabelFromSent(row: UserSuggestionSent): string {
   }
   return row.boardName ? `Board · ${row.boardName}` : "Board";
 }
-
-const MULTI_TARGET_ERROR =
-  "Please select only one target: a team, a mentor, or a board.";
 
 export function useSuggestionPage() {
   const { session, isHydrating } = useHostAuthSession();
@@ -55,11 +53,17 @@ export function useSuggestionPage() {
   const updateMutation = useUpdateUserSuggestionMutation();
   const deleteMutation = useDeleteUserSuggestionMutation();
 
-  const [teamId, setTeamId] = useState("");
-  const [mentorId, setMentorId] = useState("");
-  const [boardId, setBoardId] = useState("");
-  const [fields, setFields] = useState(emptyFields);
   const [editingId, setEditingId] = useState<string | null>(null);
+
+  const form = useForm<SuggestionComposerFormValues>({
+    resolver: zodResolver(suggestionComposerSchema),
+    defaultValues: SUGGESTION_FORM_DEFAULT_VALUES,
+    mode: "onChange",
+  });
+
+  const {
+    formState: { isValid, errors },
+  } = form;
 
   const teams = (teamsQuery.data ?? []).map((t) => ({
     id: t.id,
@@ -80,21 +84,13 @@ export function useSuggestionPage() {
       mentorTargetsQuery.isPending ||
       boardTargetsQuery.isPending);
 
-  const targetCount = [teamId, mentorId, boardId].filter(Boolean).length;
-  const selectionError =
-    targetCount > 1 ? MULTI_TARGET_ERROR : null;
-
-  const canSubmitBase =
-    enabled &&
-    targetCount === 1 &&
-    fields.title.trim().length > 0 &&
-    fields.detail.trim().length > 0 &&
-    !selectionError;
+  const targetError = errors.teamId?.message ?? null;
 
   const anyOptionAvailable = teams.length > 0 || mentors.length > 0 || boards.length > 0;
 
   const canSend =
-    canSubmitBase &&
+    enabled &&
+    isValid &&
     anyOptionAvailable &&
     !createMutation.isPending &&
     !updateMutation.isPending;
@@ -110,25 +106,15 @@ export function useSuggestionPage() {
   );
 
   const applySentToForm = (row: UserSuggestionSent) => {
-    setFields({
+    form.reset({
       title: row.title,
       detail: row.detail,
       priority: suggestionPriorityFromApi(row.priority),
+      teamId: row.scope === "TEAM" && row.teamId ? row.teamId : "",
+      mentorId: row.scope === "MENTOR" ? row.recipientMentorId : "",
+      boardId: row.scope === "BOARD" && row.boardId ? row.boardId : "",
     });
-    setTeamId(row.scope === "TEAM" && row.teamId ? row.teamId : "");
-    setMentorId(row.scope === "MENTOR" ? row.recipientMentorId : "");
-    setBoardId(row.scope === "BOARD" && row.boardId ? row.boardId : "");
     setEditingId(row.id);
-  };
-
-  const onFieldChange = (
-    key: keyof SuggestionComposerFields,
-    value: string,
-  ) => {
-    setFields((prev) => ({
-      ...prev,
-      [key]: key === "priority" ? (value as SuggestionPriority) : value,
-    }));
   };
 
   const onEdit = (id: string) => {
@@ -142,20 +128,14 @@ export function useSuggestionPage() {
     void deleteMutation.mutateAsync(id).then(() => {
       if (editingId === id) {
         setEditingId(null);
-        setFields(emptyFields());
-        setTeamId("");
-        setMentorId("");
-        setBoardId("");
+        form.reset(SUGGESTION_FORM_DEFAULT_VALUES);
       }
     });
   };
 
   const resetAfterSuccess = () => {
     setEditingId(null);
-    setFields(emptyFields());
-    setTeamId("");
-    setMentorId("");
-    setBoardId("");
+    form.reset(SUGGESTION_FORM_DEFAULT_VALUES);
   };
 
   const onCancelEdit = () => {
@@ -165,14 +145,14 @@ export function useSuggestionPage() {
     resetAfterSuccess();
   };
 
-  const onSend = () => {
-    if (!canSubmitBase) {
+  const onValidSubmit = (data: SuggestionComposerFormValues) => {
+    if (!enabled) {
       return;
     }
     const bodyBase = {
-      title: fields.title.trim(),
-      detail: fields.detail.trim(),
-      priority: suggestionPriorityToApi(fields.priority),
+      title: data.title.trim(),
+      detail: data.detail.trim(),
+      priority: suggestionPriorityToApi(data.priority),
     };
 
     if (editingId) {
@@ -182,33 +162,33 @@ export function useSuggestionPage() {
       return;
     }
 
-    if (teamId) {
+    if (data.teamId) {
       void createMutation
         .mutateAsync({
           scope: "TEAM",
-          teamId,
+          teamId: data.teamId,
           ...bodyBase,
         })
         .then(resetAfterSuccess);
       return;
     }
 
-    if (mentorId) {
+    if (data.mentorId) {
       void createMutation
         .mutateAsync({
           scope: "MENTOR",
-          targetMentorId: mentorId,
+          targetMentorId: data.mentorId,
           ...bodyBase,
         })
         .then(resetAfterSuccess);
       return;
     }
 
-    if (boardId) {
+    if (data.boardId) {
       void createMutation
         .mutateAsync({
           scope: "BOARD",
-          boardId,
+          boardId: data.boardId,
           ...bodyBase,
         })
         .then(resetAfterSuccess);
@@ -221,19 +201,13 @@ export function useSuggestionPage() {
     mentors,
     boards,
     isTargetsLoading,
-    teamId,
-    mentorId,
-    boardId,
-    onTeamChange: setTeamId,
-    onMentorChange: setMentorId,
-    onBoardChange: setBoardId,
-    selectionError,
-    fields,
-    onFieldChange,
+    control: form.control,
+    targetError,
     canSend,
+    register: form.register,
+    submitSuggestion: form.handleSubmit(onValidSubmit),
     sendLabel: editingId ? "Update suggestion" : "Send Suggestion",
     isSending: createMutation.isPending || updateMutation.isPending,
-    onSend,
     historyItems,
     editingId,
     onEdit,

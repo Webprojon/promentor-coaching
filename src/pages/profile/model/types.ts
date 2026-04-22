@@ -30,6 +30,15 @@ export type ProfileChangeFormValues = {
   jobTitle: string;
 };
 
+export type ProfileAboutFormValues = {
+  about: string;
+};
+
+export type ProfilePhotoFormValues = {
+  draftDataUrl: string;
+  photoRemoved: boolean;
+};
+
 export type ProfileHeroProps = {
   header: ProfileHeader;
   onOpenPhotoModal: () => void;
@@ -50,11 +59,10 @@ export type ProfilePhotoModalProps = {
 };
 
 export type ProfileAboutSectionProps = {
-  draftBio: string;
+  register: UseFormRegister<ProfileAboutFormValues>;
   isChanged: boolean;
   isDisabled: boolean;
   isSaving: boolean;
-  onDraftBioChange: (value: string) => void;
   onSave: () => void;
 };
 

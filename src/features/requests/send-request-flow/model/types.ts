@@ -14,7 +14,4 @@ export type RequestDraft = {
 
 export type SendRequestFlowProps = {
   step: WizardStep;
-  targetLabel: string;
-  draft: RequestDraft;
-  onChange: (field: keyof RequestDraft, value: string) => void;
 };

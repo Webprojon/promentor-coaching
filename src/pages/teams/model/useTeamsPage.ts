@@ -169,18 +169,16 @@ export function useTeamsPage() {
     setPendingDeleteTeamId(null);
   };
 
-  const confirmDeleteTeam = async () => {
+  const confirmDeleteTeam = () => {
     if (!pendingDeleteTeamId) {
       return;
     }
     const teamId = pendingDeleteTeamId;
     setDeletingTeamId(teamId);
-    try {
-      await deleteMutation.mutateAsync(teamId);
-      setPendingDeleteTeamId(null);
-    } finally {
-      setDeletingTeamId(null);
-    }
+    deleteMutation.mutate(teamId, {
+      onSuccess: () => setPendingDeleteTeamId(null),
+      onSettled: () => setDeletingTeamId(null),
+    });
   };
 
   const pendingDeleteTeamName =

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Typography } from "@promentorapp/ui-kit";
 import type { CreateTacticalBoardBody, TacticalBoardRecord } from "@/entities/boards";
 import {
@@ -101,23 +101,19 @@ export default function BoardsPage() {
     useState<TacticalBoardRecord | null>(null);
 
   const isDirty = useBoardsTactics(
-    useCallback(
-      (state) =>
-        editorBaselineRef.current !== null &&
-        serializeEditorForDirty(state) !== editorBaselineRef.current,
-      [],
-    ),
+    (state) =>
+      editorBaselineRef.current !== null &&
+      serializeEditorForDirty(state) !== editorBaselineRef.current,
   );
 
-  const saveFormDefaults: BoardAssignFormValues = useMemo(() => {
-    const board =
-      editingId && data ? (data.find((b) => b.id === editingId) ?? null) : null;
-    return {
-      boardName: board?.name ?? "",
-      teamId: board?.teamId ?? "",
-      sessionDate: board?.sessionDate ?? "",
-    };
-  }, [editingId, data]);
+  const boardBeingEdited =
+    editingId && data ? (data.find((b) => b.id === editingId) ?? null) : null;
+
+  const saveFormDefaults: BoardAssignFormValues = {
+    boardName: boardBeingEdited?.name ?? "",
+    teamId: boardBeingEdited?.teamId ?? "",
+    sessionDate: boardBeingEdited?.sessionDate ?? "",
+  };
 
   const saveInFlight =
     createBoardMutation.isPending || updateBoardMutation.isPending;
@@ -194,10 +190,7 @@ export default function BoardsPage() {
     );
   };
 
-  const activeBoardName =
-    editingId && data
-      ? (data.find((b) => b.id === editingId)?.name ?? "Tactical board")
-      : "Tactical board";
+  const activeBoardName = boardBeingEdited?.name ?? "Tactical board";
 
   if (view === "editor" && isMentor) {
     return (

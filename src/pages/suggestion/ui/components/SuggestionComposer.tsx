@@ -1,4 +1,5 @@
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
+import { Controller } from "react-hook-form";
 import type { SuggestionComposerProps } from "@/pages/suggestion/model/types";
 import {
   PRIORITY_BADGE_CLASS,
@@ -7,13 +8,13 @@ import {
 import { FormField, Textarea } from "@/shared/ui";
 
 export default function SuggestionComposer({
-  fields,
+  register,
+  control,
   priorities,
   canSend,
   sendLabel,
   isSending,
   isEditing,
-  onFieldChange,
   onSend,
   onCancelEdit,
 }: SuggestionComposerProps) {
@@ -31,14 +32,12 @@ export default function SuggestionComposer({
           aria-label="Suggestion title"
           placeholder="e.g. Narrow sprint scope to 2 critical deliverables"
           className="border-white/20 h-12!"
-          value={fields.title}
-          onChange={(event) => onFieldChange("title", event.target.value)}
+          {...register("title")}
         />
         <FormField label="Detail">
           <Textarea
             placeholder="Explain what should change and why."
-            value={fields.detail}
-            onChange={(event) => onFieldChange("detail", event.target.value)}
+            {...register("detail")}
             aria-label="Suggestion detail"
           />
         </FormField>
@@ -48,28 +47,34 @@ export default function SuggestionComposer({
             <Typography variantStyle="label" className="pm-text-secondary">
               Priority
             </Typography>
-            <div className="flex flex-wrap gap-2">
-              {priorities.map((priority) => {
-                const isActive = fields.priority === priority;
-                return (
-                  <button
-                    key={priority}
-                    type="button"
-                    aria-pressed={isActive}
-                    onClick={() => onFieldChange("priority", priority)}
-                    className={`cursor-pointer rounded-lg border px-6 py-2 text-xs transition outline-none focus:outline-none focus-visible:ring-0 ${
-                      PRIORITY_BADGE_CLASS[priority]
-                    } ${
-                      isActive
-                        ? PRIORITY_SELECTED_BORDER_CLASS[priority]
-                        : "border-transparent"
-                    }`}
-                  >
-                    {priority}
-                  </button>
-                );
-              })}
-            </div>
+            <Controller
+              name="priority"
+              control={control}
+              render={({ field }) => (
+                <div className="flex flex-wrap gap-2">
+                  {priorities.map((priority) => {
+                    const isActive = field.value === priority;
+                    return (
+                      <button
+                        key={priority}
+                        type="button"
+                        aria-pressed={isActive}
+                        onClick={() => field.onChange(priority)}
+                        className={`cursor-pointer rounded-lg border px-6 py-2 text-xs transition outline-none focus:outline-none focus-visible:ring-0 ${
+                          PRIORITY_BADGE_CLASS[priority]
+                        } ${
+                          isActive
+                            ? PRIORITY_SELECTED_BORDER_CLASS[priority]
+                            : "border-transparent"
+                        }`}
+                      >
+                        {priority}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            />
           </div>
 
           <div className="flex flex-wrap items-center justify-end gap-2">

@@ -1,4 +1,6 @@
 import { Typography } from "@promentorapp/ui-kit";
+import { Controller, type Control } from "react-hook-form";
+import type { SuggestionComposerFormValues } from "@/pages/suggestion/model/schema/suggestion-composer";
 import { FormField, Select } from "@/shared/ui";
 
 export type SuggestionCategoryOption = { id: string; label: string };
@@ -8,13 +10,8 @@ type SuggestionCategoryProps = {
   teams: SuggestionCategoryOption[];
   mentors: SuggestionCategoryOption[];
   boards: SuggestionCategoryOption[];
-  teamId: string;
-  mentorId: string;
-  boardId: string;
-  onTeamChange: (id: string) => void;
-  onMentorChange: (id: string) => void;
-  onBoardChange: (id: string) => void;
-  selectionError: string | null;
+  control: Control<SuggestionComposerFormValues>;
+  targetError: string | null;
   disabled?: boolean;
 };
 
@@ -84,13 +81,8 @@ export default function SuggestionCategory({
   teams,
   mentors,
   boards,
-  teamId,
-  mentorId,
-  boardId,
-  onTeamChange,
-  onMentorChange,
-  onBoardChange,
-  selectionError,
+  control,
+  targetError,
   disabled = false,
 }: SuggestionCategoryProps) {
   return (
@@ -103,46 +95,70 @@ export default function SuggestionCategory({
       </Typography>
 
       <div className="mt-3 grid gap-3">
-        <SelectWithEmptyState
-          label="Teams"
-          ariaLabel="Choose team target"
-          placeholder="Select a team"
-          options={teams}
-          value={teamId}
-          onChange={onTeamChange}
-          emptyHint="No joined teams yet."
-          disabled={disabled}
-          isLoading={isTargetsLoading}
+        <Controller
+          name="teamId"
+          control={control}
+          render={({ field }) => (
+            <SelectWithEmptyState
+              label="Teams"
+              ariaLabel="Choose team target"
+              placeholder="Select a team"
+              options={teams}
+              value={field.value}
+              onChange={(v) => {
+                field.onChange(v);
+              }}
+              emptyHint="No joined teams yet."
+              disabled={disabled}
+              isLoading={isTargetsLoading}
+            />
+          )}
         />
-        <SelectWithEmptyState
-          label="Mentors"
-          ariaLabel="Choose mentor target"
-          placeholder="Select a mentor"
-          options={mentors}
-          value={mentorId}
-          onChange={onMentorChange}
-          emptyHint="No accepted mentors yet."
-          disabled={disabled}
-          isLoading={isTargetsLoading}
+        <Controller
+          name="mentorId"
+          control={control}
+          render={({ field }) => (
+            <SelectWithEmptyState
+              label="Mentors"
+              ariaLabel="Choose mentor target"
+              placeholder="Select a mentor"
+              options={mentors}
+              value={field.value}
+              onChange={(v) => {
+                field.onChange(v);
+              }}
+              emptyHint="No accepted mentors yet."
+              disabled={disabled}
+              isLoading={isTargetsLoading}
+            />
+          )}
         />
-        <SelectWithEmptyState
-          label="Boards"
-          ariaLabel="Choose board target"
-          placeholder="Select a board"
-          options={boards}
-          value={boardId}
-          onChange={onBoardChange}
-          emptyHint="No boards yet."
-          disabled={disabled}
-          isLoading={isTargetsLoading}
+        <Controller
+          name="boardId"
+          control={control}
+          render={({ field }) => (
+            <SelectWithEmptyState
+              label="Boards"
+              ariaLabel="Choose board target"
+              placeholder="Select a board"
+              options={boards}
+              value={field.value}
+              onChange={(v) => {
+                field.onChange(v);
+              }}
+              emptyHint="No boards yet."
+              disabled={disabled}
+              isLoading={isTargetsLoading}
+            />
+          )}
         />
-        {selectionError ? (
+        {targetError ? (
           <Typography
             component="p"
             className="text-sm font-medium text-rose-300"
             role="alert"
           >
-            {selectionError}
+            {targetError}
           </Typography>
         ) : null}
       </div>
