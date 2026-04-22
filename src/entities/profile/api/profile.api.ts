@@ -3,7 +3,7 @@ import {
   normalizeCurrentUser,
   type CurrentUser,
 } from "@/shared/api/current-user";
-import { apiRequest } from "@/shared/api/base-api";
+import { apiRequest } from "@/shared/api/base.api";
 
 export type UserProfile = CurrentUser;
 
@@ -19,6 +19,15 @@ type UpdateUserProfileResponse = UserProfile & { message: string };
 type DeleteMyAccountResponse = {
   message?: string;
 };
+
+type UsersListResponse = {
+  items: CurrentUser[];
+  total: number;
+  limit: number;
+  offset: number;
+};
+
+const REGULAR_USER_DIRECTORY_LIMIT = 100;
 
 export const normalizeUserProfile = normalizeCurrentUser;
 
@@ -50,4 +59,19 @@ export async function deleteUserAccount(): Promise<void> {
   await apiRequest<DeleteMyAccountResponse>("/users/me", {
     method: "DELETE",
   });
+}
+
+export async function fetchRegularUsersDirectory(): Promise<CurrentUser[]> {
+  const params = new URLSearchParams({
+    role: "REGULAR_USER",
+    limit: String(REGULAR_USER_DIRECTORY_LIMIT),
+    offset: "0",
+  });
+  const res = await apiRequest<UsersListResponse>(
+    `/users?${params.toString()}`,
+    {
+      method: "GET",
+    },
+  );
+  return res.items;
 }

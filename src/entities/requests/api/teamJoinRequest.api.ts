@@ -2,7 +2,7 @@ import type {
   CreateTeamJoinRequestBody,
   TeamJoinRequestInboxItem,
 } from "@/entities/requests/model/team-join-request.types";
-import { apiRequest } from "@/shared/api/base-api";
+import { apiRequest } from "@/shared/api/base.api";
 
 export async function createTeamJoinRequest(
   teamId: string,

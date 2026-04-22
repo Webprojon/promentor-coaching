@@ -4,9 +4,9 @@ import {
   decideMentorshipRequest,
   deleteMentorshipRequest,
   fetchReceivedMentorshipRequests,
-} from "@/entities/requests/api/mentorship-request-api";
+} from "@/entities/requests/api/mentorshipRequest.api";
 import { mentorQueryKeys } from "@/entities/mentors/model/mentor.keys";
-import { mentorshipRequestQueryKeys } from "@/entities/requests/model/mentorship-request.keys";
+import { mentorshipRequestQueryKeys } from "@/entities/requests/model/mentorshipRequest.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 
 export function useReceivedMentorshipRequestsQuery(enabled: boolean) {

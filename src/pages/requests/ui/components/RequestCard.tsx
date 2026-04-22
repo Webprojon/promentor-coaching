@@ -4,7 +4,7 @@ import { MENTOR_SENT_DELIVERED_BADGE_CLASS } from "@/pages/requests/model/consta
 import {
   SUGGESTION_PRIORITY_API_BADGE,
   SUGGESTION_PRIORITY_API_LABEL,
-} from "@/entities/suggestion/model/suggestion-priority-display";
+} from "@/shared/model/constants";
 import type {
   RequestSentCardViewModel,
   RequestSuggestionCardViewModel,

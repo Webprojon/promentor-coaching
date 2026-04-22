@@ -5,14 +5,14 @@ import {
   normalizeUserProfile,
   updateUserProfile,
   type UserProfile,
-} from "@/entities/profile/api/user-profile-api";
+} from "@/entities/profile/api/profile.api";
 import {
   HOST_APP_LOGIN_REDIRECT_PATH,
   loadHostAuthBridge,
   type HostAuthSession,
 } from "@/features/auth";
 import { notifyOk } from "@/shared/feedback/notify";
-import { profileQueryKeys } from "@/shared/query/profile-query-keys";
+import { profileQueryKeys } from "@/entities/profile/model/profile.keys";
 
 export type { UserProfile };
 

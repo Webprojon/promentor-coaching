@@ -5,8 +5,8 @@ import {
   type CreateTacticalBoardBody,
   fetchTacticalBoards,
   updateTacticalBoard,
-} from "@/entities/boards/api/tactical-board-api";
-import { tacticalBoardQueryKeys } from "@/entities/boards/model/tactical-board.keys";
+} from "@/entities/boards/api/board.api";
+import { tacticalBoardQueryKeys } from "@/entities/boards/model/board.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 
 const STALE_MS = 30_000;

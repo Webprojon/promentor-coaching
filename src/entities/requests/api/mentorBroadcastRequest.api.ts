@@ -2,8 +2,8 @@ import type {
   CreateMentorBroadcastRequestBody,
   MentorBroadcastRequestSentItem,
   MentorBroadcastTargetOption,
-} from "@/entities/requests/mentor-broadcast/model/mentor-broadcast-request.types";
-import { apiRequest } from "@/shared/api/base-api";
+} from "@/entities/requests/model/mentorBroadcastRequest.types";
+import { apiRequest } from "@/shared/api/base.api";
 
 export async function fetchSentMentorBroadcastRequests(): Promise<
   MentorBroadcastRequestSentItem[]

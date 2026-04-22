@@ -6,7 +6,7 @@ import type {
   UpdateTeamBody,
 } from "@/entities/teams/model/team.types";
 import type { CurrentUser } from "@/shared/api/current-user";
-import { apiRequest } from "@/shared/api/base-api";
+import { apiRequest } from "@/shared/api/base.api";
 
 export async function fetchTeams(): Promise<CoachingTeamListItem[]> {
   return apiRequest<CoachingTeamListItem[]>("/teams", { method: "GET" });

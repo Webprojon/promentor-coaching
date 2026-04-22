@@ -11,15 +11,15 @@ import {
   fetchTeams,
   inviteRegularUser,
   updateTeam,
-} from "@/entities/teams/api/team-api";
-import { fetchRegularUsersDirectory } from "@/entities/profile/api/user-directory-api";
+} from "@/entities/teams/api/team.api";
+import { fetchRegularUsersDirectory } from "@/entities/profile/api/profile.api";
 import type {
   CreateTeamBody,
   InviteRegularUserBody,
   UpdateTeamBody,
 } from "@/entities/teams/model/team.types";
 import { teamQueryKeys } from "@/entities/teams/model/team.keys";
-import { userDirectoryQueryKeys } from "@/entities/profile/model/user-directory.keys";
+import { userDirectoryQueryKeys } from "@/entities/profile/model/profile.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 
 const TEAMS_STALE_MS = 30_000;

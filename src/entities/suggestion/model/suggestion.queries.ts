@@ -8,7 +8,7 @@ import {
   fetchMyUserSuggestions,
   fetchReceivedUserSuggestions,
   updateUserSuggestion,
-} from "@/entities/suggestion/api/suggestion-api";
+} from "@/entities/suggestion/api/suggestion.api";
 import type {
   CreateUserBoardBody,
   CreateUserSuggestionBody,

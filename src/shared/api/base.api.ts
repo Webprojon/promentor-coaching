@@ -1,8 +1,10 @@
 import type { AxiosRequestConfig } from "axios";
 import { apiClient } from "@/shared/api/axios-instance";
-import { AppApiError } from "@/shared/api/errors";
-import { getApiErrorMessage } from "@/shared/api/errors";
-import { axiosErrorToAppApiError } from "@/shared/api/error-handler";
+import {
+  AppApiError,
+  axiosErrorToAppApiError,
+  getApiErrorMessage,
+} from "@/shared/api/errors";
 import { env } from "@/shared/config/env";
 
 const MAX_PATH_LENGTH = 8192;
@@ -18,10 +20,17 @@ type RequestOptions = Omit<AxiosRequestConfig, "url" | "data"> & {
   body?: unknown;
 };
 
-function assertSafeRelativePath(path: string): void {
-  if (typeof path !== "string") {
-    throw new AppApiError("Invalid request path", 0, null);
+function hasAsciiControlOrDelete(path: string): boolean {
+  for (let i = 0; i < path.length; i += 1) {
+    const code = path.charCodeAt(i);
+    if (code <= 0x1f || code === 0x7f) {
+      return true;
+    }
   }
+  return false;
+}
+
+function assertSafeRelativePath(path: string): void {
   if (path.length === 0 || path.length > MAX_PATH_LENGTH) {
     throw new AppApiError("Invalid request path", 0, null);
   }
@@ -31,7 +40,7 @@ function assertSafeRelativePath(path: string): void {
   if (path.includes("..") || path.includes("\\")) {
     throw new AppApiError("Invalid request path", 0, null);
   }
-  if (/[\u0000-\u001f\u007f]/.test(path)) {
+  if (hasAsciiControlOrDelete(path)) {
     throw new AppApiError("Invalid request path", 0, null);
   }
 }

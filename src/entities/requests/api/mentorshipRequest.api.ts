@@ -1,5 +1,5 @@
 import type { MentorshipRequestInboxItem } from "@/entities/requests/model/mentorship-request.types";
-import { apiRequest } from "@/shared/api/base-api";
+import { apiRequest } from "@/shared/api/base.api";
 
 export type CreateMentorshipRequestBody = {
   mentorId: string;

@@ -7,7 +7,7 @@ import {
 import {
   SUGGESTION_PRIORITY_API_BADGE,
   SUGGESTION_PRIORITY_API_LABEL,
-} from "@/entities/suggestion/model/suggestion-priority-display";
+} from "@/shared/model/constants";
 import type { SuggestionPriorityApi } from "@/entities/suggestion/model/suggestion.types";
 import type {
   RequestSentCardViewModel,

@@ -3,7 +3,7 @@ import { TextField, Typography } from "@promentorapp/ui-kit";
 import {
   useCreateMentorBroadcastRequestMutation,
   useMentorBroadcastTargetsQuery,
-} from "@/entities/requests/mentor-broadcast";
+} from "@/entities/requests";
 import { useTeamsListQuery } from "@/entities/teams";
 import { MENTOR_BROADCAST_ALL_INTERN_VALUE } from "@/pages/requests/model/constants/mentor-broadcast-ui";
 import type { MentorSentTargetKind } from "@/pages/requests/model/types";

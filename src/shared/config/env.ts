@@ -27,7 +27,7 @@ function isCoachingLocalStandalone(): boolean {
   return loc.port === "4175";
 }
 
-export function resolveApiBaseUrl(): string {
+function resolveApiBaseUrl(): string {
   const fromEnv = normalizeTrustedHttpOrigin(
     String(import.meta.env.VITE_API_URL ?? ""),
   );
@@ -50,6 +50,5 @@ export function resolveApiBaseUrl(): string {
 
 export const env = {
   apiBaseUrl: resolveApiBaseUrl(),
-  isDev: import.meta.env.DEV,
   isProd: import.meta.env.PROD,
 } as const;

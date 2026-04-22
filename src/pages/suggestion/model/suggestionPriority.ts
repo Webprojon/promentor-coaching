@@ -1,4 +1,4 @@
-import { SUGGESTION_PRIORITY_API_LABEL } from "@/entities/suggestion/model/suggestion-priority-display";
+import { SUGGESTION_PRIORITY_API_LABEL } from "@/shared/model/constants";
 import type { SuggestionPriorityApi } from "@/entities/suggestion/model/suggestion.types";
 import type { SuggestionPriority } from "@/pages/suggestion/model/types";
 

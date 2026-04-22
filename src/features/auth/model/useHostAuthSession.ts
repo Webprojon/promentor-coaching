@@ -8,7 +8,7 @@ import {
   normalizeCurrentUser,
 } from "@/shared/api/current-user";
 import { AppApiError } from "@/shared/api/errors";
-import { profileQueryKeys } from "@/shared/query/profile-query-keys";
+import { profileQueryKeys } from "@/entities/profile/model/profile.keys";
 import { queryClient } from "@/shared/query/query-client";
 
 const fallbackSession: HostAuthSession = {

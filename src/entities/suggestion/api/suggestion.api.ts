@@ -7,7 +7,7 @@ import type {
   UserSuggestionMentorTarget,
   UserSuggestionSent,
 } from "@/entities/suggestion/model/suggestion.types";
-import { apiRequest } from "@/shared/api/base-api";
+import { apiRequest } from "@/shared/api/base.api";
 
 export async function fetchMyUserSuggestions(): Promise<UserSuggestionSent[]> {
   return apiRequest<UserSuggestionSent[]>("/user-suggestions", { method: "GET" });

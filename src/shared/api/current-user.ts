@@ -1,4 +1,4 @@
-import { apiRequest } from "@/shared/api/base-api";
+import { apiRequest } from "@/shared/api/base.api";
 
 type AuthRole = import("shell/authBridge").AuthRole;
 

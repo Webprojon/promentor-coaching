@@ -3,10 +3,10 @@ import {
   createTeamJoinRequest,
   decideTeamJoinRequest,
   fetchReceivedTeamJoinRequests,
-} from "@/entities/requests/api/team-join-request-api";
+} from "@/entities/requests/api/teamJoinRequest.api";
 import type { CreateTeamJoinRequestBody } from "@/entities/requests/model/team-join-request.types";
-import { teamJoinRequestQueryKeys } from "@/entities/requests/model/team-join-request.keys";
-import { exploreTeamsQueryKeys } from "@/entities/explore-teams/model/explore-teams.keys";
+import { teamJoinRequestQueryKeys } from "@/entities/requests/model/teamJoinRequest.keys";
+import { exploreTeamsQueryKeys } from "@/entities/explore-teams/model/exploreTeams.keys";
 import { teamQueryKeys } from "@/entities/teams/model/team.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchExploreTeams } from "@/entities/explore-teams/api/explore-teams-api";
-import { exploreTeamsQueryKeys } from "@/entities/explore-teams/model/explore-teams.keys";
+import { fetchExploreTeams } from "@/entities/explore-teams/api/exploreTeams.api";
+import { exploreTeamsQueryKeys } from "@/entities/explore-teams/model/exploreTeams.keys";
 
 const STALE_MS = 30_000;
 
