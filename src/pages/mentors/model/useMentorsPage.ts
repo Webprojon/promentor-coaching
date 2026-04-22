@@ -6,31 +6,41 @@ import {
   getNextWizardStep,
   getPreviousWizardStep,
 } from "@/features/send-request-flow/model/utils";
-import { MENTOR_ROWS } from "@/pages/mentors/model/constants";
-import type { Mentor, WizardStep } from "@/pages/mentors/model/types";
+import { useHostAuthSession } from "@/features/auth";
+import {
+  useCreateMentorshipRequestMutation,
+  useDeleteMentorshipRequestMutation,
+} from "@/entities/requests/hooks/use-mentorship-request-queries";
+import { useMentorsQuery } from "@/entities/mentors/hooks/use-mentors-query";
+import { buildRequestMessage } from "@/features/send-request-flow/model/build-request-message";
+import { mapMentorFromApi } from "@/pages/mentors/model/mapMentorFromApi";
 import {
   createEmptyMentorDraft,
-  getMentorActionStatus,
 } from "@/pages/mentors/model/utils";
-
-const updateMentorStatus = (
-  rows: Mentor[],
-  mentorId: string,
-  requestStatus: Mentor["requestStatus"],
-) =>
-  rows.map((mentor) =>
-    mentor.id === mentorId ? { ...mentor, requestStatus } : mentor,
-  );
+import type { Mentor, WizardStep } from "@/pages/mentors/model/types";
 
 export function useMentorsPage() {
-  const [mentorRows, setMentorRows] = useState<Mentor[]>(MENTOR_ROWS);
+  const { session, isHydrating } = useHostAuthSession();
+  const canLoad = !isHydrating && session.isAuthenticated;
+  const isRegularUser = session.user?.role === "REGULAR_USER";
+
+  const mentorsQuery = useMentorsQuery(canLoad);
+  const createMutation = useCreateMentorshipRequestMutation();
+  const deleteMutation = useDeleteMentorshipRequestMutation();
+
+  const rows: Mentor[] = (mentorsQuery.data ?? []).map(mapMentorFromApi);
+
   const [wizardStep, setWizardStep] = useState<WizardStep>(FIRST_WIZARD_STEP);
   const [draft, setDraft] = useState<RequestDraft>(createEmptyMentorDraft);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
 
+  const isMentorsLoading = isHydrating || (canLoad && mentorsQuery.isPending);
+  const isMentorshipActionPending =
+    createMutation.isPending || deleteMutation.isPending;
+
   const onRequestClick = (mentorId: string) => {
-    const mentor = mentorRows.find((item) => item.id === mentorId);
-    if (!mentor) return;
+    const mentor = rows.find((item) => item.id === mentorId);
+    if (!mentor || !isRegularUser) return;
     setDraft({
       ...createEmptyMentorDraft(),
       targetId: mentor.id,
@@ -51,26 +61,36 @@ export function useMentorsPage() {
   };
 
   const onSubmitRequest = () => {
-    if (!draft.targetId) return;
-    setMentorRows((previous) =>
-      updateMentorStatus(previous, draft.targetId, "Pending"),
+    if (!draft.targetId || !isRegularUser) return;
+    createMutation.mutate(
+      {
+        mentorId: draft.targetId,
+        message: buildRequestMessage(draft, "Mentorship request"),
+      },
+      { onSuccess: onCloseWizard },
     );
-    onCloseWizard();
   };
 
   const onMentorActionClick = (mentorId: string) => {
-    const mentor = mentorRows.find((item) => item.id === mentorId);
-    if (!mentor) return;
+    const mentor = rows.find((item) => item.id === mentorId);
+    if (!mentor || !isRegularUser) return;
 
     if (mentor.requestStatus === "NotRequested") {
       onRequestClick(mentorId);
       return;
     }
 
-    const nextStatus = getMentorActionStatus(mentor.requestStatus);
-    setMentorRows((previous) =>
-      updateMentorStatus(previous, mentorId, nextStatus),
-    );
+    if (mentor.requestStatus === "Declined") {
+      onRequestClick(mentorId);
+      return;
+    }
+
+    const requestId = mentor.mentorshipRequestId;
+    if (!requestId) return;
+
+    if (mentor.requestStatus === "Pending" || mentor.requestStatus === "Accepted") {
+      deleteMutation.mutate(requestId);
+    }
   };
 
   const goNext = () => setWizardStep((previous) => getNextWizardStep(previous));
@@ -79,11 +99,10 @@ export function useMentorsPage() {
   const canGoNext = canProceedWizardStep(wizardStep, draft);
 
   return {
-    rows: mentorRows,
+    rows,
     wizardStep,
     draft,
     isWizardOpen,
-    onRequestClick,
     onMentorActionClick,
     onCloseWizard,
     onChangeDraft,
@@ -91,5 +110,8 @@ export function useMentorsPage() {
     goNext,
     goBack,
     canGoNext,
+    isMentorsLoading,
+    isMentorshipActionPending,
+    isSendingMentorship: createMutation.isPending,
   };
 }

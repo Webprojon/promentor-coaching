@@ -27,6 +27,7 @@ export type RequestSentCardViewModel = RequestCardSharedFields & {
   KindIcon: IconType;
   mentorName: string;
   mentorAvatarUrl?: string | null;
+  onCancelRequest: () => Promise<void>;
 };
 
 export type RequestsTabFilterOption<T extends string = string> = {
@@ -48,15 +49,10 @@ export type MentorSentTargetKind =
   | "interns"
   | "boards";
 
-export type MentorSentRequestSendOption = {
-  value: string;
-  label: string;
-};
-
 export type MentorSentRequestSendFieldset = {
   primaryLabel: string;
   primaryAriaLabel: string;
-  primaryOptions: readonly MentorSentRequestSendOption[];
+  emptyPrimaryLabel: string;
   angleField: {
     label: string;
     ariaLabel: string;
@@ -86,6 +82,7 @@ export type MentorSentRequestRow = {
   counterpartName: string;
   summary: string;
   createdLabel: string;
+  onCancelRequest: () => Promise<void>;
 };
 
 export type RequestViewToggleOption = {

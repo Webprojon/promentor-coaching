@@ -64,6 +64,7 @@ export function toRequestSentCardViewModel(
     counterpartName: row.counterpartName,
     createdLabel: row.createdLabel,
     summary: row.summary,
+    onCancelRequest: row.onCancelRequest,
   };
 }
 

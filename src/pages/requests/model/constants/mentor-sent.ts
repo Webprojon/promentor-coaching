@@ -27,7 +27,7 @@ export const MENTOR_SENT_DELIVERED_BADGE_CLASS =
 export const MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS = {
   cancel: "Cancel",
   edit: "Edit",
-  delete: "Delete",
+  delete: "Cancel request",
 } as const;
 
 export type MentorSentRequestViewModalFooterHandlers = {
@@ -88,7 +88,7 @@ export const MENTOR_SENT_KIND_META: Record<
   interns: {
     label: "Interns",
     shortLabel: "Intern",
-    hint: "Requests for your intern cohort and mentors-of-record.",
+    hint: "Requests to your accepted interns, or to everyone at once.",
     Icon: RiPlantLine,
     cardAccentClass:
       "border-l-4 border-l-emerald-400/75 bg-linear-to-br from-emerald-500/12 via-slate-900/70 to-slate-950/80",
@@ -112,12 +112,7 @@ export const MENTOR_SENT_REQUEST_SEND_FIELDSET: Record<
   teams: {
     primaryLabel: "Team",
     primaryAriaLabel: "Choose team",
-    primaryOptions: [
-      { value: "", label: "Select a team you mentor" },
-      { value: "core", label: "Core Delivery Guild" },
-      { value: "design", label: "Design Systems Guild" },
-      { value: "mobile", label: "Mobile Platform Guild" },
-    ],
+    emptyPrimaryLabel: "Select a team you mentor",
     angleField: {
       label: "Ritual or workflow",
       ariaLabel: "Ritual or workflow",
@@ -127,14 +122,9 @@ export const MENTOR_SENT_REQUEST_SEND_FIELDSET: Record<
       "What should change, and why does it help the whole team?",
   },
   interns: {
-    primaryLabel: "Cohort",
-    primaryAriaLabel: "Choose intern cohort",
-    primaryOptions: [
-      { value: "", label: "Pick a cohort" },
-      { value: "summer-design", label: "Summer · Design" },
-      { value: "summer-eng", label: "Summer · Engineering" },
-      { value: "returning", label: "Returning interns" },
-    ],
+    primaryLabel: "Interns",
+    primaryAriaLabel: "Choose an intern or All",
+    emptyPrimaryLabel: "Select an intern or All",
     angleField: {
       label: "Focus skill",
       ariaLabel: "Focus skill",
@@ -142,23 +132,11 @@ export const MENTOR_SENT_REQUEST_SEND_FIELDSET: Record<
     },
     detailPlaceholder:
       "What practice, template, or cadence would accelerate their growth?",
-    extraFields: [
-      {
-        label: "Optional office hours",
-        ariaLabel: "Optional office hours",
-        placeholder: "e.g. Fri 15:00-16:00 UTC",
-      },
-    ],
   },
   boards: {
     primaryLabel: "Board",
     primaryAriaLabel: "Choose board",
-    primaryOptions: [
-      { value: "", label: "Select a board" },
-      { value: "release", label: "Release train board" },
-      { value: "portfolio", label: "Portfolio kanban" },
-      { value: "risk", label: "Risk radar" },
-    ],
+    emptyPrimaryLabel: "Select a board",
     angleField: {
       label: "Column or swimlane",
       ariaLabel: "Column or swimlane",

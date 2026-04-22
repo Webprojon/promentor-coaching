@@ -7,13 +7,17 @@ import {
 import type { MentorCardProps } from "@/pages/mentors/model/types";
 import { Badge } from "@/shared/ui";
 
-export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
+export function MentorCard({
+  mentor,
+  isMentorshipActionPending,
+  onActionClick,
+}: MentorCardProps) {
   const actionButtonProps = ACTION_BUTTON_PROPS_BY_STATUS[mentor.requestStatus];
   const {
     id,
     avatarUrl,
     name,
-    expertise,
+    expertiseLabel,
     availability,
     requestStatus,
     sessions,
@@ -33,7 +37,7 @@ export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
               {name}
             </Typography>
             <Typography component="p" className="mt-1 text-sm text-slate-300">
-              {expertise} coaching
+              {expertiseLabel} coaching
             </Typography>
             <Typography component="p" className="mt-1 text-xs text-cyan-200/80">
               Availability: {availability}
@@ -55,15 +59,17 @@ export function MentorCard({ mentor, onActionClick }: MentorCardProps) {
           component="p"
           className="line-clamp-2 text-sm text-slate-300"
         >
-          Linked teams: {linkedTeams.join(", ")}
+          Linked teams:{" "}
+          {linkedTeams.length > 0 ? linkedTeams.join(", ") : "—"}
         </Typography>
       </div>
 
-      <div className="mt-4 flex justify-end">
+      <div className="mt-4 flex min-h-[40px] items-end justify-end">
         <Button
           type="button"
           variant={actionButtonProps.variant}
           color={actionButtonProps.color}
+          disabled={isMentorshipActionPending}
           onClick={() => onActionClick(id)}
         >
           {ACTION_LABEL_BY_STATUS[requestStatus]}

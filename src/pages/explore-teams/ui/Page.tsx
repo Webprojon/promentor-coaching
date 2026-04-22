@@ -1,7 +1,7 @@
 import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
 import { SendRequestFlow } from "@/features/send-request-flow";
-import { Modal, PageHeader, TeamsEmptyState } from "@/shared/ui";
+import { EmptyListingState, Modal, PageHeader } from "@/shared/ui";
 import { Typography } from "@promentorapp/ui-kit";
 
 export default function ExploreTeamsPage() {
@@ -34,7 +34,10 @@ export default function ExploreTeamsPage() {
           Loading teams…
         </Typography>
       ) : showExploreEmpty ? (
-        <TeamsEmptyState description="Once a team is created, it will appear here." />
+        <EmptyListingState
+          title="No teams yet"
+          description="Once a team is created, it will appear here."
+        />
       ) : (
         <ExploreTeamTable
           rows={rows}

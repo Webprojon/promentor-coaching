@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -59,18 +59,12 @@ export function useTeamsPage() {
     defaultValues: { fullName: "", email: "" },
   });
 
-  const teamRows = useMemo(() => {
-    const items = teamsQuery.data ?? [];
-    return items.map(mapListItemToTeamRow);
-  }, [teamsQuery.data]);
+  const teamRows = (teamsQuery.data ?? []).map(mapListItemToTeamRow);
 
   const hasTeams = teamRows.length > 0;
   const isLoadingTeams = teamsQuery.isPending;
 
-  const memberOptions = useMemo(() => {
-    const users = directoryQuery.data ?? [];
-    return users.map(mapUserToMemberOption);
-  }, [directoryQuery.data]);
+  const memberOptions = (directoryQuery.data ?? []).map(mapUserToMemberOption);
 
   useEffect(() => {
     const detail = teamDetailQuery.data;
@@ -81,39 +75,36 @@ export function useTeamsPage() {
     setSelectedMemberIds(detail.members.map((m) => m.id));
   }, [editingTeamId, teamDetailQuery.data, createTeamForm]);
 
-  const resetCreatorForm = useCallback(() => {
+  const resetCreatorForm = () => {
     setSelectedMemberIds([]);
     setIsManualMemberFormOpen(false);
     setEditingTeamId(null);
     createTeamForm.reset();
     manualMemberForm.reset();
-  }, [createTeamForm, manualMemberForm]);
+  };
 
-  const closeCreator = useCallback(() => {
+  const closeCreator = () => {
     setIsCreatorOpen(false);
     resetCreatorForm();
-  }, [resetCreatorForm]);
+  };
 
-  const openCreator = useCallback(() => {
+  const openCreator = () => {
     setEditingTeamId(null);
     setSelectedMemberIds([]);
     setIsManualMemberFormOpen(false);
     createTeamForm.reset({ teamName: "" });
     manualMemberForm.reset();
     setIsCreatorOpen(true);
-  }, [createTeamForm, manualMemberForm]);
+  };
 
-  const openEditor = useCallback(
-    (teamId: string) => {
-      setEditingTeamId(teamId);
-      setSelectedMemberIds([]);
-      setIsManualMemberFormOpen(false);
-      createTeamForm.reset({ teamName: "" });
-      manualMemberForm.reset();
-      setIsCreatorOpen(true);
-    },
-    [createTeamForm, manualMemberForm],
-  );
+  const openEditor = (teamId: string) => {
+    setEditingTeamId(teamId);
+    setSelectedMemberIds([]);
+    setIsManualMemberFormOpen(false);
+    createTeamForm.reset({ teamName: "" });
+    manualMemberForm.reset();
+    setIsCreatorOpen(true);
+  };
 
   const isEditingDetailLoading =
     Boolean(editingTeamId) && teamDetailQuery.isPending;
@@ -167,18 +158,18 @@ export function useTeamsPage() {
     manualMemberForm.reset();
   });
 
-  const requestDeleteTeam = useCallback((teamId: string) => {
+  const requestDeleteTeam = (teamId: string) => {
     setPendingDeleteTeamId(teamId);
-  }, []);
+  };
 
-  const closeDeleteTeamModal = useCallback(() => {
+  const closeDeleteTeamModal = () => {
     if (deletingTeamId !== null) {
       return;
     }
     setPendingDeleteTeamId(null);
-  }, [deletingTeamId]);
+  };
 
-  const confirmDeleteTeam = useCallback(async () => {
+  const confirmDeleteTeam = async () => {
     if (!pendingDeleteTeamId) {
       return;
     }
@@ -190,16 +181,13 @@ export function useTeamsPage() {
     } finally {
       setDeletingTeamId(null);
     }
-  }, [pendingDeleteTeamId, deleteMutation]);
+  };
 
-  const pendingDeleteTeamName = useMemo(() => {
-    if (!pendingDeleteTeamId) {
-      return "";
-    }
-    return (
-      teamRows.find((row) => row.id === pendingDeleteTeamId)?.teamName ?? ""
-    );
-  }, [pendingDeleteTeamId, teamRows]);
+  const pendingDeleteTeamName =
+    pendingDeleteTeamId === null
+      ? ""
+      : (teamRows.find((row) => row.id === pendingDeleteTeamId)?.teamName ??
+        "");
 
   const createErrors = createTeamForm.formState.errors;
   const manualErrors = manualMemberForm.formState.errors;

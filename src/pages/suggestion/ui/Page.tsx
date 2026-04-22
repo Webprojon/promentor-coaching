@@ -17,6 +17,7 @@ export default function SuggestionPage() {
       <section className="grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
         <JoinedTeamsPanel
           joinedTeams={state.joinedTeams}
+          isTeamsLoading={state.isTeamsLoading}
           selectedTeamId={state.selectedTeamId}
           selectedTeam={state.selectedTeam}
           onTeamChange={state.onTeamChange}

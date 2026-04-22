@@ -2,7 +2,7 @@ import { Button, Typography } from "@promentorapp/ui-kit";
 import { useTeamsPage } from "@/pages/teams/model/useTeamsPage";
 import { TeamCreatorSection } from "@/pages/teams/ui/components/TeamCreatorSection";
 import { TeamTable } from "@/pages/teams/ui/components/TeamTable";
-import { Modal, PageHeader, TeamsEmptyState } from "@/shared/ui";
+import { EmptyListingState, Modal, PageHeader } from "@/shared/ui";
 import { DeleteTeamModal } from "@/pages/teams/ui/components/DeleteTeamModal";
 
 export default function TeamsPage() {
@@ -56,7 +56,10 @@ export default function TeamsPage() {
             deletingTeamId={deletingTeamId}
           />
         ) : (
-          <TeamsEmptyState description="Create your first team to get started." />
+          <EmptyListingState
+            title="No teams yet"
+            description="Create your first team to get started."
+          />
         )}
       </section>
 

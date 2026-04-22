@@ -1,75 +1,91 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { useTeamsListQuery } from "@/entities/team/hooks/use-team-queries";
+import { useHostAuthSession } from "@/features/auth/model/useHostAuthSession";
+import { mapListItemToJoinedTeam } from "@/pages/suggestion/model/mapJoinedTeamFromApi";
+import { firstMemberName, resolveActiveTeam } from "@/pages/suggestion/model/resolveActiveTeam";
 import type {
   SuggestionDraft,
+  SuggestionHistoryItem,
   SuggestionPriority,
 } from "@/pages/suggestion/model/types";
-import {
-  joinedTeams,
-  suggestionHistory,
-} from "@/pages/suggestion/model/constants";
 
-const DEFAULT_TEAM = joinedTeams[0];
-
-const EMPTY_DRAFT: SuggestionDraft = {
-  teamId: DEFAULT_TEAM?.id ?? "",
-  teamName: DEFAULT_TEAM?.name ?? "",
-  title: "",
-  detail: "",
-  priority: "Medium",
-  mentorTarget: "",
-};
+function createEmptyFields(): {
+  title: string;
+  detail: string;
+  priority: SuggestionPriority;
+} {
+  return { title: "", detail: "", priority: "Medium" };
+}
 
 export function useSuggestionPage() {
-  const [selectedTeamId, setSelectedTeamId] = useState<string>(
-    DEFAULT_TEAM?.id ?? "",
-  );
-  const [draft, setDraft] = useState<SuggestionDraft>(EMPTY_DRAFT);
+  const { session, isHydrating } = useHostAuthSession();
+  const authed = session.isAuthenticated;
 
-  const selectedTeam = useMemo(
-    () =>
-      joinedTeams.find((team) => team.id === selectedTeamId) ?? joinedTeams[0],
-    [selectedTeamId],
-  );
+  const teamsQuery = useTeamsListQuery(!isHydrating && authed);
+  const joinedTeams = (teamsQuery.data ?? []).map(mapListItemToJoinedTeam);
 
-  const history = useMemo(
-    () => suggestionHistory.filter((item) => item.teamId === selectedTeam?.id),
-    [selectedTeam],
-  );
+  const [selectedTeamId, setSelectedTeamId] = useState<string | null>(null);
+  const [fields, setFields] = useState(createEmptyFields);
+
+  const activeTeam = resolveActiveTeam(joinedTeams, selectedTeamId);
+
+  const draft: SuggestionDraft = !activeTeam
+    ? {
+        teamId: "",
+        teamName: "",
+        title: fields.title,
+        detail: fields.detail,
+        priority: fields.priority,
+        mentorTarget: "",
+      }
+    : {
+        teamId: activeTeam.id,
+        teamName: activeTeam.name,
+        title: fields.title,
+        detail: fields.detail,
+        priority: fields.priority,
+        mentorTarget: firstMemberName(activeTeam),
+      };
 
   const onTeamChange = (teamId: string) => {
-    const nextTeam = joinedTeams.find((team) => team.id === teamId);
-    if (!nextTeam) return;
-    setSelectedTeamId(nextTeam.id);
-    setDraft((previous) => ({
-      ...previous,
-      teamId: nextTeam.id,
-      teamName: nextTeam.name,
-      mentorTarget: nextTeam.mentors[0] ?? "",
-    }));
+    setSelectedTeamId(teamId);
   };
 
-  const onDraftChange = (field: keyof SuggestionDraft, value: string) => {
-    setDraft((previous) => ({ ...previous, [field]: value }));
+  const onDraftChange = (key: keyof SuggestionDraft, value: string) => {
+    if (key === "title") {
+      setFields((prev) => ({ ...prev, title: value }));
+      return;
+    }
+    if (key === "detail") {
+      setFields((prev) => ({ ...prev, detail: value }));
+      return;
+    }
+    if (key === "priority") {
+      setFields((prev) => ({
+        ...prev,
+        priority: value as SuggestionPriority,
+      }));
+    }
+  };
+
+  const onSend = () => {
+    setFields(createEmptyFields());
   };
 
   const priorities: SuggestionPriority[] = ["High", "Medium", "Low"];
 
   const canSend =
-    draft.title.trim().length > 0 && draft.detail.trim().length > 0;
+    activeTeam !== null &&
+    fields.title.trim().length > 0 &&
+    fields.detail.trim().length > 0;
 
-  const onSend = () => {
-    setDraft((previous) => ({
-      ...previous,
-      title: "",
-      detail: "",
-      priority: "Medium",
-    }));
-  };
+  const history: SuggestionHistoryItem[] = [];
 
   return {
     joinedTeams,
-    selectedTeam,
-    selectedTeamId,
+    isTeamsLoading: teamsQuery.isPending,
+    selectedTeam: activeTeam ?? undefined,
+    selectedTeamId: activeTeam?.id ?? "",
     draft,
     history,
     priorities,

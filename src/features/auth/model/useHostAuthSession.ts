@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   HostAuthBridge,
   HostAuthSession,
@@ -186,7 +186,7 @@ export function useHostAuthSession() {
     };
   }, []);
 
-  const retryStandaloneAuthLoad = useCallback(() => {
+  const retryStandaloneAuthLoad = () => {
     if (isBridgeAvailable) {
       return;
     }
@@ -203,7 +203,7 @@ export function useHostAuthSession() {
         setStandaloneAuthError(result.error);
       }
     });
-  }, [isBridgeAvailable]);
+  };
 
   return {
     session,

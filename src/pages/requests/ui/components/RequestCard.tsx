@@ -5,6 +5,7 @@ import type {
   RequestSentCardViewModel,
   RequestSuggestionCardViewModel,
 } from "@/pages/requests/model/types";
+import { CancelBroadcastRequestModal } from "./CancelBroadcastRequestModal";
 import { RequestViewModal } from "@/pages/requests/ui/components/RequestViewModal";
 import { Badge } from "@/shared/ui";
 
@@ -23,9 +24,10 @@ type RequestCardProps = {
 export function RequestCard({
   viewModel,
   onSentEdit,
-  onSentDelete,
 }: RequestCardProps) {
   const [detailOpen, setDetailOpen] = useState(false);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [isCancelling, setIsCancelling] = useState(false);
 
   const {
     cardAccentClass,
@@ -58,14 +60,22 @@ export function RequestCard({
     onSentEdit?.();
   };
 
-  const handleSentDelete = () => {
-    if (
-      typeof window !== "undefined" &&
-      window.confirm("Delete this request? This cannot be undone.")
-    ) {
-      setDetailOpen(false);
-      onSentDelete?.();
-    }
+  const openCancelDialog = () => {
+    if (!isSentCardViewModel(viewModel)) return;
+    setCancelDialogOpen(true);
+  };
+
+  const handleConfirmCancel = () => {
+    if (!isSentCardViewModel(viewModel)) return;
+    void (async () => {
+      setIsCancelling(true);
+      try {
+        await viewModel.onCancelRequest();
+        setCancelDialogOpen(false);
+      } finally {
+        setIsCancelling(false);
+      }
+    })();
   };
 
   return (
@@ -134,7 +144,7 @@ export function RequestCard({
         >
           {summary}
         </Typography>
-        <div className="mt-2 flex justify-end">
+        <div className="mt-2 flex items-center justify-between gap-2">
           <Button
             type="button"
             variant="text"
@@ -144,6 +154,17 @@ export function RequestCard({
           >
             More
           </Button>
+          {isSentCardViewModel(viewModel) ? (
+            <Button
+              type="button"
+              variant="outlined"
+              color="error"
+              onClick={openCancelDialog}
+              className="min-w-0 shrink-0 px-3 py-1 text-xs font-semibold normal-case"
+            >
+              Cancel request
+            </Button>
+          ) : null}
         </div>
       </article>
 
@@ -153,7 +174,12 @@ export function RequestCard({
         onClose={() => setDetailOpen(false)}
         onEditSent={isSentCardViewModel(viewModel) ? handleSentEdit : undefined}
         onDeleteSent={
-          isSentCardViewModel(viewModel) ? handleSentDelete : undefined
+          isSentCardViewModel(viewModel)
+            ? () => {
+                setDetailOpen(false);
+                setCancelDialogOpen(true);
+              }
+            : undefined
         }
         onAccept={
           !isSentCardViewModel(viewModel)
@@ -166,6 +192,15 @@ export function RequestCard({
             : undefined
         }
       />
+
+      {isSentCardViewModel(viewModel) ? (
+        <CancelBroadcastRequestModal
+          open={cancelDialogOpen}
+          onClose={() => setCancelDialogOpen(false)}
+          onConfirm={handleConfirmCancel}
+          isPending={isCancelling}
+        />
+      ) : null}
     </>
   );
 }

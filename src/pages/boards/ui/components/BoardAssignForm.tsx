@@ -1,16 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { Button, TextField, Typography } from "@promentorapp/ui-kit";
+import { useForm } from "react-hook-form";
+import { useTeamsListQuery } from "@/entities/team/hooks/use-team-queries";
+import { useHostAuthSession } from "@/features/auth/model/useHostAuthSession";
 import {
   boardAssignSchema,
   type BoardAssignFormValues,
 } from "@/pages/boards/model/boardAssignSchema";
-import { joinedTeams } from "@/pages/suggestion/model/constants";
 import { FieldError } from "@/pages/teams/ui/components/FieldError";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { FormField, Select } from "@/shared/ui";
 
 export function BoardAssignForm() {
+  const { session, isHydrating } = useHostAuthSession();
+  const authed = session.isAuthenticated;
+  const teamsQuery = useTeamsListQuery(!isHydrating && authed);
+  const teams = teamsQuery.data ?? [];
+
   const {
     register,
     handleSubmit,
@@ -53,20 +59,36 @@ export function BoardAssignForm() {
 
           <div className="grid min-w-0 gap-2">
             <FormField label="Team">
-              <Select
-                fieldSize="md"
-                aria-label="Assign board to team"
-                {...register("teamId")}
-              >
-                <option value="" disabled>
-                  Choose a team
-                </option>
-                {joinedTeams.map((team) => (
-                  <option key={team.id} value={team.id}>
-                    {team.name}
+              {teamsQuery.isPending ? (
+                <Typography
+                  component="p"
+                  className="text-sm text-slate-500"
+                >
+                  Loading teams…
+                </Typography>
+              ) : teams.length === 0 ? (
+                <Typography
+                  component="p"
+                  className="text-sm text-slate-500"
+                >
+                  No teams available. Create a team on the Teams page first.
+                </Typography>
+              ) : (
+                <Select
+                  fieldSize="md"
+                  aria-label="Assign board to team"
+                  {...register("teamId")}
+                >
+                  <option value="" disabled>
+                    Choose a team
                   </option>
-                ))}
-              </Select>
+                  {teams.map((team) => (
+                    <option key={team.id} value={team.id}>
+                      {team.name}
+                    </option>
+                  ))}
+                </Select>
+              )}
             </FormField>
             <FieldError message={errors.teamId?.message} />
           </div>
@@ -76,7 +98,7 @@ export function BoardAssignForm() {
           <Button
             type="submit"
             variant="contained"
-            disabled={!isValid}
+            disabled={!isValid || teams.length === 0}
             className="h-11 w-full rounded-lg! px-6 sm:w-auto sm:min-w-44"
           >
             Save board

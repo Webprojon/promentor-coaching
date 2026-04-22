@@ -13,9 +13,8 @@ export type SuggestionDraft = {
 export type JoinedTeam = {
   id: string;
   name: string;
-  mentors: string[];
-  weeklyGoal: string;
-  progress: string;
+  membersCount: number;
+  membersLabel: string;
 };
 
 export type SuggestionHistoryItem = {
@@ -29,6 +28,7 @@ export type SuggestionHistoryItem = {
 
 export type JoinedTeamsPanelProps = {
   joinedTeams: JoinedTeam[];
+  isTeamsLoading?: boolean;
   selectedTeamId: string;
   selectedTeam?: JoinedTeam;
   onTeamChange: (teamId: string) => void;

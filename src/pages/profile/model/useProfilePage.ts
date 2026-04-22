@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHostAuthSession } from "@/features/auth";
 import {
@@ -63,7 +63,7 @@ export function useProfilePage(): ProfilePageUiModel {
   const canEdit = session.isAuthenticated && Boolean(profile);
   const savedBio = profile?.about ?? "";
   const draftBio = draftBioOverride ?? savedBio;
-  const profileHeader = useMemo(() => buildProfileHeader(profile), [profile]);
+  const profileHeader = buildProfileHeader(profile);
 
   const handleBioSave = () => {
     if (!canEdit) {

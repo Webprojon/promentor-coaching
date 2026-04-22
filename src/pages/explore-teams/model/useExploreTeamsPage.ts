@@ -13,7 +13,7 @@ import {
   useCreateTeamJoinRequestMutation,
   useExploreTeamsQuery,
 } from "@/entities/team/hooks/use-explore-teams";
-import { buildTeamJoinMessage } from "@/pages/explore-teams/model/buildTeamJoinMessage";
+import { buildRequestMessage } from "@/features/send-request-flow/model/build-request-message";
 import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/mapExploreTeamFromApi";
 
 const createEmptyDraft = (): RequestDraft => ({
@@ -73,7 +73,7 @@ export function useExploreTeamsPage() {
     joinMutation.mutate(
       {
         teamId: draft.targetId,
-        body: { message: buildTeamJoinMessage(draft) },
+        body: { message: buildRequestMessage(draft, "Team join request") },
       },
       { onSuccess: onCloseWizard },
     );
