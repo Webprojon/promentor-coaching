@@ -1,4 +1,4 @@
-import type { MentorBroadcastRequestSentItem } from "@/entities/mentor-broadcast-request/model/mentor-broadcast-request.types";
+import type { MentorBroadcastRequestSentItem } from "@/entities/requests/mentor-broadcast/model/mentor-broadcast-request.types";
 import { MENTOR_SENT_KIND_META } from "@/pages/requests/model/constants/mentor-sent";
 import type {
   MentorSentRequestRow,

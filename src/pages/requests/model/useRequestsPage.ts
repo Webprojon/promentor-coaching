@@ -3,7 +3,7 @@ import { useHostAuthSession } from "@/features/auth";
 import {
   useCancelMentorBroadcastRequestMutation,
   useSentMentorBroadcastRequestsQuery,
-} from "@/entities/mentor-broadcast-request/hooks/use-mentor-broadcast-request-queries";
+} from "@/entities/requests/mentor-broadcast/hooks/use-mentor-broadcast-request-queries";
 import {
   useDecideMentorshipRequestMutation,
   useReceivedMentorshipRequestsQuery,

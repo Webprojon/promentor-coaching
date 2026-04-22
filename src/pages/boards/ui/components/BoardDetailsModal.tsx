@@ -1,7 +1,7 @@
 import { Button, Typography } from "@promentorapp/ui-kit";
 import dayjs from "dayjs";
 import { LuEye, LuPencil, LuTrash2 } from "react-icons/lu";
-import type { TacticalBoardRecord } from "@/entities/tactical-board";
+import type { TacticalBoardRecord } from "@/entities/boards";
 import { getBoardTypeLabel } from "@/pages/boards/lib/board-type-label";
 import { Modal } from "@/shared/ui";
 

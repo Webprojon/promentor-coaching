@@ -1,4 +1,4 @@
-import type { ExploreJoinUiApi } from "@/entities/team/model/team.types";
+import type { ExploreJoinUiApi } from "@/entities/teams/model/team.types";
 import type { TeamStatus } from "@/shared/model/types";
 
 export type ExploreTeam = {

@@ -45,9 +45,16 @@ function SelectWithEmptyState({
   return (
     <FormField label={label}>
       {isLoading ? (
-        <Typography component="p" className="text-sm text-slate-500">
-          Loading…
-        </Typography>
+        <Select
+          fieldSize="sm"
+          value=""
+          onChange={() => {}}
+          aria-label={ariaLabel}
+          disabled
+          aria-busy
+        >
+          <option value="">{placeholder}</option>
+        </Select>
       ) : noOptions ? (
         <Typography component="p" className="text-sm text-slate-500">
           {emptyHint}

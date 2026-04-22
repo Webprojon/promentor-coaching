@@ -2,7 +2,7 @@ import { Button, Typography } from "@promentorapp/ui-kit";
 import dayjs from "dayjs";
 import { LuUsers } from "react-icons/lu";
 import { getBoardTypeLabel } from "@/pages/boards/lib/board-type-label";
-import type { TacticalBoardRecord } from "@/entities/tactical-board";
+import type { TacticalBoardRecord } from "@/entities/boards";
 
 type BoardCardProps = {
   board: TacticalBoardRecord;

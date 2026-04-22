@@ -1,4 +1,4 @@
-import type { TacticalBoardRecord } from "@/entities/tactical-board/model/tactical-board.types";
+import type { TacticalBoardRecord } from "@/entities/boards/model/tactical-board.types";
 import { apiRequest } from "@/shared/api/base-api";
 
 export type CreateTacticalBoardBody = {

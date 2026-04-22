@@ -1,6 +1,6 @@
 import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
-import { SendRequestFlow } from "@/features/send-request-flow";
+import { SendRequestFlow } from "@/features/requests/send-request-flow";
 import { EmptyListingState, Modal, PageHeader } from "@/shared/ui";
 import { Typography } from "@promentorapp/ui-kit";
 

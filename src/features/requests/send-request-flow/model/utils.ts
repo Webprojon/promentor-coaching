@@ -1,7 +1,7 @@
 import type {
   RequestDraft,
   WizardStep,
-} from "@/features/send-request-flow/model/types";
+} from "@/features/requests/send-request-flow/model/types";
 
 export const FIRST_WIZARD_STEP: WizardStep = 1;
 export const LAST_WIZARD_STEP: WizardStep = 3;

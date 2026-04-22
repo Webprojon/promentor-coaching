@@ -1,4 +1,4 @@
-import type { RequestDraft } from "@/features/send-request-flow/model/types";
+import type { RequestDraft } from "@/features/requests/send-request-flow/model/types";
 
 export const createEmptyMentorDraft = (): RequestDraft => ({
   targetType: "mentor",

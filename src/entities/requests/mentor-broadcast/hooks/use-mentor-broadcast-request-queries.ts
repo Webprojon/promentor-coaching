@@ -4,9 +4,9 @@ import {
   createMentorBroadcastRequest,
   fetchMentorBroadcastTargets,
   fetchSentMentorBroadcastRequests,
-} from "@/entities/mentor-broadcast-request/api/mentor-broadcast-request-api";
-import type { CreateMentorBroadcastRequestBody } from "@/entities/mentor-broadcast-request/model/mentor-broadcast-request.types";
-import { mentorBroadcastRequestQueryKeys } from "@/entities/mentor-broadcast-request/model/mentor-broadcast-request.keys";
+} from "@/entities/requests/mentor-broadcast/api/mentor-broadcast-request-api";
+import type { CreateMentorBroadcastRequestBody } from "@/entities/requests/mentor-broadcast/model/mentor-broadcast-request.types";
+import { mentorBroadcastRequestQueryKeys } from "@/entities/requests/mentor-broadcast/model/mentor-broadcast-request.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 
 export function useSentMentorBroadcastRequestsQuery(enabled: boolean) {

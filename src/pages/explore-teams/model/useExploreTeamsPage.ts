@@ -2,18 +2,18 @@ import { useState } from "react";
 import type {
   RequestDraft,
   WizardStep,
-} from "@/features/send-request-flow/model/types";
+} from "@/features/requests/send-request-flow/model/types";
 import {
   canProceedWizardStep,
   getNextWizardStep,
   getPreviousWizardStep,
-} from "@/features/send-request-flow/model/utils";
+} from "@/features/requests/send-request-flow/model/utils";
 import { useHostAuthSession } from "@/features/auth";
 import {
   useCreateTeamJoinRequestMutation,
   useExploreTeamsQuery,
-} from "@/entities/team/hooks/use-explore-teams";
-import { buildRequestMessage } from "@/features/send-request-flow/model/build-request-message";
+} from "@/entities/teams/hooks/use-explore-teams";
+import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
 import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/mapExploreTeamFromApi";
 
 const createEmptyDraft = (): RequestDraft => ({

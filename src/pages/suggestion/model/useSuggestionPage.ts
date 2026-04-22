@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTeamsListQuery } from "@/entities/team/hooks/use-team-queries";
+import { useTeamsListQuery } from "@/entities/teams/hooks/use-team-queries";
 import {
   useBoardTargetsForSuggestionQuery,
   useCreateUserSuggestionMutation,
@@ -43,9 +43,8 @@ const MULTI_TARGET_ERROR =
 export function useSuggestionPage() {
   const { session, isHydrating } = useHostAuthSession();
   const authed = session.isAuthenticated;
-  const isRegularUser = session.user?.role === "REGULAR_USER";
 
-  const enabled = !isHydrating && authed && isRegularUser;
+  const enabled = !isHydrating && authed;
 
   const teamsQuery = useTeamsListQuery(enabled);
   const mentorTargetsQuery = useMentorTargetsForSuggestionQuery(enabled);
@@ -76,9 +75,10 @@ export function useSuggestionPage() {
   }));
 
   const isTargetsLoading =
-    teamsQuery.isPending ||
-    mentorTargetsQuery.isPending ||
-    boardTargetsQuery.isPending;
+    enabled &&
+    (teamsQuery.isPending ||
+      mentorTargetsQuery.isPending ||
+      boardTargetsQuery.isPending);
 
   const targetCount = [teamId, mentorId, boardId].filter(Boolean).length;
   const selectionError =
@@ -216,7 +216,6 @@ export function useSuggestionPage() {
   };
 
   return {
-    isRegularUser,
     isAuthReady: !isHydrating && authed,
     teams,
     mentors,
@@ -244,7 +243,7 @@ export function useSuggestionPage() {
         ? deleteMutation.variables
         : null,
     priorities: SUGGESTION_PRIORITIES_UI,
-    isHistoryLoading: mySuggestionsQuery.isPending,
+    isHistoryLoading: enabled && mySuggestionsQuery.isPending,
     onCancelEdit,
   };
 }

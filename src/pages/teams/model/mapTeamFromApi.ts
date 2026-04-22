@@ -1,4 +1,4 @@
-import type { CoachingTeamListItem } from "@/entities/team/model/team.types";
+import type { CoachingTeamListItem } from "@/entities/teams/model/team.types";
 import type { CurrentUser } from "@/shared/api/current-user";
 import type { TeamMemberOption, TeamRow } from "@/pages/teams/model/types";
 

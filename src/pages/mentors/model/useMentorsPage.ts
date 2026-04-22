@@ -1,18 +1,18 @@
 import { useState } from "react";
-import type { RequestDraft } from "@/features/send-request-flow/model/types";
+import type { RequestDraft } from "@/features/requests/send-request-flow/model/types";
 import {
   canProceedWizardStep,
   FIRST_WIZARD_STEP,
   getNextWizardStep,
   getPreviousWizardStep,
-} from "@/features/send-request-flow/model/utils";
+} from "@/features/requests/send-request-flow/model/utils";
 import { useHostAuthSession } from "@/features/auth";
 import {
   useCreateMentorshipRequestMutation,
   useDeleteMentorshipRequestMutation,
 } from "@/entities/requests/hooks/use-mentorship-request-queries";
 import { useMentorsQuery } from "@/entities/mentors/hooks/use-mentors-query";
-import { buildRequestMessage } from "@/features/send-request-flow/model/build-request-message";
+import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
 import { mapMentorFromApi } from "@/pages/mentors/model/mapMentorFromApi";
 import {
   createEmptyMentorDraft,

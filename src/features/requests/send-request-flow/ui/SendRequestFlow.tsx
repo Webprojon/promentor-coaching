@@ -1,6 +1,6 @@
 import { TextField, Typography } from "@promentorapp/ui-kit";
-import { SEND_REQUEST_REVIEW_FIELDS } from "@/features/send-request-flow/model/constants";
-import type { SendRequestFlowProps } from "@/features/send-request-flow/model/types";
+import { SEND_REQUEST_REVIEW_FIELDS } from "@/features/requests/send-request-flow/model/constants";
+import type { SendRequestFlowProps } from "@/features/requests/send-request-flow/model/types";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { FormField, Textarea } from "@/shared/ui";
 

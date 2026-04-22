@@ -1,4 +1,4 @@
-import type { WizardStep } from "@/features/send-request-flow/model/types";
+import type { WizardStep } from "@/features/requests/send-request-flow/model/types";
 import type { RequestStatus } from "@/shared/model/types";
 
 export type MentorAvailability = "High" | "Medium" | "Low";

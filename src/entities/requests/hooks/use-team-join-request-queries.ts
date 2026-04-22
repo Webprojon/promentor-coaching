@@ -4,7 +4,7 @@ import {
   fetchReceivedTeamJoinRequests,
 } from "@/entities/requests/api/team-join-request-api";
 import { teamJoinRequestQueryKeys } from "@/entities/requests/model/team-join-request.keys";
-import { teamQueryKeys } from "@/entities/team/model/team.keys";
+import { teamQueryKeys } from "@/entities/teams/model/team.keys";
 import { notifyOk } from "@/shared/feedback/notify";
 
 export function useReceivedTeamJoinRequestsQuery(enabled: boolean) {

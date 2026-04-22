@@ -6,7 +6,7 @@ import type {
   ExploreTeamListItem,
   InviteRegularUserBody,
   UpdateTeamBody,
-} from "@/entities/team/model/team.types";
+} from "@/entities/teams/model/team.types";
 import type { CurrentUser } from "@/shared/api/current-user";
 import { apiRequest } from "@/shared/api/base-api";
 

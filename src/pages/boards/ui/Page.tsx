@@ -1,13 +1,13 @@
 import { useCallback, useMemo, useRef, useState } from "react";
 import { Typography } from "@promentorapp/ui-kit";
-import type { CreateTacticalBoardBody, TacticalBoardRecord } from "@/entities/tactical-board";
+import type { CreateTacticalBoardBody, TacticalBoardRecord } from "@/entities/boards";
 import {
   useCreateTacticalBoardMutation,
   useDeleteTacticalBoardMutation,
   useTacticalBoardsListQuery,
   useUpdateTacticalBoardMutation,
-} from "@/entities/tactical-board";
-import { useTeamsListQuery } from "@/entities/team/hooks/use-team-queries";
+} from "@/entities/boards";
+import { useTeamsListQuery } from "@/entities/teams/hooks/use-team-queries";
 import { useHostAuthSession } from "@/features/auth";
 import { serializeEditorForDirty } from "@/pages/boards/lib/editor-state-snapshot";
 import { type BoardAssignFormValues } from "@/pages/boards/model/boardAssignSchema";

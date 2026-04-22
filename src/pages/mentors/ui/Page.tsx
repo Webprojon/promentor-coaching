@@ -1,6 +1,6 @@
 import { Typography } from "@promentorapp/ui-kit";
 import { EmptyListingState, Modal, PageHeader } from "@/shared/ui";
-import { SendRequestFlow } from "@/features/send-request-flow";
+import { SendRequestFlow } from "@/features/requests/send-request-flow";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
 import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
 

@@ -11,13 +11,13 @@ export default function SuggestionHistory({
   onDelete,
   isDeletingId,
 }: SuggestionHistoryProps) {
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <section className="mt-4 rounded-lg border border-white/10 bg-blue-900/5 p-4">
-      {isLoading ? (
-        <Typography component="p" className="text-sm text-slate-400">
-          Loading history…
-        </Typography>
-      ) : items.length > 0 ? (
+      {items.length > 0 ? (
         <>
           <Typography
             component="h2"
@@ -57,7 +57,7 @@ export default function SuggestionHistory({
                         aria-label="Edit suggestion"
                         disabled={Boolean(isDeletingId)}
                         onClick={() => onEdit(id)}
-                        className="!min-w-0 px-2"
+                        className="min-w-0! px-2"
                       >
                         <RiEdit2Fill className="h-4 w-4" />
                       </Button>
@@ -68,7 +68,7 @@ export default function SuggestionHistory({
                         aria-label="Delete suggestion"
                         disabled={isDeletingId === id}
                         onClick={() => onDelete(id)}
-                        className="!min-w-0 px-2"
+                        className="min-w-0! px-2"
                       >
                         <RiDeleteBin6Line className="h-4 w-4" />
                       </Button>

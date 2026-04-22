@@ -1,4 +1,4 @@
-import type { ExploreTeamListItem } from "@/entities/team/model/team.types";
+import type { ExploreTeamListItem } from "@/entities/teams/model/team.types";
 import type { ExploreTeam } from "@/pages/explore-teams/model/types";
 
 export function mapExploreTeamFromApi(row: ExploreTeamListItem): ExploreTeam {
