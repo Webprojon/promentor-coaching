@@ -1,15 +1,5 @@
-import { useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
 import { createEmptyTeamJoinRequestDraft } from "@/features/requests/send-request-flow/model/empty-drafts";
-import type {
-  RequestDraft,
-  WizardStep,
-} from "@/features/requests/send-request-flow/model/types";
-import {
-  canProceedWizardStep,
-  getNextWizardStep,
-  getPreviousWizardStep,
-} from "@/features/requests/send-request-flow/model/utils";
+import { useSendRequestWizardState } from "@/features/requests/send-request-flow/model/useSendRequestWizardState";
 import { useHostAuthSession } from "@/features/auth";
 import { useExploreTeamsQuery } from "@/entities/explore-teams";
 import { useCreateTeamJoinRequestMutation } from "@/entities/requests";
@@ -25,18 +15,16 @@ export function useExploreTeamsPage() {
 
   const rows = (exploreQuery.data ?? []).map(mapExploreTeamFromApi);
 
-  const requestWizardForm = useForm<RequestDraft>({
-    defaultValues: createEmptyTeamJoinRequestDraft(),
-    mode: "onChange",
-  });
-
-  const [wizardStep, setWizardStep] = useState<WizardStep>(1);
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-
-  const draft = useWatch({
-    control: requestWizardForm.control,
-    defaultValue: createEmptyTeamJoinRequestDraft(),
-  }) as RequestDraft;
+  const {
+    requestWizardForm,
+    wizardStep,
+    isWizardOpen,
+    prepareAndOpen,
+    closeWizard,
+    goNext,
+    goBack,
+    canGoNext,
+  } = useSendRequestWizardState(createEmptyTeamJoinRequestDraft);
 
   const onRequestClick = (targetId: string) => {
     const target = rows.find((row) => row.id === targetId);
@@ -46,20 +34,10 @@ export function useExploreTeamsPage() {
     ) {
       return;
     }
-    requestWizardForm.reset({
-      ...createEmptyTeamJoinRequestDraft(),
-      targetId: target.id,
-      targetName: target.teamName,
-    });
-    setWizardStep(1);
-    setIsWizardOpen(true);
+    prepareAndOpen({ targetId: target.id, targetName: target.teamName });
   };
 
-  const onCloseWizard = () => {
-    setIsWizardOpen(false);
-    setWizardStep(1);
-    requestWizardForm.reset(createEmptyTeamJoinRequestDraft());
-  };
+  const onCloseWizard = closeWizard;
 
   const onSubmitRequest = () => {
     const values = requestWizardForm.getValues();
@@ -71,15 +49,9 @@ export function useExploreTeamsPage() {
         teamId: values.targetId,
         body: { message: buildRequestMessage(values, "Team join request") },
       },
-      { onSuccess: onCloseWizard },
+      { onSuccess: closeWizard },
     );
   };
-
-  const goNext = () => setWizardStep((previous) => getNextWizardStep(previous));
-  const goBack = () =>
-    setWizardStep((previous) => getPreviousWizardStep(previous));
-
-  const canGoNext = canProceedWizardStep(wizardStep, draft);
 
   const isExploreLoading =
     isHydrating || (canLoad && exploreQuery.isPending);

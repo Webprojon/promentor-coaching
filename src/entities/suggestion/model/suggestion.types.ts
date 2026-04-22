@@ -53,5 +53,3 @@ export type UpdateUserSuggestionBody = {
   detail: string;
   priority: SuggestionPriorityApi;
 };
-
-export type CreateUserBoardBody = { name: string; mentorId: string };

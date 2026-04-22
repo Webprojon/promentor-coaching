@@ -62,5 +62,9 @@ export default defineConfig(({ mode }) => {
     build: {
       target: "esnext",
     },
+    test: {
+      environment: "node",
+      include: ["src/**/*.test.ts"],
+    },
   };
 });

@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  createUserBoard,
   createUserSuggestion,
   deleteUserSuggestion,
   fetchBoardTargetsForSuggestion,
@@ -10,7 +9,6 @@ import {
   updateUserSuggestion,
 } from "@/entities/suggestion/api/suggestion.api";
 import type {
-  CreateUserBoardBody,
   CreateUserSuggestionBody,
   UpdateUserSuggestionBody,
 } from "@/entities/suggestion/model/suggestion.types";
@@ -44,19 +42,6 @@ export function useBoardTargetsForSuggestionQuery(enabled: boolean) {
     enabled,
     staleTime: 30_000,
     meta: { notifyErrorToastId: "suggestion-board-targets" },
-  });
-}
-
-export function useCreateUserBoardMutation() {
-  const queryClient = useQueryClient();
-  return useMutation({
-    mutationFn: (body: CreateUserBoardBody) => createUserBoard(body),
-    meta: { notifyErrorToastId: "suggestion-user-board-create" },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: suggestionQueryKeys.boardTargets(),
-      });
-    },
   });
 }
 

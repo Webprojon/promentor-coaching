@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -17,7 +17,7 @@ import {
   type AddManualMemberFormValues,
   type CreateTeamFormValues,
 } from "@/pages/teams/model/schema/team-creator";
-import { useHostAuthSession } from "@/features/auth/model/useHostAuthSession";
+import { useHostAuthSession } from "@/features/auth";
 
 export function useTeamsPage() {
   const { session, isHydrating } = useHostAuthSession();
@@ -72,7 +72,10 @@ export function useTeamsPage() {
       return;
     }
     createTeamForm.reset({ teamName: detail.name });
-    setSelectedMemberIds(detail.members.map((m) => m.id));
+    const memberIds = detail.members.map((m) => m.id);
+    startTransition(() => {
+      setSelectedMemberIds(memberIds);
+    });
   }, [editingTeamId, teamDetailQuery.data, createTeamForm]);
 
   const resetCreatorForm = () => {

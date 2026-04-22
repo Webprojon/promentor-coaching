@@ -1,4 +1,3 @@
-import type { WizardStep } from "@/features/requests/send-request-flow/model/types";
 import type { RequestStatus } from "@/shared/model/types";
 
 export type MentorAvailability = "High" | "Medium" | "Low";
@@ -24,5 +23,3 @@ export type MentorCardProps = {
   isMentorshipActionPending: boolean;
   onActionClick: (mentorId: string) => void;
 };
-
-export type { WizardStep };

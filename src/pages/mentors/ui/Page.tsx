@@ -1,9 +1,8 @@
 import { Typography } from "@promentorapp/ui-kit";
-import { FormProvider } from "react-hook-form";
-import { EmptyListingState, Modal, PageHeader } from "@/shared/ui";
-import { SendRequestFlow } from "@/features/requests/send-request-flow";
+import { SendRequestWizardModal } from "@/features/requests/send-request-flow";
 import { useMentorsPage } from "@/pages/mentors/model/useMentorsPage";
 import { MentorCard } from "@/pages/mentors/ui/components/MentorCard";
+import { EmptyListingState, PageHeader } from "@/shared/ui";
 
 export default function MentorsPage() {
   const {
@@ -51,29 +50,18 @@ export default function MentorsPage() {
         </section>
       )}
 
-      <FormProvider {...requestWizardForm}>
-        <Modal
-          open={isWizardOpen}
-          onClose={onCloseWizard}
-          title={`Mentorship request · Step ${wizardStep}/3`}
-          secondaryAction={{
-            label: wizardStep === 1 ? "Cancel" : "Back",
-            onClick: wizardStep === 1 ? onCloseWizard : goBack,
-            variant: "outlined",
-          }}
-          primaryAction={{
-            label: wizardStep === 3 ? "Send request" : "Continue",
-            onClick: wizardStep === 3 ? onSubmitRequest : goNext,
-            variant: "contained",
-            disabled:
-              wizardStep === 3
-                ? !canGoNext || isSendingMentorship
-                : !canGoNext,
-          }}
-        >
-          <SendRequestFlow step={wizardStep} />
-        </Modal>
-      </FormProvider>
+      <SendRequestWizardModal
+        form={requestWizardForm}
+        open={isWizardOpen}
+        onClose={onCloseWizard}
+        wizardStep={wizardStep}
+        goNext={goNext}
+        goBack={goBack}
+        canGoNext={canGoNext}
+        onSubmitRequest={onSubmitRequest}
+        titlePrefix="Mentorship request"
+        isSending={isSendingMentorship}
+      />
     </>
   );
 }

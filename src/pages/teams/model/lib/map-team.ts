@@ -2,7 +2,7 @@ import type { CoachingTeamListItem } from "@/entities/teams/model/team.types";
 import type { CurrentUser } from "@/shared/api/current-user";
 import type { TeamMemberOption, TeamRow } from "@/pages/teams/model/types";
 
-export function displayFirstName(fullName: string): string {
+function displayFirstName(fullName: string): string {
   const t = fullName.trim();
   if (!t) {
     return "";

@@ -1,5 +1,4 @@
 import type {
-  CreateUserBoardBody,
   CreateUserSuggestionBody,
   UpdateUserSuggestionBody,
   UserSuggestionBoardTarget,
@@ -51,15 +50,6 @@ export async function fetchBoardTargetsForSuggestion(): Promise<
   return apiRequest<UserSuggestionBoardTarget[]>(
     "/user-suggestions/mentor-targets/boards",
     { method: "GET" },
-  );
-}
-
-export async function createUserBoard(
-  body: CreateUserBoardBody,
-): Promise<UserSuggestionBoardTarget> {
-  return apiRequest<UserSuggestionBoardTarget>(
-    "/user-suggestions/mentor-targets/boards",
-    { method: "POST", body },
   );
 }
 

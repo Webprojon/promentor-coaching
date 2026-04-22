@@ -13,6 +13,7 @@ import {
   MENTOR_SENT_DEFAULT_FILTER,
   REQUEST_DEFAULT_CATEGORY_FILTER,
 } from "@/pages/requests/model/constants";
+import { mergeReceivedRequestCards } from "@/pages/requests/model/lib/merge-received-sorted";
 import {
   buildRequestSlotCardViewModel,
   buildRequestsEmptyCard,
@@ -36,16 +37,6 @@ type DatedSuggestionCard = {
   createdAt: string;
   card: RequestSuggestionCardViewModel;
 };
-
-function mergeReceivedSorted(
-  teamJoin: DatedSuggestionCard[],
-  mentorship: DatedSuggestionCard[],
-  learnerSuggestions: DatedSuggestionCard[],
-): RequestSuggestionCardViewModel[] {
-  return [...teamJoin, ...mentorship, ...learnerSuggestions]
-    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-    .map((x) => x.card);
-}
 
 export function useRequestsPage(direction: RequestInboxDirection) {
   const { session, isHydrating } = useHostAuthSession();
@@ -149,7 +140,7 @@ export function useRequestsPage(direction: RequestInboxDirection) {
   let receivedCardRows: RequestSuggestionCardViewModel[] = [];
   if (direction === "received" && authed && mentorReceivedEnabled) {
     if (receivedCategoryFilter === "all") {
-      receivedCardRows = mergeReceivedSorted(
+      receivedCardRows = mergeReceivedRequestCards(
         teamJoinCards,
         mentorshipCards,
         receivedSuggestionCards,

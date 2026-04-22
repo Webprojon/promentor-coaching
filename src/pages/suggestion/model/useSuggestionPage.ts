@@ -11,7 +11,7 @@ import {
   useUpdateUserSuggestionMutation,
 } from "@/entities/suggestion";
 import type { UserSuggestionSent } from "@/entities/suggestion/model/suggestion.types";
-import { useHostAuthSession } from "@/features/auth/model/useHostAuthSession";
+import { useHostAuthSession } from "@/features/auth";
 import {
   SUGGESTION_FORM_DEFAULT_VALUES,
   suggestionComposerSchema,

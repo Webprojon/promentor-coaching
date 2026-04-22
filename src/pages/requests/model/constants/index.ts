@@ -13,8 +13,6 @@ export {
 export {
   MENTOR_SENT_DEFAULT_FILTER,
   MENTOR_SENT_DELIVERED_BADGE_CLASS,
-  MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS,
-  type MentorSentRequestViewModalFooterHandlers,
   mentorSentRequestViewModalFooterActions,
   MENTOR_SENT_KIND_META,
   MENTOR_SENT_REQUEST_SEND_FIELDSET,

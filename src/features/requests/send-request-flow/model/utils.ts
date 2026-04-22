@@ -4,7 +4,7 @@ import type {
 } from "@/features/requests/send-request-flow/model/types";
 
 export const FIRST_WIZARD_STEP: WizardStep = 1;
-export const LAST_WIZARD_STEP: WizardStep = 3;
+const LAST_WIZARD_STEP: WizardStep = 3;
 
 export const getNextWizardStep = (step: WizardStep): WizardStep =>
   step < LAST_WIZARD_STEP ? ((step + 1) as WizardStep) : step;
