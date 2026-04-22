@@ -7,7 +7,7 @@ import {
   useTacticalBoardsListQuery,
   useUpdateTacticalBoardMutation,
 } from "@/entities/boards";
-import { useTeamsListQuery } from "@/entities/teams/hooks/use-team-queries";
+import { useTeamsListQuery } from "@/entities/teams";
 import { useHostAuthSession } from "@/features/auth";
 import { serializeEditorForDirty } from "@/pages/boards/lib/editor-state-snapshot";
 import { type BoardAssignFormValues } from "@/pages/boards/model/boardAssignSchema";

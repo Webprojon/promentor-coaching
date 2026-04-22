@@ -10,8 +10,8 @@ import { useHostAuthSession } from "@/features/auth";
 import {
   useCreateMentorshipRequestMutation,
   useDeleteMentorshipRequestMutation,
-} from "@/entities/requests/hooks/use-mentorship-request-queries";
-import { useMentorsQuery } from "@/entities/mentors/hooks/use-mentors-query";
+} from "@/entities/requests";
+import { useMentorsQuery } from "@/entities/mentors";
 import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
 import { mapMentorFromApi } from "@/pages/mentors/model/mapMentorFromApi";
 import {

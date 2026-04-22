@@ -11,6 +11,6 @@ export {
   useDeleteTacticalBoardMutation,
   useTacticalBoardsListQuery,
   useUpdateTacticalBoardMutation,
-} from "@/entities/boards/hooks/use-tactical-board-queries";
+} from "@/entities/boards/hooks/useTacticalBoardQueries";
 export { tacticalBoardQueryKeys } from "@/entities/boards/model/tactical-board.keys";
 export type { TacticalBoardRecord } from "@/entities/boards/model/tactical-board.types";

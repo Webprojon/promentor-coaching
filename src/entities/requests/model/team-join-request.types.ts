@@ -1,3 +1,7 @@
+export type CreateTeamJoinRequestBody = {
+  message?: string;
+};
+
 export type TeamJoinRequestInboxItem = {
   id: string;
   teamId: string;

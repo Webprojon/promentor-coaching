@@ -1,4 +1,4 @@
-import type { Profile } from "@/features/profile/api";
+import type { UserProfile } from "@/entities/profile";
 import { PROFILE_HEADER_FALLBACK } from "@/pages/profile/model/constants";
 import type {
   ProfileChangeFormValues,
@@ -17,7 +17,7 @@ export function splitFullNameToForm(
   };
 }
 
-export function formatProfileRole(role: Profile["role"] | undefined): string {
+export function formatProfileRole(role: UserProfile["role"] | undefined): string {
   if (role === "MENTOR") {
     return "Mentor";
   }
@@ -39,7 +39,7 @@ export function joinFullName(values: ProfileChangeFormValues): string {
 }
 
 export function buildProfileHeader(
-  profile: Profile | null | undefined,
+  profile: UserProfile | null | undefined,
 ): ProfileHeader {
   return {
     ...PROFILE_HEADER_FALLBACK,

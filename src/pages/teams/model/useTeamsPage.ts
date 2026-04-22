@@ -9,7 +9,7 @@ import {
   useTeamDetailQuery,
   useTeamsListQuery,
   useUpdateTeamMutation,
-} from "@/features/teams/api";
+} from "@/entities/teams";
 import { mapListItemToTeamRow, mapUserToMemberOption } from "@/pages/teams/model/mapTeamFromApi";
 import {
   addManualMemberSchema,

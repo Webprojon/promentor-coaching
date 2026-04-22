@@ -9,10 +9,8 @@ import {
   getPreviousWizardStep,
 } from "@/features/requests/send-request-flow/model/utils";
 import { useHostAuthSession } from "@/features/auth";
-import {
-  useCreateTeamJoinRequestMutation,
-  useExploreTeamsQuery,
-} from "@/entities/teams/hooks/use-explore-teams";
+import { useExploreTeamsQuery } from "@/entities/explore-teams";
+import { useCreateTeamJoinRequestMutation } from "@/entities/requests";
 import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
 import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/mapExploreTeamFromApi";
 

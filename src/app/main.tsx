@@ -13,7 +13,11 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={queryClient}>
       <AppThemeProvider>
         <App />
-        <ToastContainer position="top-right" newestOnTop />
+        <ToastContainer
+          position="top-right"
+          newestOnTop
+          autoClose={2000}
+        />
       </AppThemeProvider>
     </QueryClientProvider>
   </React.StrictMode>,

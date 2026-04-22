@@ -2,8 +2,6 @@ import type {
   CoachingTeamDetail,
   CoachingTeamListItem,
   CreateTeamBody,
-  CreateTeamJoinRequestBody,
-  ExploreTeamListItem,
   InviteRegularUserBody,
   UpdateTeamBody,
 } from "@/entities/teams/model/team.types";
@@ -12,22 +10,6 @@ import { apiRequest } from "@/shared/api/base-api";
 
 export async function fetchTeams(): Promise<CoachingTeamListItem[]> {
   return apiRequest<CoachingTeamListItem[]>("/teams", { method: "GET" });
-}
-
-export async function fetchExploreTeams(): Promise<ExploreTeamListItem[]> {
-  return apiRequest<ExploreTeamListItem[]>("/teams/explore", {
-    method: "GET",
-  });
-}
-
-export async function createTeamJoinRequest(
-  teamId: string,
-  body: CreateTeamJoinRequestBody,
-): Promise<{ id: string; status: string }> {
-  return apiRequest<{ id: string; status: string }>(
-    `/teams/${teamId}/join-requests`,
-    { method: "POST", body },
-  );
 }
 
 export async function fetchTeamDetail(

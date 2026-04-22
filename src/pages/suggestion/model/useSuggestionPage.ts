@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTeamsListQuery } from "@/entities/teams/hooks/use-team-queries";
+import { useTeamsListQuery } from "@/entities/teams";
 import {
   useBoardTargetsForSuggestionQuery,
   useCreateUserSuggestionMutation,
@@ -7,7 +7,7 @@ import {
   useMentorTargetsForSuggestionQuery,
   useMyUserSuggestionsQuery,
   useUpdateUserSuggestionMutation,
-} from "@/entities/suggestion/hooks/use-suggestion-queries";
+} from "@/entities/suggestion";
 import type { UserSuggestionSent } from "@/entities/suggestion/model/suggestion.types";
 import { useHostAuthSession } from "@/features/auth/model/useHostAuthSession";
 import {

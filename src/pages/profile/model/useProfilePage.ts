@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useHostAuthSession } from "@/features/auth";
 import {
-  updateMyProfileMutationOptions,
-  useDeleteMyAccountMutation,
+  updateUserProfileMutationOptions,
+  useDeleteUserAccountMutation,
   useMyProfileQuery,
-  useUpdateMyProfileMutation,
-} from "@/features/profile/api";
+  useUpdateUserProfileMutation,
+} from "@/entities/profile";
 import {
   buildProfileHeader,
   joinFullName,
@@ -29,16 +29,16 @@ const msg = {
 export function useProfilePage(): ProfilePageUiModel {
   const { session, isHydrating } = useHostAuthSession();
   const { data: profile } = useMyProfileQuery(session, isHydrating);
-  const updateBioMutation = useUpdateMyProfileMutation(
-    updateMyProfileMutationOptions.bio,
+  const updateBioMutation = useUpdateUserProfileMutation(
+    updateUserProfileMutationOptions.bio,
   );
-  const updateDetailsMutation = useUpdateMyProfileMutation(
-    updateMyProfileMutationOptions.details,
+  const updateDetailsMutation = useUpdateUserProfileMutation(
+    updateUserProfileMutationOptions.details,
   );
-  const updatePhotoMutation = useUpdateMyProfileMutation(
-    updateMyProfileMutationOptions.photo,
+  const updatePhotoMutation = useUpdateUserProfileMutation(
+    updateUserProfileMutationOptions.photo,
   );
-  const deleteAccountMutation = useDeleteMyAccountMutation();
+  const deleteAccountMutation = useDeleteUserAccountMutation();
 
   const [draftBioOverride, setDraftBioOverride] = useState<string | null>(null);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);

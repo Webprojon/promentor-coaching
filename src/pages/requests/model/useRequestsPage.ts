@@ -3,16 +3,14 @@ import { useHostAuthSession } from "@/features/auth";
 import {
   useCancelMentorBroadcastRequestMutation,
   useSentMentorBroadcastRequestsQuery,
-} from "@/entities/requests/mentor-broadcast/hooks/use-mentor-broadcast-request-queries";
+} from "@/entities/requests/mentor-broadcast";
 import {
   useDecideMentorshipRequestMutation,
   useReceivedMentorshipRequestsQuery,
-} from "@/entities/requests/hooks/use-mentorship-request-queries";
-import {
   useDecideTeamJoinRequestMutation,
   useReceivedTeamJoinRequestsQuery,
-} from "@/entities/requests/hooks/use-team-join-request-queries";
-import { useReceivedUserSuggestionsQuery } from "@/entities/suggestion/hooks/use-suggestion-queries";
+} from "@/entities/requests";
+import { useReceivedUserSuggestionsQuery } from "@/entities/suggestion";
 import {
   MENTOR_SENT_DEFAULT_FILTER,
   REQUEST_DEFAULT_CATEGORY_FILTER,
