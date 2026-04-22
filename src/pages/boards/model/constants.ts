@@ -18,6 +18,8 @@ export const CANVAS_ASPECT_RATIO = 2;
 export const STICKER_BASE_SIZE = 28;
 export const PLAYER_BASE_SIZE = 32;
 
+export const FREEHAND_MIN_POINT_DISTANCE_PX = 2.5;
+
 export const PLAYER_MODAL_WIDTH = 176;
 export const PLAYER_MODAL_HEIGHT = 132;
 export const PLAYER_MODAL_PADDING = 12;

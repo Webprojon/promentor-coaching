@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { TextField, Typography } from "@promentorapp/ui-kit";
 import {
   useCreateMentorBroadcastRequestMutation,
@@ -62,42 +62,35 @@ export function RequestSendModal({
 
   const internList = internTargets.data ?? [];
 
-  const primaryOptions = useMemo(() => {
-    if (targetKind === "teams") {
-      const list = teamsQuery.data ?? [];
-      return [
-        { value: EMPTY, label: fieldset.emptyPrimaryLabel },
-        ...list.map((t) => ({ value: t.id, label: t.name })),
-      ];
-    }
-    if (targetKind === "interns") {
-      const allRow =
-        internList.length > 0
-          ? [
-              {
-                value: MENTOR_BROADCAST_ALL_INTERN_VALUE,
-                label: "All interns",
-              },
-            ]
-          : [];
-      return [
-        { value: EMPTY, label: fieldset.emptyPrimaryLabel },
-        ...allRow,
-        ...internList.map((t) => ({ value: t.id, label: t.label })),
-      ];
-    }
+  let primaryOptions: { value: string; label: string }[];
+  if (targetKind === "teams") {
+    const list = teamsQuery.data ?? [];
+    primaryOptions = [
+      { value: EMPTY, label: fieldset.emptyPrimaryLabel },
+      ...list.map((t) => ({ value: t.id, label: t.name })),
+    ];
+  } else if (targetKind === "interns") {
+    const allRow =
+      internList.length > 0
+        ? [
+            {
+              value: MENTOR_BROADCAST_ALL_INTERN_VALUE,
+              label: "All interns",
+            },
+          ]
+        : [];
+    primaryOptions = [
+      { value: EMPTY, label: fieldset.emptyPrimaryLabel },
+      ...allRow,
+      ...internList.map((t) => ({ value: t.id, label: t.label })),
+    ];
+  } else {
     const list = boardTargets.data ?? [];
-    return [
+    primaryOptions = [
       { value: EMPTY, label: fieldset.emptyPrimaryLabel },
       ...list.map((t) => ({ value: t.id, label: t.label })),
     ];
-  }, [
-    boardTargets.data,
-    fieldset.emptyPrimaryLabel,
-    internList,
-    targetKind,
-    teamsQuery.data,
-  ]);
+  }
 
   const selectedLabel =
     primaryOptions.find((o) => o.value === primaryPick)?.label ?? "";

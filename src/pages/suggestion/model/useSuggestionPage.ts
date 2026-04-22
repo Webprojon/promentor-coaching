@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTeamsListQuery } from "@/entities/team/hooks/use-team-queries";
 import {
   useBoardTargetsForSuggestionQuery,
@@ -99,15 +99,15 @@ export function useSuggestionPage() {
     !createMutation.isPending &&
     !updateMutation.isPending;
 
-  const historyItems: SuggestionHistoryItemVm[] = useMemo(() => {
-    return (mySuggestionsQuery.data ?? []).map((row) => ({
+  const historyItems: SuggestionHistoryItemVm[] = (mySuggestionsQuery.data ?? []).map(
+    (row) => ({
       id: row.id,
       title: row.title,
       detail: row.detail,
       priority: suggestionPriorityFromApi(row.priority),
       targetLabel: targetLabelFromSent(row),
-    }));
-  }, [mySuggestionsQuery.data]);
+    }),
+  );
 
   const applySentToForm = (row: UserSuggestionSent) => {
     setFields({

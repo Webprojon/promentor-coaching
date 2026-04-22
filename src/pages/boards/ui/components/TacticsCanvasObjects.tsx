@@ -159,7 +159,7 @@ function renderSticker(object: Extract<DrawableObject, { kind: "sticker" }>) {
 }
 
 export function renderDrawableObject(object: DrawableObject) {
-  if (object.kind === "line") {
+  if (object.kind === "line" || object.kind === "freehand") {
     return (
       <Line
         key={object.id}

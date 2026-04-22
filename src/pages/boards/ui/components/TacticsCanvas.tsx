@@ -10,6 +10,7 @@ import {
   PLAYER_MODAL_PADDING,
   PLAYER_MODAL_WIDTH,
   STICKER_BASE_SIZE,
+  FREEHAND_MIN_POINT_DISTANCE_PX,
 } from "@/pages/boards/model/constants";
 import { BoardBackground } from "@/pages/boards/ui/components/BoardBackground";
 import {
@@ -35,7 +36,11 @@ function getModalPosition(x: number, y: number, width: number, height: number) {
   };
 }
 
-export function TacticsCanvas() {
+type TacticsCanvasProps = {
+  readOnly?: boolean;
+};
+
+export function TacticsCanvas({ readOnly = false }: TacticsCanvasProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(920);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -83,6 +88,9 @@ export function TacticsCanvas() {
   };
 
   const handlePointerDown = (event: KonvaEventObject<MouseEvent>) => {
+    if (readOnly) {
+      return;
+    }
     const point = getPointer(event);
     if (!point) {
       return;
@@ -143,6 +151,17 @@ export function TacticsCanvas() {
       return;
     }
 
+    if (tool === "freehand") {
+      setDraftObject({
+        id: createId(),
+        kind: "freehand",
+        points: [point.x, point.y],
+        stroke,
+        strokeWidth,
+      });
+      return;
+    }
+
     if (tool === "rect") {
       setDraftObject({
         id: createId(),
@@ -169,6 +188,9 @@ export function TacticsCanvas() {
   };
 
   const handlePointerMove = (event: KonvaEventObject<MouseEvent>) => {
+    if (readOnly) {
+      return;
+    }
     if (!isDrawing || !draftObject) {
       return;
     }
@@ -187,6 +209,23 @@ export function TacticsCanvas() {
           point.x,
           point.y,
         ],
+      });
+      return;
+    }
+
+    if (draftObject.kind === "freehand") {
+      const { points } = draftObject;
+      const lastX = points[points.length - 2]!;
+      const lastY = points[points.length - 1]!;
+      if (
+        Math.hypot(point.x - lastX, point.y - lastY) <
+        FREEHAND_MIN_POINT_DISTANCE_PX
+      ) {
+        return;
+      }
+      setDraftObject({
+        ...draftObject,
+        points: [...points, point.x, point.y],
       });
       return;
     }
@@ -218,14 +257,22 @@ export function TacticsCanvas() {
     if (!draftObject) {
       return;
     }
+    if (draftObject.kind === "freehand" && draftObject.points.length < 4) {
+      clearDraftObject();
+      return;
+    }
     commitObject(draftObject);
   };
 
   return (
-    <div ref={containerRef} className="relative overflow-hidden shadow-2xl">
+    <div
+      ref={containerRef}
+      className={`relative overflow-hidden shadow-2xl ${readOnly ? "cursor-default" : ""}`}
+    >
       <Stage
         width={width}
         height={height}
+        listening={!readOnly}
         onMouseDown={handlePointerDown}
         onMouseMove={handlePointerMove}
         onMouseUp={handlePointerUp}

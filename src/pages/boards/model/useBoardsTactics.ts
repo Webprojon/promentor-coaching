@@ -14,6 +14,13 @@ import type {
   ToolKind,
 } from "@/pages/boards/model/types";
 
+export type TacticsEditorSnapshot = {
+  boardType: BoardType;
+  objects: DrawableObject[];
+  stroke: string;
+  strokeWidth: number;
+};
+
 type DraftObject = DrawableObject | null;
 const MAX_HISTORY_SNAPSHOTS = 100;
 
@@ -37,6 +44,8 @@ type TacticsBoardState = {
   eraseObjectAt: (x: number, y: number) => void;
   undo: () => void;
   redo: () => void;
+  loadEditorState: (snapshot: TacticsEditorSnapshot) => void;
+  resetForNewBoard: () => void;
 };
 
 function snapshot(state: TacticsBoardState) {
@@ -138,6 +147,27 @@ export const useBoardsTactics = create<TacticsBoardState>()(
             future: state.future.slice(1),
             draftObject: null,
           };
+        }),
+      loadEditorState: (next) =>
+        set({
+          boardType: next.boardType,
+          objects: next.objects,
+          stroke: next.stroke,
+          strokeWidth: next.strokeWidth,
+          draftObject: null,
+          history: [],
+          future: [],
+        }),
+      resetForNewBoard: () =>
+        set({
+          boardType: DEFAULT_BOARD_TYPE,
+          tool: DEFAULT_TOOL,
+          stroke: DEFAULT_STROKE,
+          strokeWidth: DEFAULT_STROKE_WIDTH,
+          objects: [],
+          draftObject: null,
+          history: [],
+          future: [],
         }),
     }),
     {
