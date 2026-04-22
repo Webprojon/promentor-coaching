@@ -46,6 +46,7 @@ export function toRequestSuggestionCardViewModel(
     summary: row.summary,
     status: row.status,
     statusBadgeClass: REQUEST_STATUS_BADGE_CLASS[row.status],
+    priorityLevel: row.priorityLevel,
   };
 }
 

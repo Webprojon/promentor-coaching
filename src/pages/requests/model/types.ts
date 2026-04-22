@@ -1,3 +1,4 @@
+import type { SuggestionPriorityApi } from "@/entities/suggestion/model/suggestion.types";
 import type { RequestStatus } from "@/shared/model/types";
 import type { IconType } from "react-icons";
 
@@ -18,6 +19,7 @@ export type RequestSuggestionCardViewModel = RequestCardSharedFields & {
   counterpartAvatarUrl?: string | null;
   status: RequestStatus;
   statusBadgeClass: string;
+  priorityLevel?: SuggestionPriorityApi;
   onMentorAccept?: () => Promise<void>;
   onMentorDecline?: () => Promise<void>;
 };
@@ -114,4 +116,5 @@ export type RequestInboxRow = {
   status: RequestStatus;
   createdLabel: string;
   counterpartAvatarUrl?: string | null;
+  priorityLevel?: SuggestionPriorityApi;
 };

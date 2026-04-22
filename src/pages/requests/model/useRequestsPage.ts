@@ -12,11 +12,13 @@ import {
   useDecideTeamJoinRequestMutation,
   useReceivedTeamJoinRequestsQuery,
 } from "@/entities/requests/hooks/use-team-join-request-queries";
+import { useReceivedUserSuggestionsQuery } from "@/entities/suggestion/hooks/use-suggestion-queries";
 import {
   MENTOR_SENT_DEFAULT_FILTER,
   REQUEST_DEFAULT_CATEGORY_FILTER,
 } from "@/pages/requests/model/constants";
 import { mapMentorBroadcastToSentRow } from "@/pages/requests/model/mapSentMentorBroadcast";
+import { mapReceivedUserSuggestionToRow } from "@/pages/requests/model/mapReceivedUserSuggestion";
 import {
   buildRequestSlotCardViewModel,
   buildRequestsEmptyCard,
@@ -34,6 +36,21 @@ import type {
   RequestSuggestionCardViewModel,
 } from "@/pages/requests/model/types";
 
+type DatedSuggestionCard = {
+  createdAt: string;
+  card: RequestSuggestionCardViewModel;
+};
+
+function mergeReceivedSorted(
+  teamJoin: DatedSuggestionCard[],
+  mentorship: DatedSuggestionCard[],
+  learnerSuggestions: DatedSuggestionCard[],
+): RequestSuggestionCardViewModel[] {
+  return [...teamJoin, ...mentorship, ...learnerSuggestions]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .map((x) => x.card);
+}
+
 export function useRequestsPage(direction: RequestInboxDirection) {
   const { session, isHydrating } = useHostAuthSession();
   const isMentor = session.user?.role === "MENTOR";
@@ -47,6 +64,9 @@ export function useRequestsPage(direction: RequestInboxDirection) {
 
   const teamJoinQuery = useReceivedTeamJoinRequestsQuery(mentorReceivedEnabled);
   const mentorshipQuery = useReceivedMentorshipRequestsQuery(
+    mentorReceivedEnabled,
+  );
+  const receivedSuggestionsQuery = useReceivedUserSuggestionsQuery(
     mentorReceivedEnabled,
   );
   const sentMentorBroadcastQuery =
@@ -65,12 +85,13 @@ export function useRequestsPage(direction: RequestInboxDirection) {
     useState<MentorSentTargetKind | null>(null);
 
   const teamJoinItems = teamJoinQuery.data ?? [];
-  const teamJoinCards: RequestSuggestionCardViewModel[] = teamJoinItems.map(
-    (item) => {
-      const row = mapTeamJoinInboxItemToRow(item);
-      const base = toRequestSuggestionCardViewModel(row);
-      const pending = item.status === "PENDING";
-      return {
+  const teamJoinCards: DatedSuggestionCard[] = teamJoinItems.map((item) => {
+    const row = mapTeamJoinInboxItemToRow(item);
+    const base = toRequestSuggestionCardViewModel(row);
+    const pending = item.status === "PENDING";
+    return {
+      createdAt: item.createdAt,
+      card: {
         ...base,
         onMentorAccept: pending
           ? () =>
@@ -86,44 +107,63 @@ export function useRequestsPage(direction: RequestInboxDirection) {
                 action: "reject",
               })
           : undefined,
-      };
-    },
-  );
+      },
+    };
+  });
 
   const mentorshipItems = mentorshipQuery.data ?? [];
-  const mentorshipCards: RequestSuggestionCardViewModel[] = mentorshipItems.map(
+  const mentorshipCards: DatedSuggestionCard[] = mentorshipItems.map(
     (item) => {
       const row = mapMentorshipInboxItemToRow(item);
       const base = toRequestSuggestionCardViewModel(row);
       const pending = item.status === "PENDING";
       return {
-        ...base,
-        onMentorAccept: pending
-          ? () =>
-              decideMentorshipMutation.mutateAsync({
-                requestId: item.id,
-                action: "accept",
-              })
-          : undefined,
-        onMentorDecline: pending
-          ? () =>
-              decideMentorshipMutation.mutateAsync({
-                requestId: item.id,
-                action: "reject",
-              })
-          : undefined,
+        createdAt: item.createdAt,
+        card: {
+          ...base,
+          onMentorAccept: pending
+            ? () =>
+                decideMentorshipMutation.mutateAsync({
+                  requestId: item.id,
+                  action: "accept",
+                })
+            : undefined,
+          onMentorDecline: pending
+            ? () =>
+                decideMentorshipMutation.mutateAsync({
+                  requestId: item.id,
+                  action: "reject",
+                })
+            : undefined,
+        },
       };
     },
   );
 
+  const receivedSuggestionItems = receivedSuggestionsQuery.data ?? [];
+  const receivedSuggestionCards: DatedSuggestionCard[] =
+    receivedSuggestionItems.map((item) => {
+      const row = mapReceivedUserSuggestionToRow(item);
+      return {
+        createdAt: item.createdAt,
+        card: toRequestSuggestionCardViewModel(row),
+      };
+    });
+
   let receivedCardRows: RequestSuggestionCardViewModel[] = [];
   if (direction === "received" && authed && mentorReceivedEnabled) {
     if (receivedCategoryFilter === "all") {
-      receivedCardRows = [...teamJoinCards, ...mentorshipCards];
+      receivedCardRows = mergeReceivedSorted(
+        teamJoinCards,
+        mentorshipCards,
+        receivedSuggestionCards,
+      );
     } else if (receivedCategoryFilter === "team_join") {
-      receivedCardRows = teamJoinCards;
+      receivedCardRows = teamJoinCards.map((x) => x.card);
     } else if (receivedCategoryFilter === "mentorship") {
-      receivedCardRows = mentorshipCards;
+      receivedCardRows = mentorshipCards.map((x) => x.card);
+    } else if (receivedCategoryFilter === "suggestion") {
+      receivedCardRows = receivedSuggestionCards.map((x) => x.card);
     }
   }
 
@@ -176,7 +216,9 @@ export function useRequestsPage(direction: RequestInboxDirection) {
     emptyCard,
     isReceivedLoading:
       mentorReceivedEnabled &&
-      (teamJoinQuery.isLoading || mentorshipQuery.isLoading),
+      (teamJoinQuery.isLoading ||
+        mentorshipQuery.isLoading ||
+        receivedSuggestionsQuery.isLoading),
     isSentLoading,
   };
 }

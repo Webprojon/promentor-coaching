@@ -3,7 +3,9 @@ import type { RequestStatus } from "@/shared/model/types";
 
 export type MentorAvailability = "High" | "Medium" | "Low";
 
-export type MentorRequestStatus = RequestStatus | "NotRequested";
+export type MentorRequestStatus =
+  | Exclude<RequestStatus, "Delivered">
+  | "NotRequested";
 
 export type Mentor = {
   id: string;

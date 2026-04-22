@@ -1,6 +1,10 @@
 import Button, { Avatar, Typography } from "@promentorapp/ui-kit";
 import { useState } from "react";
 import { MENTOR_SENT_DELIVERED_BADGE_CLASS } from "@/pages/requests/model/constants";
+import {
+  SUGGESTION_PRIORITY_API_BADGE,
+  SUGGESTION_PRIORITY_API_LABEL,
+} from "@/entities/suggestion/model/suggestion-priority-display";
 import type {
   RequestSentCardViewModel,
   RequestSuggestionCardViewModel,
@@ -113,6 +117,21 @@ export function RequestCard({
                     <Badge toneClassName={viewModel.statusBadgeClass}>
                       {viewModel.status}
                     </Badge>
+                    {viewModel.priorityLevel ? (
+                      <Badge
+                        toneClassName={
+                          SUGGESTION_PRIORITY_API_BADGE[
+                            viewModel.priorityLevel
+                          ]
+                        }
+                      >
+                        {
+                          SUGGESTION_PRIORITY_API_LABEL[
+                            viewModel.priorityLevel
+                          ]
+                        }
+                      </Badge>
+                    ) : null}
                   </>
                 )}
               </div>

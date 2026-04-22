@@ -8,5 +8,5 @@ export const mentorLinks = [
 export const regularUserLinks = [
   { to: "/explore-teams", label: "Explore Teams" },
   { to: "/mentors", label: "Mentors" },
-  { to: "/suggestion", label: "Suggestion" },
+  { to: "/suggestion", label: "Suggestions" },
 ];

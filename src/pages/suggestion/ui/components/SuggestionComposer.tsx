@@ -7,11 +7,15 @@ import {
 import { FormField, Textarea } from "@/shared/ui";
 
 export default function SuggestionComposer({
-  draft,
+  fields,
   priorities,
   canSend,
-  onDraftChange,
+  sendLabel,
+  isSending,
+  isEditing,
+  onFieldChange,
   onSend,
+  onCancelEdit,
 }: SuggestionComposerProps) {
   return (
     <article className="rounded-lg border border-white/10 bg-blue-900/5 p-4">
@@ -27,35 +31,39 @@ export default function SuggestionComposer({
           aria-label="Suggestion title"
           placeholder="e.g. Narrow sprint scope to 2 critical deliverables"
           className="border-white/20 h-12!"
-          value={draft.title}
-          onChange={(event) => onDraftChange("title", event.target.value)}
+          value={fields.title}
+          onChange={(event) => onFieldChange("title", event.target.value)}
         />
         <FormField label="Detail">
           <Textarea
             placeholder="Explain what should change and why."
-            value={draft.detail}
-            onChange={(event) => onDraftChange("detail", event.target.value)}
+            value={fields.detail}
+            onChange={(event) => onFieldChange("detail", event.target.value)}
             aria-label="Suggestion detail"
           />
         </FormField>
 
-        <div className="flex justify-between items-end mt-2">
+        <div className="mt-2 flex flex-wrap items-end justify-between gap-3">
           <div className="grid gap-2 text-sm text-slate-300">
             <Typography variantStyle="label" className="pm-text-secondary">
               Priority
             </Typography>
             <div className="flex flex-wrap gap-2">
               {priorities.map((priority) => {
-                const isActive = draft.priority === priority;
+                const isActive = fields.priority === priority;
                 return (
                   <button
                     key={priority}
                     type="button"
                     aria-pressed={isActive}
-                    onClick={() => onDraftChange("priority", priority)}
-                    className={`rounded-lg border px-6 py-2 text-xs cursor-pointer transition outline-none focus:outline-none focus-visible:ring-0 ${
+                    onClick={() => onFieldChange("priority", priority)}
+                    className={`cursor-pointer rounded-lg border px-6 py-2 text-xs transition outline-none focus:outline-none focus-visible:ring-0 ${
                       PRIORITY_BADGE_CLASS[priority]
-                    } ${isActive ? PRIORITY_SELECTED_BORDER_CLASS[priority] : "border-transparent"}`}
+                    } ${
+                      isActive
+                        ? PRIORITY_SELECTED_BORDER_CLASS[priority]
+                        : "border-transparent"
+                    }`}
                   >
                     {priority}
                   </button>
@@ -64,14 +72,27 @@ export default function SuggestionComposer({
             </div>
           </div>
 
-          <Button
-            type="button"
-            variant="contained"
-            disabled={!canSend}
-            onClick={onSend}
-          >
-            Send Suggestion
-          </Button>
+          <div className="flex flex-wrap items-center justify-end gap-2">
+            {isEditing ? (
+              <Button
+                type="button"
+                variant="outlined"
+                disabled={isSending}
+                onClick={onCancelEdit}
+                className="normal-case"
+              >
+                Cancel edit
+              </Button>
+            ) : null}
+            <Button
+              type="button"
+              variant="contained"
+              disabled={!canSend || isSending}
+              onClick={onSend}
+            >
+              {isSending ? "Saving…" : sendLabel}
+            </Button>
+          </div>
         </div>
       </div>
     </article>

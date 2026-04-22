@@ -4,6 +4,11 @@ import {
   MENTOR_SENT_DELIVERED_BADGE_CLASS,
   mentorSentRequestViewModalFooterActions,
 } from "@/pages/requests/model/constants";
+import {
+  SUGGESTION_PRIORITY_API_BADGE,
+  SUGGESTION_PRIORITY_API_LABEL,
+} from "@/entities/suggestion/model/suggestion-priority-display";
+import type { SuggestionPriorityApi } from "@/entities/suggestion/model/suggestion.types";
 import type {
   RequestSentCardViewModel,
   RequestSuggestionCardViewModel,
@@ -24,6 +29,7 @@ type RequestViewModalCardProps = {
   counterpartName: string;
   createdLabel: string;
   summary: string;
+  priorityLevel?: SuggestionPriorityApi;
 };
 
 function RequestViewModalCard({
@@ -34,6 +40,7 @@ function RequestViewModalCard({
   counterpartName,
   createdLabel,
   summary,
+  priorityLevel,
 }: RequestViewModalCardProps) {
   return (
     <div className="max-h-[min(70vh,560px)] overflow-y-auto pr-1">
@@ -67,6 +74,23 @@ function RequestViewModalCard({
             {createdLabel}
           </Typography>
         </div>
+
+        {priorityLevel ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <Typography
+              component="p"
+              variantStyle="label"
+              className="pm-text-secondary"
+            >
+              Priority
+            </Typography>
+            <Badge
+              toneClassName={SUGGESTION_PRIORITY_API_BADGE[priorityLevel]}
+            >
+              {SUGGESTION_PRIORITY_API_LABEL[priorityLevel]}
+            </Badge>
+          </div>
+        ) : null}
 
         <div className="mt-4 border-t border-white/10 pt-4">
           <Typography
@@ -181,6 +205,7 @@ export function RequestViewModal({
     summary,
     status,
     statusBadgeClass,
+    priorityLevel,
   } = viewModel;
 
   const relationLabel = direction === "sent" ? "To" : "From";
@@ -236,6 +261,7 @@ export function RequestViewModal({
         counterpartName={counterpartName}
         createdLabel={createdLabel}
         summary={summary}
+        priorityLevel={priorityLevel}
         badges={
           <>
             <Badge
