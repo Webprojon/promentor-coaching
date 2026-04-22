@@ -7,7 +7,7 @@ import {
   DEFAULT_STROKE_WIDTH,
   DEFAULT_TOOL,
   TACTICS_BOARD_STORAGE_KEY,
-} from "@/pages/boards/model/constants";
+} from "@/pages/boards/model/constants/field-canvas";
 import type {
   BoardType,
   DrawableObject,

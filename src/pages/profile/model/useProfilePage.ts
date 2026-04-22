@@ -12,7 +12,7 @@ import {
   joinFullName,
   splitFullNameToForm,
   trimToOptional,
-} from "@/pages/profile/model/profilePageUtils";
+} from "@/pages/profile/model/lib/profile-utils";
 import type {
   ProfileChangeFormValues,
   ProfilePageUiModel,

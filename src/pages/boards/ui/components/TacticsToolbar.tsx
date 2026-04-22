@@ -13,7 +13,7 @@ import {
   TACTICS_TOOLBAR_CHIP_NEUTRAL,
   TACTICS_TOOLBAR_DRAW_TOOLS,
   TACTICS_TOOLBAR_STICKER_TOOLS,
-} from "@/pages/boards/model/tactics-toolbar.constants";
+} from "@/pages/boards/model/constants/tactics-toolbar";
 import { useBoardsTactics } from "@/pages/boards/model/useBoardsTactics";
 
 type TacticsToolbarProps =

@@ -12,7 +12,7 @@ import { useHostAuthSession } from "@/features/auth";
 import { useExploreTeamsQuery } from "@/entities/explore-teams";
 import { useCreateTeamJoinRequestMutation } from "@/entities/requests";
 import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
-import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/mapExploreTeamFromApi";
+import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/lib/map-explore-team";
 
 const createEmptyDraft = (): RequestDraft => ({
   targetType: "team",

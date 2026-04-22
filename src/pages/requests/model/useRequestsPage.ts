@@ -13,16 +13,16 @@ import {
   MENTOR_SENT_DEFAULT_FILTER,
   REQUEST_DEFAULT_CATEGORY_FILTER,
 } from "@/pages/requests/model/constants";
-import { mapMentorBroadcastToSentRow } from "@/pages/requests/model/mapSentMentorBroadcast";
-import { mapReceivedUserSuggestionToRow } from "@/pages/requests/model/mapReceivedUserSuggestion";
 import {
   buildRequestSlotCardViewModel,
   buildRequestsEmptyCard,
+  mapMentorBroadcastToSentRow,
+  mapMentorshipInboxItemToRow,
+  mapReceivedUserSuggestionToRow,
+  mapTeamJoinInboxItemToRow,
   toRequestSentCardViewModel,
   toRequestSuggestionCardViewModel,
-} from "@/pages/requests/model/mappers";
-import { mapMentorshipInboxItemToRow } from "@/pages/requests/model/mapReceivedMentorship";
-import { mapTeamJoinInboxItemToRow } from "@/pages/requests/model/mapReceivedTeamJoin";
+} from "@/pages/requests/model/lib/mappers";
 import type {
   MentorSentFilter,
   MentorSentTargetKind,

@@ -10,7 +10,7 @@ import {
 import { useTeamsListQuery } from "@/entities/teams";
 import { useHostAuthSession } from "@/features/auth";
 import { serializeEditorForDirty } from "@/pages/boards/lib/editor-state-snapshot";
-import { type BoardAssignFormValues } from "@/pages/boards/model/boardAssignSchema";
+import { type BoardAssignFormValues } from "@/pages/boards/model/schema/board-assign";
 import { useBoardsTactics } from "@/pages/boards/model/useBoardsTactics";
 import {
   BoardCard,

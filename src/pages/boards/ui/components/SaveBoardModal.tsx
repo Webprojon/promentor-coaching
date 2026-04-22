@@ -11,7 +11,7 @@ import { FieldError } from "@/pages/teams/ui/components/FieldError";
 import {
   type BoardAssignFormValues,
   boardAssignSchema,
-} from "@/pages/boards/model/boardAssignSchema";
+} from "@/pages/boards/model/schema/board-assign";
 import { SHARED_TEXT_FIELD_CLASS } from "@/shared/model/constants";
 import { FormField, Modal, Select } from "@/shared/ui";
 

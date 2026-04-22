@@ -10,13 +10,13 @@ import {
   useTeamsListQuery,
   useUpdateTeamMutation,
 } from "@/entities/teams";
-import { mapListItemToTeamRow, mapUserToMemberOption } from "@/pages/teams/model/mapTeamFromApi";
+import { mapListItemToTeamRow, mapUserToMemberOption } from "@/pages/teams/model/lib/map-team";
 import {
   addManualMemberSchema,
   createTeamSchema,
   type AddManualMemberFormValues,
   type CreateTeamFormValues,
-} from "@/pages/teams/model/teamCreatorSchema";
+} from "@/pages/teams/model/schema/team-creator";
 import { useHostAuthSession } from "@/features/auth/model/useHostAuthSession";
 
 export function useTeamsPage() {

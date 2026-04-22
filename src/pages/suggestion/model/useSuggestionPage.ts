@@ -14,7 +14,7 @@ import {
   SUGGESTION_PRIORITIES_UI,
   suggestionPriorityFromApi,
   suggestionPriorityToApi,
-} from "@/pages/suggestion/model/suggestionPriority";
+} from "@/pages/suggestion/model/lib/suggestion-priority";
 import type {
   SuggestionComposerFields,
   SuggestionHistoryItemVm,

@@ -13,10 +13,10 @@ import {
 } from "@/entities/requests";
 import { useMentorsQuery } from "@/entities/mentors";
 import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
-import { mapMentorFromApi } from "@/pages/mentors/model/mapMentorFromApi";
+import { mapMentorFromApi } from "@/pages/mentors/model/lib/map-mentor";
 import {
   createEmptyMentorDraft,
-} from "@/pages/mentors/model/utils";
+} from "@/pages/mentors/model/lib/utils";
 import type { Mentor, WizardStep } from "@/pages/mentors/model/types";
 
 export function useMentorsPage() {
