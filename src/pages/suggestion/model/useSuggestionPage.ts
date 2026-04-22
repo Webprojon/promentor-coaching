@@ -22,18 +22,14 @@ import {
   suggestionPriorityFromApi,
   suggestionPriorityToApi,
 } from "@/pages/suggestion/model/lib/suggestion-priority";
-import type {
-  SuggestionHistoryItemVm,
-} from "@/pages/suggestion/model/types";
+import type { SuggestionHistoryItemVm } from "@/pages/suggestion/model/types";
 
 function targetLabelFromSent(row: UserSuggestionSent): string {
   if (row.scope === "TEAM") {
     return row.teamName ? `Team · ${row.teamName}` : "Team";
   }
   if (row.scope === "MENTOR") {
-    return row.targetMentorName
-      ? `Mentor · ${row.targetMentorName}`
-      : "Mentor";
+    return row.targetMentorName ? `Mentor · ${row.targetMentorName}` : "Mentor";
   }
   return row.boardName ? `Board · ${row.boardName}` : "Board";
 }
@@ -86,7 +82,8 @@ export function useSuggestionPage() {
 
   const targetError = errors.teamId?.message ?? null;
 
-  const anyOptionAvailable = teams.length > 0 || mentors.length > 0 || boards.length > 0;
+  const anyOptionAvailable =
+    teams.length > 0 || mentors.length > 0 || boards.length > 0;
 
   const canSend =
     enabled &&
@@ -95,15 +92,15 @@ export function useSuggestionPage() {
     !createMutation.isPending &&
     !updateMutation.isPending;
 
-  const historyItems: SuggestionHistoryItemVm[] = (mySuggestionsQuery.data ?? []).map(
-    (row) => ({
-      id: row.id,
-      title: row.title,
-      detail: row.detail,
-      priority: suggestionPriorityFromApi(row.priority),
-      targetLabel: targetLabelFromSent(row),
-    }),
-  );
+  const historyItems: SuggestionHistoryItemVm[] = (
+    mySuggestionsQuery.data ?? []
+  ).map((row) => ({
+    id: row.id,
+    title: row.title,
+    detail: row.detail,
+    priority: suggestionPriorityFromApi(row.priority),
+    targetLabel: targetLabelFromSent(row),
+  }));
 
   const applySentToForm = (row: UserSuggestionSent) => {
     form.reset({

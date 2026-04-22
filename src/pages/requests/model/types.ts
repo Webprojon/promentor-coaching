@@ -46,10 +46,7 @@ export type RequestInboxDirection = "sent" | "received";
 
 export type RequestCategoryFilter = RequestCategory | "all";
 
-export type MentorSentTargetKind =
-  | "teams"
-  | "interns"
-  | "boards";
+export type MentorSentTargetKind = "teams" | "interns" | "boards";
 
 export type MentorSentRequestSendFieldset = {
   primaryLabel: string;

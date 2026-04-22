@@ -31,11 +31,16 @@ describe("send-request wizard utils", () => {
   });
 
   it("canProceedWizardStep: step 2 requires reason and weeklyAvailability", () => {
-    const d = { ...baseDraft(), goal: "g", reason: "r", weeklyAvailability: "" };
+    const d = {
+      ...baseDraft(),
+      goal: "g",
+      reason: "r",
+      weeklyAvailability: "",
+    };
     expect(canProceedWizardStep(2, d)).toBe(false);
-    expect(
-      canProceedWizardStep(2, { ...d, weeklyAvailability: "5h" }),
-    ).toBe(true);
+    expect(canProceedWizardStep(2, { ...d, weeklyAvailability: "5h" })).toBe(
+      true,
+    );
   });
 
   it("canProceedWizardStep: step 3 is always allowed", () => {

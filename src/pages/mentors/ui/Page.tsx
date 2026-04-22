@@ -29,7 +29,11 @@ export default function MentorsPage() {
         className="mb-5"
       />
       {isMentorsLoading ? (
-        <Typography component="p" variantStyle="body" className="text-slate-400">
+        <Typography
+          component="p"
+          variantStyle="body"
+          className="text-slate-400"
+        >
           Loading mentors…
         </Typography>
       ) : rows.length === 0 ? (

@@ -53,10 +53,8 @@ export function useExploreTeamsPage() {
     );
   };
 
-  const isExploreLoading =
-    isHydrating || (canLoad && exploreQuery.isPending);
-  const showExploreEmpty =
-    !isExploreLoading && rows.length === 0;
+  const isExploreLoading = isHydrating || (canLoad && exploreQuery.isPending);
+  const showExploreEmpty = !isExploreLoading && rows.length === 0;
 
   return {
     rows,

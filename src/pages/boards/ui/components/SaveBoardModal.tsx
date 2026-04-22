@@ -141,17 +141,11 @@ export function SaveBoardModal({
         <div className="grid min-w-0 gap-2">
           <FormField label="Team">
             {teamsLoading ? (
-              <Typography
-                component="p"
-                className="text-sm text-slate-500"
-              >
+              <Typography component="p" className="text-sm text-slate-500">
                 Loading teams…
               </Typography>
             ) : teams.length === 0 ? (
-              <Typography
-                component="p"
-                className="text-sm text-slate-500"
-              >
+              <Typography component="p" className="text-sm text-slate-500">
                 No teams available. Create a team on the Teams page first.
               </Typography>
             ) : (

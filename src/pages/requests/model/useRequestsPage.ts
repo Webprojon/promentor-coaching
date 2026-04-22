@@ -60,7 +60,8 @@ export function useRequestsPage(direction: RequestInboxDirection) {
     useSentMentorBroadcastRequestsQuery(mentorSentEnabled);
   const decideTeamJoinMutation = useDecideTeamJoinRequestMutation();
   const decideMentorshipMutation = useDecideMentorshipRequestMutation();
-  const cancelMentorBroadcastMutation = useCancelMentorBroadcastRequestMutation();
+  const cancelMentorBroadcastMutation =
+    useCancelMentorBroadcastRequestMutation();
 
   const [receivedCategoryFilter, setReceivedCategoryFilter] =
     useState<RequestCategoryFilter>(REQUEST_DEFAULT_CATEGORY_FILTER);
@@ -99,33 +100,31 @@ export function useRequestsPage(direction: RequestInboxDirection) {
   });
 
   const mentorshipItems = mentorshipQuery.data ?? [];
-  const mentorshipCards: DatedSuggestionCard[] = mentorshipItems.map(
-    (item) => {
-      const row = mapMentorshipInboxItemToRow(item);
-      const base = toRequestSuggestionCardViewModel(row);
-      const pending = item.status === "PENDING";
-      return {
-        createdAt: item.createdAt,
-        card: {
-          ...base,
-          onMentorAccept: pending
-            ? () =>
-                decideMentorshipMutation.mutateAsync({
-                  requestId: item.id,
-                  action: "accept",
-                })
-            : undefined,
-          onMentorDecline: pending
-            ? () =>
-                decideMentorshipMutation.mutateAsync({
-                  requestId: item.id,
-                  action: "reject",
-                })
-            : undefined,
-        },
-      };
-    },
-  );
+  const mentorshipCards: DatedSuggestionCard[] = mentorshipItems.map((item) => {
+    const row = mapMentorshipInboxItemToRow(item);
+    const base = toRequestSuggestionCardViewModel(row);
+    const pending = item.status === "PENDING";
+    return {
+      createdAt: item.createdAt,
+      card: {
+        ...base,
+        onMentorAccept: pending
+          ? () =>
+              decideMentorshipMutation.mutateAsync({
+                requestId: item.id,
+                action: "accept",
+              })
+          : undefined,
+        onMentorDecline: pending
+          ? () =>
+              decideMentorshipMutation.mutateAsync({
+                requestId: item.id,
+                action: "reject",
+              })
+          : undefined,
+      },
+    };
+  });
 
   const receivedSuggestionItems = receivedSuggestionsQuery.data ?? [];
   const receivedSuggestionCards: DatedSuggestionCard[] =
@@ -173,8 +172,7 @@ export function useRequestsPage(direction: RequestInboxDirection) {
     mentorSentFilter,
   );
 
-  const isSentLoading =
-    mentorSentEnabled && sentMentorBroadcastQuery.isLoading;
+  const isSentLoading = mentorSentEnabled && sentMentorBroadcastQuery.isLoading;
 
   const isGridEmpty =
     direction === "received"

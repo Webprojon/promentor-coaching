@@ -28,7 +28,9 @@ export function useCreateTacticalBoardMutation() {
     meta: { notifyErrorToastId: "boards-create" },
     onSuccess: async () => {
       notifyOk("Board saved.");
-      await queryClient.invalidateQueries({ queryKey: tacticalBoardQueryKeys.all });
+      await queryClient.invalidateQueries({
+        queryKey: tacticalBoardQueryKeys.all,
+      });
     },
   });
 }
@@ -46,7 +48,9 @@ export function useUpdateTacticalBoardMutation() {
     meta: { notifyErrorToastId: "boards-update" },
     onSuccess: async () => {
       notifyOk("Board updated.");
-      await queryClient.invalidateQueries({ queryKey: tacticalBoardQueryKeys.all });
+      await queryClient.invalidateQueries({
+        queryKey: tacticalBoardQueryKeys.all,
+      });
     },
   });
 }
@@ -58,7 +62,9 @@ export function useDeleteTacticalBoardMutation() {
     meta: { notifyErrorToastId: "boards-delete" },
     onSuccess: async () => {
       notifyOk("Board deleted.");
-      await queryClient.invalidateQueries({ queryKey: tacticalBoardQueryKeys.all });
+      await queryClient.invalidateQueries({
+        queryKey: tacticalBoardQueryKeys.all,
+      });
     },
   });
 }

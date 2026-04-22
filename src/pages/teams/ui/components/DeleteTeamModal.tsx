@@ -16,7 +16,8 @@ export function DeleteTeamModal({
   onConfirm,
   isDeleting,
 }: DeleteTeamModalProps) {
-  const label = teamName.trim().length > 0 ? `“${teamName.trim()}”` : "this team";
+  const label =
+    teamName.trim().length > 0 ? `“${teamName.trim()}”` : "this team";
 
   return (
     <Modal

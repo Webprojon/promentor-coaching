@@ -19,15 +19,12 @@ function formatUpdated(iso: string) {
   return d.isValid() ? d.format("DD.MM.YYYY [at] HH:mm") : "";
 }
 
-
 export function BoardCard({ board, onMore }: BoardCardProps) {
   const typeLabel = getBoardTypeLabel(board.boardType);
   const updatedLabel = formatUpdated(board.updatedAt);
 
   return (
-    <article
-      className="relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-lg border border-white/10 bg-cyan-800/5 shadow-[0_16px_40px_rgba(2,6,23,0.55)] transition hover:border-white/15"
-    >
+    <article className="relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-lg border border-white/10 bg-cyan-800/5 shadow-[0_16px_40px_rgba(2,6,23,0.55)] transition hover:border-white/15">
       <div
         className="absolute left-0 top-0 h-full w-1 bg-cyan-900"
         aria-hidden
@@ -67,7 +64,9 @@ export function BoardCard({ board, onMore }: BoardCardProps) {
             component="p"
             className="mt-0.5 truncate text-sm text-slate-400"
           >
-            Created for: <span className="font-bold text-slate-200">{board.teamName}</span> team
+            Created for:{" "}
+            <span className="font-bold text-slate-200">{board.teamName}</span>{" "}
+            team
           </Typography>
         </div>
 

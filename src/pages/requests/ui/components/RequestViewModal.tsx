@@ -84,9 +84,7 @@ function RequestViewModalCard({
             >
               Priority
             </Typography>
-            <Badge
-              toneClassName={SUGGESTION_PRIORITY_API_BADGE[priorityLevel]}
-            >
+            <Badge toneClassName={SUGGESTION_PRIORITY_API_BADGE[priorityLevel]}>
               {SUGGESTION_PRIORITY_API_LABEL[priorityLevel]}
             </Badge>
           </div>

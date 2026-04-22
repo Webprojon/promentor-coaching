@@ -29,7 +29,11 @@ export default function ExploreTeamsPage() {
         className="mb-5"
       />
       {isExploreLoading ? (
-        <Typography component="p" variantStyle="body" className="text-slate-400">
+        <Typography
+          component="p"
+          variantStyle="body"
+          className="text-slate-400"
+        >
           Loading teams…
         </Typography>
       ) : showExploreEmpty ? (

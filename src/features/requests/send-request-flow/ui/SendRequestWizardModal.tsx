@@ -1,6 +1,9 @@
 import { FormProvider, type UseFormReturn } from "react-hook-form";
 import { SendRequestFlow } from "@/features/requests/send-request-flow/ui/SendRequestFlow";
-import type { RequestDraft, WizardStep } from "@/features/requests/send-request-flow/model/types";
+import type {
+  RequestDraft,
+  WizardStep,
+} from "@/features/requests/send-request-flow/model/types";
 import { Modal } from "@/shared/ui";
 
 type SendRequestWizardModalProps = {
@@ -43,8 +46,7 @@ export function SendRequestWizardModal({
           label: wizardStep === 3 ? "Send request" : "Continue",
           onClick: wizardStep === 3 ? onSubmitRequest : goNext,
           variant: "contained",
-          disabled:
-            wizardStep === 3 ? !canGoNext || isSending : !canGoNext,
+          disabled: wizardStep === 3 ? !canGoNext || isSending : !canGoNext,
         }}
       >
         <SendRequestFlow step={wizardStep} />

@@ -1,6 +1,9 @@
 import { useRef, useState } from "react";
 import { Typography } from "@promentorapp/ui-kit";
-import type { CreateTacticalBoardBody, TacticalBoardRecord } from "@/entities/boards";
+import type {
+  CreateTacticalBoardBody,
+  TacticalBoardRecord,
+} from "@/entities/boards";
 import {
   useCreateTacticalBoardMutation,
   useDeleteTacticalBoardMutation,
@@ -274,10 +277,7 @@ export default function BoardsPage() {
             </li>
           ))}
           {isMentor ? (
-            <li
-              className="flex h-full min-h-0 p-0"
-              key="create-tactical-board"
-            >
+            <li className="flex h-full min-h-0 p-0" key="create-tactical-board">
               <CreateBoardCard onCreate={startCreate} />
             </li>
           ) : null}

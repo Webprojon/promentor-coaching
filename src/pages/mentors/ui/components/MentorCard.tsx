@@ -59,8 +59,7 @@ export function MentorCard({
           component="p"
           className="line-clamp-2 text-sm text-slate-300"
         >
-          Linked teams:{" "}
-          {linkedTeams.length > 0 ? linkedTeams.join(", ") : "—"}
+          Linked teams: {linkedTeams.length > 0 ? linkedTeams.join(", ") : "—"}
         </Typography>
       </div>
 

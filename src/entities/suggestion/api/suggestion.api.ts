@@ -9,7 +9,9 @@ import type {
 import { apiRequest } from "@/shared/api/base.api";
 
 export async function fetchMyUserSuggestions(): Promise<UserSuggestionSent[]> {
-  return apiRequest<UserSuggestionSent[]>("/user-suggestions", { method: "GET" });
+  return apiRequest<UserSuggestionSent[]>("/user-suggestions", {
+    method: "GET",
+  });
 }
 
 export async function createUserSuggestion(
@@ -56,8 +58,7 @@ export async function fetchBoardTargetsForSuggestion(): Promise<
 export async function fetchReceivedUserSuggestions(): Promise<
   UserSuggestionInbox[]
 > {
-  return apiRequest<UserSuggestionInbox[]>(
-    "/user-suggestions/received",
-    { method: "GET" },
-  );
+  return apiRequest<UserSuggestionInbox[]>("/user-suggestions/received", {
+    method: "GET",
+  });
 }

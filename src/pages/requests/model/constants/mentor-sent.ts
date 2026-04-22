@@ -1,9 +1,5 @@
 import type { IconType } from "react-icons";
-import {
-  RiLayoutGridLine,
-  RiPlantLine,
-  RiTeamLine,
-} from "react-icons/ri";
+import { RiLayoutGridLine, RiPlantLine, RiTeamLine } from "react-icons/ri";
 import type {
   MentorSentFilter,
   MentorSentRequestSendFieldset,

@@ -73,7 +73,10 @@ export function useMentorsPage() {
     const requestId = mentor.mentorshipRequestId;
     if (!requestId) return;
 
-    if (mentor.requestStatus === "Pending" || mentor.requestStatus === "Accepted") {
+    if (
+      mentor.requestStatus === "Pending" ||
+      mentor.requestStatus === "Accepted"
+    ) {
       deleteMutation.mutate(requestId);
     }
   };

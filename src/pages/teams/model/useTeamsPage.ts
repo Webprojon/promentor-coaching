@@ -10,7 +10,10 @@ import {
   useTeamsListQuery,
   useUpdateTeamMutation,
 } from "@/entities/teams";
-import { mapListItemToTeamRow, mapUserToMemberOption } from "@/pages/teams/model/lib/map-team";
+import {
+  mapListItemToTeamRow,
+  mapUserToMemberOption,
+} from "@/pages/teams/model/lib/map-team";
 import {
   addManualMemberSchema,
   createTeamSchema,

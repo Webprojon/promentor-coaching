@@ -25,10 +25,7 @@ type RequestCardProps = {
   onSentDelete?: () => void;
 };
 
-export function RequestCard({
-  viewModel,
-  onSentEdit,
-}: RequestCardProps) {
+export function RequestCard({ viewModel, onSentEdit }: RequestCardProps) {
   const [detailOpen, setDetailOpen] = useState(false);
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
@@ -117,16 +114,10 @@ export function RequestCard({
                     {viewModel.priorityLevel ? (
                       <Badge
                         toneClassName={
-                          SUGGESTION_PRIORITY_API_BADGE[
-                            viewModel.priorityLevel
-                          ]
+                          SUGGESTION_PRIORITY_API_BADGE[viewModel.priorityLevel]
                         }
                       >
-                        {
-                          SUGGESTION_PRIORITY_API_LABEL[
-                            viewModel.priorityLevel
-                          ]
-                        }
+                        {SUGGESTION_PRIORITY_API_LABEL[viewModel.priorityLevel]}
                       </Badge>
                     ) : null}
                   </>
@@ -198,9 +189,7 @@ export function RequestCard({
             : undefined
         }
         onAccept={
-          !isSentCardViewModel(viewModel)
-            ? viewModel.onMentorAccept
-            : undefined
+          !isSentCardViewModel(viewModel) ? viewModel.onMentorAccept : undefined
         }
         onDecline={
           !isSentCardViewModel(viewModel)

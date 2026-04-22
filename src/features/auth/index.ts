@@ -11,4 +11,3 @@ export {
   AUTH_SESSION_WAITING_TEXT,
   HOST_APP_LOGIN_REDIRECT_PATH,
 } from "@/features/auth/model/constants";
- 

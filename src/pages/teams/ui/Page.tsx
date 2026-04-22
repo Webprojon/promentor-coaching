@@ -44,7 +44,11 @@ export default function TeamsPage() {
         />
 
         {isLoadingTeams ? (
-          <Typography component="p" variantStyle="body" className="text-slate-400">
+          <Typography
+            component="p"
+            variantStyle="body"
+            className="text-slate-400"
+          >
             Loading teams…
           </Typography>
         ) : hasTeams ? (

@@ -112,7 +112,10 @@ export function RequestSendModal({
     "interns",
     loadInternTargets,
   );
-  const boardTargets = useMentorBroadcastTargetsQuery("boards", loadBoardTargets);
+  const boardTargets = useMentorBroadcastTargetsQuery(
+    "boards",
+    loadBoardTargets,
+  );
 
   const {
     control,
@@ -245,9 +248,7 @@ export function RequestSendModal({
         }`}
       >
         {kindIntro}
-        <div
-          className={`grid ${isCompactIntro ? "mt-3 gap-3" : "mt-5 gap-4"}`}
-        >
+        <div className={`grid ${isCompactIntro ? "mt-3 gap-3" : "mt-5 gap-4"}`}>
           <FormField label={fieldset.primaryLabel}>
             <Controller
               name="primaryPick"
@@ -278,11 +279,13 @@ export function RequestSendModal({
                 Create a team on the Teams page to send a request.
               </Typography>
             ) : null}
-            {targetKind === "interns" && !targetsLoading && internList.length === 0 ? (
+            {targetKind === "interns" &&
+            !targetsLoading &&
+            internList.length === 0 ? (
               <Typography component="p" className="mt-2 text-xs text-slate-500">
                 No accepted interns yet. Accept a mentorship on the received
-                requests flow to see people here, or use &quot;All interns&quot; for a
-                future broadcast.
+                requests flow to see people here, or use &quot;All interns&quot;
+                for a future broadcast.
               </Typography>
             ) : null}
             {targetKind === "boards" &&

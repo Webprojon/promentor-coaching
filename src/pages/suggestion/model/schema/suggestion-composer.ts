@@ -23,7 +23,9 @@ export const suggestionComposerSchema = z
     }
   });
 
-export type SuggestionComposerFormValues = z.infer<typeof suggestionComposerSchema>;
+export type SuggestionComposerFormValues = z.infer<
+  typeof suggestionComposerSchema
+>;
 
 export const SUGGESTION_FORM_DEFAULT_VALUES: SuggestionComposerFormValues = {
   teamId: "",

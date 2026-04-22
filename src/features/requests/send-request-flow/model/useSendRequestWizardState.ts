@@ -1,6 +1,9 @@
 import { useCallback, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import type { RequestDraft, WizardStep } from "@/features/requests/send-request-flow/model/types";
+import type {
+  RequestDraft,
+  WizardStep,
+} from "@/features/requests/send-request-flow/model/types";
 import {
   canProceedWizardStep,
   FIRST_WIZARD_STEP,
@@ -8,7 +11,9 @@ import {
   getPreviousWizardStep,
 } from "@/features/requests/send-request-flow/model/utils";
 
-export function useSendRequestWizardState(createEmptyDraft: () => RequestDraft) {
+export function useSendRequestWizardState(
+  createEmptyDraft: () => RequestDraft,
+) {
   const requestWizardForm = useForm<RequestDraft>({
     defaultValues: createEmptyDraft(),
     mode: "onChange",

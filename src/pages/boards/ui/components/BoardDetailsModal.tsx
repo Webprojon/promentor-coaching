@@ -53,8 +53,8 @@ export function BoardDetailsModal({
     >
       <div className="space-y-4">
         <Typography component="p" className="text-sm text-slate-400">
-          View tactical board details for your team. Changes sync across
-          members from the server.
+          View tactical board details for your team. Changes sync across members
+          from the server.
         </Typography>
         <dl className="grid gap-3 text-sm">
           <div className="flex justify-between gap-4 border-b border-white/10 py-2">

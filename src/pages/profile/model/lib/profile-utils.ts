@@ -17,7 +17,9 @@ export function splitFullNameToForm(
   };
 }
 
-export function formatProfileRole(role: UserProfile["role"] | undefined): string {
+export function formatProfileRole(
+  role: UserProfile["role"] | undefined,
+): string {
   if (role === "MENTOR") {
     return "Mentor";
   }

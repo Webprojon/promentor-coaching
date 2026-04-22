@@ -30,10 +30,12 @@ export function CreateBoardCard({ onCreate }: CreateBoardCardProps) {
           </Typography>
         </div>
 
-        <span
-          className="mt-0.5 inline-flex max-w-full items-center justify-center gap-1.5 rounded-lg border border-cyan-400/55 bg-linear-to-b from-cyan-600/30 via-teal-900/25 to-slate-950/50 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition group-hover:from-cyan-500/35 group-hover:border-cyan-300/50 sm:px-5 sm:py-2 sm:text-sm"
-        >
-          <LuPlus className="size-3.5 shrink-0 sm:size-4" strokeWidth={2.5} aria-hidden />
+        <span className="mt-0.5 inline-flex max-w-full items-center justify-center gap-1.5 rounded-lg border border-cyan-400/55 bg-linear-to-b from-cyan-600/30 via-teal-900/25 to-slate-950/50 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition group-hover:from-cyan-500/35 group-hover:border-cyan-300/50 sm:px-5 sm:py-2 sm:text-sm">
+          <LuPlus
+            className="size-3.5 shrink-0 sm:size-4"
+            strokeWidth={2.5}
+            aria-hidden
+          />
           Create new board
         </span>
       </div>

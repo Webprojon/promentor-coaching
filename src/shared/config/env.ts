@@ -38,9 +38,8 @@ function resolveApiBaseUrl(): string {
     return DEFAULT_LOCAL_API_ORIGIN;
   }
   if (typeof globalThis !== "undefined" && "location" in globalThis) {
-    const origin = (
-      globalThis as unknown as { location?: { origin?: string } }
-    ).location?.origin;
+    const origin = (globalThis as unknown as { location?: { origin?: string } })
+      .location?.origin;
     if (origin) {
       return normalizeTrustedHttpOrigin(origin);
     }

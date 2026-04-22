@@ -73,7 +73,6 @@ export function TacticsToolbar(props: TacticsToolbarProps) {
 
   const { onBack, onSave, canSave, isSaveBusy = false } = props;
 
-
   return (
     <div className="rounded-lg border border-white/10 bg-slate-900/30 p-3 shadow-lg">
       <div className="flex flex-wrap items-center gap-2">

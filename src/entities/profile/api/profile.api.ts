@@ -35,9 +35,7 @@ export async function fetchUserProfile(): Promise<UserProfile> {
   return fetchCurrentUser();
 }
 
-function profileFromPatchResponse(
-  res: UpdateUserProfileResponse,
-): UserProfile {
+function profileFromPatchResponse(res: UpdateUserProfileResponse): UserProfile {
   const profile = normalizeCurrentUser(res);
   if (!profile) {
     throw new Error("Updated profile response was empty.");
