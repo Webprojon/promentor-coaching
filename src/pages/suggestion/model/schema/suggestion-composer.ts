@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const SUGGESTION_MULTI_TARGET_ERROR =
-  "Please select only one target: a team, a mentor, or a board.";
+  "Please select only one target: a team or a mentor.";
 
 export const suggestionComposerSchema = z
   .object({

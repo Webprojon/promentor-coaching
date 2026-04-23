@@ -11,7 +11,7 @@ export default function SuggestionPage() {
     <>
       <PageHeader
         title="Suggestions"
-        description="Choose a single target (team, mentor, or board), write a clear note with priority, and review your history here. If no targets are available below yet, send the necessary requests first."
+        description="Choose a single target (a team or a mentor), write a clear note with priority, and review your history here. If no targets are available below yet, send the necessary requests first."
         className="mb-5"
       />
       <section className="grid gap-4 lg:grid-cols-[300px_minmax(0,1fr)]">
@@ -19,7 +19,6 @@ export default function SuggestionPage() {
           isTargetsLoading={state.isTargetsLoading}
           teams={state.teams}
           mentors={state.mentors}
-          boards={state.boards}
           control={state.control}
           targetError={state.targetError}
           disabled={Boolean(state.editingId)}

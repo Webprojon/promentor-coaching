@@ -87,6 +87,15 @@ function buildCreateMentorBroadcastBody(
     };
   }
 
+  if (scope === "BOARD") {
+    return {
+      scope: "BOARD",
+      boardId: values.primaryPick,
+      body: bodyText,
+      ...contextOpt,
+    };
+  }
+
   return {
     scope,
     targetLabel: selectedLabel,

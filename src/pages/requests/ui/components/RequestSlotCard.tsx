@@ -12,7 +12,7 @@ export function RequestSlotCard({ viewModel, onClick }: RequestSlotCardProps) {
 
   return (
     <article
-      className={`flex flex-col justify-center rounded-lg border border-dashed border-white/25 bg-linear-to-br from-slate-900/40 via-slate-950/70 to-slate-950/90 p-6 transition hover:border-cyan-400/45 hover:shadow-[0_0_32px_rgba(34,211,238,0.08)]`}
+      className={`flex flex-col justify-center rounded-lg border border-dashed border-white/25 bg-linear-to-br bg-slate-900/30 p-6 transition hover:border-cyan-400/45 hover:shadow-[0_0_32px_rgba(34,211,238,0.08)]`}
     >
       <div className="flex flex-col items-center gap-2 text-center">
         <div

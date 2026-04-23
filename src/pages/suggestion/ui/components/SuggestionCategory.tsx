@@ -9,7 +9,6 @@ type SuggestionCategoryProps = {
   isTargetsLoading: boolean;
   teams: SuggestionCategoryOption[];
   mentors: SuggestionCategoryOption[];
-  boards: SuggestionCategoryOption[];
   control: Control<SuggestionComposerFormValues>;
   targetError: string | null;
   disabled?: boolean;
@@ -80,7 +79,6 @@ export default function SuggestionCategory({
   isTargetsLoading,
   teams,
   mentors,
-  boards,
   control,
   targetError,
   disabled = false,
@@ -128,25 +126,6 @@ export default function SuggestionCategory({
                 field.onChange(v);
               }}
               emptyHint="No accepted mentors yet."
-              disabled={disabled}
-              isLoading={isTargetsLoading}
-            />
-          )}
-        />
-        <Controller
-          name="boardId"
-          control={control}
-          render={({ field }) => (
-            <SelectWithEmptyState
-              label="Boards"
-              ariaLabel="Choose board target"
-              placeholder="Select a board"
-              options={boards}
-              value={field.value}
-              onChange={(v) => {
-                field.onChange(v);
-              }}
-              emptyHint="No boards yet."
               disabled={disabled}
               isLoading={isTargetsLoading}
             />

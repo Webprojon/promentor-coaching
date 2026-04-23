@@ -7,6 +7,7 @@ export type MentorBroadcastRequestSentItem = {
   scope: MentorBroadcastScopeDto;
   teamId: string | null;
   menteeId: string | null;
+  boardId: string | null;
   targetLabel: string;
   contextLine: string | null;
   body: string;
@@ -20,6 +21,7 @@ export type CreateMentorBroadcastRequestBody = {
   teamId?: string;
   menteeId?: string;
   allInterns?: boolean;
+  boardId?: string;
   targetLabel?: string;
   contextLine?: string;
   body: string;

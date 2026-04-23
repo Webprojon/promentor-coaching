@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTeamsListQuery } from "@/entities/teams";
 import {
-  useBoardTargetsForSuggestionQuery,
   useCreateUserSuggestionMutation,
   useDeleteUserSuggestionMutation,
   useMentorTargetsForSuggestionQuery,
@@ -42,7 +41,6 @@ export function useSuggestionPage() {
 
   const teamsQuery = useTeamsListQuery(enabled);
   const mentorTargetsQuery = useMentorTargetsForSuggestionQuery(enabled);
-  const boardTargetsQuery = useBoardTargetsForSuggestionQuery(enabled);
   const mySuggestionsQuery = useMyUserSuggestionsQuery(enabled);
 
   const createMutation = useCreateUserSuggestionMutation();
@@ -69,26 +67,17 @@ export function useSuggestionPage() {
     id: m.id,
     label: m.label,
   }));
-  const boards = (boardTargetsQuery.data ?? []).map((b) => ({
-    id: b.id,
-    label: b.name,
-  }));
-
   const isTargetsLoading =
-    enabled &&
-    (teamsQuery.isPending ||
-      mentorTargetsQuery.isPending ||
-      boardTargetsQuery.isPending);
+    enabled && (teamsQuery.isPending || mentorTargetsQuery.isPending);
 
   const targetError = errors.teamId?.message ?? null;
 
-  const anyOptionAvailable =
-    teams.length > 0 || mentors.length > 0 || boards.length > 0;
+  const anyNewTargetOption = teams.length > 0 || mentors.length > 0;
 
   const canSend =
     enabled &&
     isValid &&
-    anyOptionAvailable &&
+    (Boolean(editingId) || anyNewTargetOption) &&
     !createMutation.isPending &&
     !updateMutation.isPending;
 
@@ -178,17 +167,6 @@ export function useSuggestionPage() {
           ...bodyBase,
         })
         .then(resetAfterSuccess);
-      return;
-    }
-
-    if (data.boardId) {
-      void createMutation
-        .mutateAsync({
-          scope: "BOARD",
-          boardId: data.boardId,
-          ...bodyBase,
-        })
-        .then(resetAfterSuccess);
     }
   };
 
@@ -196,7 +174,6 @@ export function useSuggestionPage() {
     isAuthReady: !isHydrating && authed,
     teams,
     mentors,
-    boards,
     isTargetsLoading,
     control: form.control,
     targetError,
