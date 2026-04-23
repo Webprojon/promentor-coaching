@@ -1,46 +1,68 @@
 import { useState } from "react";
+import { useHostAuthSession } from "@/features/auth";
+import {
+  useCancelMentorBroadcastRequestMutation,
+  useDecideMentorshipRequestMutation,
+  useDecideTeamJoinRequestMutation,
+  useReceivedMentorshipRequestsQuery,
+  useReceivedTeamJoinRequestsQuery,
+  useSentMentorBroadcastRequestsQuery,
+} from "@/entities/requests";
+import { useReceivedUserSuggestionsQuery } from "@/entities/suggestion";
 import {
   MENTOR_SENT_DEFAULT_FILTER,
-  MOCK_MENTOR_SENT_REQUESTS,
-  MOCK_REQUEST_INBOX,
   REQUEST_DEFAULT_CATEGORY_FILTER,
 } from "@/pages/requests/model/constants";
+import { mergeReceivedRequestCards } from "@/pages/requests/model/lib/merge-received-sorted";
 import {
   buildRequestSlotCardViewModel,
   buildRequestsEmptyCard,
+  mapMentorBroadcastToSentRow,
+  mapMentorshipInboxItemToRow,
+  mapReceivedUserSuggestionToRow,
+  mapTeamJoinInboxItemToRow,
   toRequestSentCardViewModel,
   toRequestSuggestionCardViewModel,
-} from "@/pages/requests/model/mappers";
+} from "@/pages/requests/model/lib/mappers";
 import type {
   MentorSentFilter,
   MentorSentTargetKind,
   RequestCategoryFilter,
   RequestInboxDirection,
+  RequestSentCardViewModel,
+  RequestSuggestionCardViewModel,
 } from "@/pages/requests/model/types";
 
-export function useRequestModalForm(onClose: () => void) {
-  const [primaryPick, setPrimaryPick] = useState("");
-  const [angle, setAngle] = useState("");
-  const [detail, setDetail] = useState("");
-  const [extra, setExtra] = useState("");
-
-  const canSubmit = primaryPick.trim().length > 0 && detail.trim().length > 0;
-
-  return {
-    primaryPick,
-    setPrimaryPick,
-    angle,
-    setAngle,
-    detail,
-    setDetail,
-    extra,
-    setExtra,
-    submit: onClose,
-    canSubmit,
-  };
-}
+type DatedSuggestionCard = {
+  createdAt: string;
+  card: RequestSuggestionCardViewModel;
+};
 
 export function useRequestsPage(direction: RequestInboxDirection) {
+  const { session, isHydrating } = useHostAuthSession();
+  const isMentor = session.user?.role === "MENTOR";
+  const authed = session.isAuthenticated;
+
+  const mentorReceivedEnabled =
+    direction === "received" && !isHydrating && authed && isMentor;
+
+  const mentorSentEnabled =
+    direction === "sent" && !isHydrating && authed && isMentor;
+
+  const teamJoinQuery = useReceivedTeamJoinRequestsQuery(mentorReceivedEnabled);
+  const mentorshipQuery = useReceivedMentorshipRequestsQuery(
+    mentorReceivedEnabled,
+  );
+  const receivedSuggestionsQuery = useReceivedUserSuggestionsQuery(
+    mentorReceivedEnabled,
+  );
+  const sentMentorBroadcastQuery =
+    useSentMentorBroadcastRequestsQuery(mentorSentEnabled);
+  const decideTeamJoinMutation = useDecideTeamJoinRequestMutation();
+  const decideMentorshipMutation = useDecideMentorshipRequestMutation();
+  const cancelMentorBroadcastMutation =
+    useCancelMentorBroadcastRequestMutation();
+
   const [receivedCategoryFilter, setReceivedCategoryFilter] =
     useState<RequestCategoryFilter>(REQUEST_DEFAULT_CATEGORY_FILTER);
   const [mentorSentFilter, setMentorSentFilter] = useState<MentorSentFilter>(
@@ -50,30 +72,98 @@ export function useRequestsPage(direction: RequestInboxDirection) {
   const [createModalKind, setCreateModalKind] =
     useState<MentorSentTargetKind | null>(null);
 
-  const filteredReceivedRows =
-    direction !== "received"
-      ? []
-      : MOCK_REQUEST_INBOX.filter(
-          (r) =>
-            r.direction === "received" &&
-            (receivedCategoryFilter === "all" ||
-              r.category === receivedCategoryFilter),
-        );
+  const teamJoinItems = teamJoinQuery.data ?? [];
+  const teamJoinCards: DatedSuggestionCard[] = teamJoinItems.map((item) => {
+    const row = mapTeamJoinInboxItemToRow(item);
+    const base = toRequestSuggestionCardViewModel(row);
+    const pending = item.status === "PENDING";
+    return {
+      createdAt: item.createdAt,
+      card: {
+        ...base,
+        onMentorAccept: pending
+          ? () =>
+              decideTeamJoinMutation.mutateAsync({
+                requestId: item.id,
+                action: "accept",
+              })
+          : undefined,
+        onMentorDecline: pending
+          ? () =>
+              decideTeamJoinMutation.mutateAsync({
+                requestId: item.id,
+                action: "reject",
+              })
+          : undefined,
+      },
+    };
+  });
 
-  const filteredMentorSentRows =
-    direction !== "sent"
-      ? []
-      : mentorSentFilter === "all"
-        ? MOCK_MENTOR_SENT_REQUESTS
-        : MOCK_MENTOR_SENT_REQUESTS.filter(
-            (r) => r.targetKind === mentorSentFilter,
-          );
+  const mentorshipItems = mentorshipQuery.data ?? [];
+  const mentorshipCards: DatedSuggestionCard[] = mentorshipItems.map((item) => {
+    const row = mapMentorshipInboxItemToRow(item);
+    const base = toRequestSuggestionCardViewModel(row);
+    const pending = item.status === "PENDING";
+    return {
+      createdAt: item.createdAt,
+      card: {
+        ...base,
+        onMentorAccept: pending
+          ? () =>
+              decideMentorshipMutation.mutateAsync({
+                requestId: item.id,
+                action: "accept",
+              })
+          : undefined,
+        onMentorDecline: pending
+          ? () =>
+              decideMentorshipMutation.mutateAsync({
+                requestId: item.id,
+                action: "reject",
+              })
+          : undefined,
+      },
+    };
+  });
 
-  const receivedCardRows = filteredReceivedRows.map(
-    toRequestSuggestionCardViewModel,
+  const receivedSuggestionItems = receivedSuggestionsQuery.data ?? [];
+  const receivedSuggestionCards: DatedSuggestionCard[] =
+    receivedSuggestionItems.map((item) => {
+      const row = mapReceivedUserSuggestionToRow(item);
+      return {
+        createdAt: item.createdAt,
+        card: toRequestSuggestionCardViewModel(row),
+      };
+    });
+
+  let receivedCardRows: RequestSuggestionCardViewModel[] = [];
+  if (direction === "received" && authed && mentorReceivedEnabled) {
+    if (receivedCategoryFilter === "all") {
+      receivedCardRows = mergeReceivedRequestCards(
+        teamJoinCards,
+        mentorshipCards,
+        receivedSuggestionCards,
+      );
+    } else if (receivedCategoryFilter === "team_join") {
+      receivedCardRows = teamJoinCards.map((x) => x.card);
+    } else if (receivedCategoryFilter === "mentorship") {
+      receivedCardRows = mentorshipCards.map((x) => x.card);
+    } else if (receivedCategoryFilter === "suggestion") {
+      receivedCardRows = receivedSuggestionCards.map((x) => x.card);
+    }
+  }
+
+  const sentBroadcastItems = sentMentorBroadcastQuery.data ?? [];
+  const cancelBroadcast = (id: string) =>
+    cancelMentorBroadcastMutation.mutateAsync(id);
+  const sentRows = sentBroadcastItems.map((item) =>
+    mapMentorBroadcastToSentRow(item, cancelBroadcast),
   );
-
-  const mentorSentCardRows = filteredMentorSentRows.map(
+  const sentFiltered =
+    mentorSentFilter === "all"
+      ? sentRows
+      : sentRows.filter((r) => r.targetKind === mentorSentFilter);
+  const mentorSentCardRows: RequestSentCardViewModel[] = sentFiltered.map(
     toRequestSentCardViewModel,
   );
 
@@ -82,10 +172,14 @@ export function useRequestsPage(direction: RequestInboxDirection) {
     mentorSentFilter,
   );
 
+  const isSentLoading = mentorSentEnabled && sentMentorBroadcastQuery.isLoading;
+
   const isGridEmpty =
     direction === "received"
       ? receivedCardRows.length === 0
-      : mentorSentCardRows.length === 0 && slotCardViewModel === null;
+      : isSentLoading
+        ? false
+        : mentorSentCardRows.length === 0 && slotCardViewModel === null;
 
   const emptyCard = buildRequestsEmptyCard(
     direction,
@@ -105,5 +199,11 @@ export function useRequestsPage(direction: RequestInboxDirection) {
     setCreateModalKind,
     isGridEmpty,
     emptyCard,
+    isReceivedLoading:
+      mentorReceivedEnabled &&
+      (teamJoinQuery.isLoading ||
+        mentorshipQuery.isLoading ||
+        receivedSuggestionsQuery.isLoading),
+    isSentLoading,
   };
 }

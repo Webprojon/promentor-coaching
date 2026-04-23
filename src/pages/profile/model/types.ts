@@ -15,8 +15,7 @@ export type ProfileQuickLinkId =
   | "mentors"
   | "requests"
   | "explore"
-  | "boards"
-  | "workouts";
+  | "boards";
 
 export type ProfileQuickLink = {
   to: string;
@@ -29,6 +28,15 @@ export type ProfileChangeFormValues = {
   firstName: string;
   lastName: string;
   jobTitle: string;
+};
+
+export type ProfileAboutFormValues = {
+  about: string;
+};
+
+export type ProfilePhotoFormValues = {
+  draftDataUrl: string;
+  photoRemoved: boolean;
 };
 
 export type ProfileHeroProps = {
@@ -51,11 +59,10 @@ export type ProfilePhotoModalProps = {
 };
 
 export type ProfileAboutSectionProps = {
-  draftBio: string;
+  register: UseFormRegister<ProfileAboutFormValues>;
   isChanged: boolean;
   isDisabled: boolean;
   isSaving: boolean;
-  onDraftBioChange: (value: string) => void;
   onSave: () => void;
 };
 

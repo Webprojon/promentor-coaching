@@ -11,10 +11,10 @@
     "jsx": "react-jsx",
     "strict": true,
     "skipLibCheck": true,
-    "types": ["vite/client", "temporal-polyfill/global"],
+    "types": ["vite/client", "temporal-polyfill/global", "node"],
     "paths": {
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src", "vite.config.ts"]
+  "include": ["src", "vite.config.ts", "playwright.config.ts"]
 }

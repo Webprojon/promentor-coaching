@@ -3,6 +3,7 @@ export type BoardType = "hockey" | "football";
 export type ToolKind =
   | "select"
   | "line"
+  | "freehand"
   | "arrow"
   | "rect"
   | "circle"
@@ -20,6 +21,11 @@ type BaseObject = {
 
 export type LineObject = BaseObject & {
   kind: "line";
+  points: number[];
+};
+
+export type FreehandObject = BaseObject & {
+  kind: "freehand";
   points: number[];
 };
 
@@ -56,6 +62,7 @@ export type StickerObject = BaseObject & {
 
 export type DrawableObject =
   | LineObject
+  | FreehandObject
   | ArrowObject
   | RectObject
   | CircleObject

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   HostAuthBridge,
   HostAuthSession,
@@ -8,8 +8,8 @@ import {
   normalizeCurrentUser,
 } from "@/shared/api/current-user";
 import { AppApiError } from "@/shared/api/errors";
-import { profileQueryKeys } from "@/shared/query/profileQueryKeys";
-import { queryClient } from "@/shared/query/queryClient";
+import { profileQueryKeys } from "@/entities/profile/model/profile.keys";
+import { queryClient } from "@/shared/query/query-client";
 
 const fallbackSession: HostAuthSession = {
   isAuthenticated: false,
@@ -186,7 +186,7 @@ export function useHostAuthSession() {
     };
   }, []);
 
-  const retryStandaloneAuthLoad = useCallback(() => {
+  const retryStandaloneAuthLoad = () => {
     if (isBridgeAvailable) {
       return;
     }
@@ -203,7 +203,7 @@ export function useHostAuthSession() {
         setStandaloneAuthError(result.error);
       }
     });
-  }, [isBridgeAvailable]);
+  };
 
   return {
     session,

@@ -1,21 +1,24 @@
-import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
+import { Typography } from "@promentorapp/ui-kit";
+import { SendRequestWizardModal } from "@/features/requests/send-request-flow";
 import { useExploreTeamsPage } from "@/pages/explore-teams/model/useExploreTeamsPage";
-import { SendRequestFlow } from "@/features/send-request-flow";
-import { Modal, PageHeader } from "@/shared/ui";
+import { ExploreTeamTable } from "@/pages/explore-teams/ui/components/ExploreTeamTable";
+import { EmptyListingState, PageHeader } from "@/shared/ui";
 
 export default function ExploreTeamsPage() {
   const {
     rows,
     isWizardOpen,
     wizardStep,
-    draft,
-    onChangeDraft,
+    requestWizardForm,
     onRequestClick,
     onCloseWizard,
     onSubmitRequest,
     goBack,
     goNext,
     canGoNext,
+    isSendingJoin,
+    isExploreLoading,
+    showExploreEmpty,
   } = useExploreTeamsPage();
 
   return (
@@ -25,31 +28,39 @@ export default function ExploreTeamsPage() {
         description="Discover teams that are open to requests and start a short join conversation."
         className="mb-5"
       />
-      <ExploreTeamTable rows={rows} onRequestClick={onRequestClick} />
+      {isExploreLoading ? (
+        <Typography
+          component="p"
+          variantStyle="body"
+          className="text-slate-400"
+        >
+          Loading teams…
+        </Typography>
+      ) : showExploreEmpty ? (
+        <EmptyListingState
+          title="No teams yet"
+          description="Once a team is created, it will appear here."
+        />
+      ) : (
+        <ExploreTeamTable
+          rows={rows}
+          onRequestClick={onRequestClick}
+          isSendingJoin={isSendingJoin}
+        />
+      )}
 
-      <Modal
+      <SendRequestWizardModal
+        form={requestWizardForm}
         open={isWizardOpen}
         onClose={onCloseWizard}
-        title={`Team request · Step ${wizardStep}/3`}
-        secondaryAction={{
-          label: wizardStep === 1 ? "Cancel" : "Back",
-          onClick: wizardStep === 1 ? onCloseWizard : goBack,
-          variant: "outlined",
-        }}
-        primaryAction={{
-          label: wizardStep === 3 ? "Send request" : "Continue",
-          onClick: wizardStep === 3 ? onSubmitRequest : goNext,
-          variant: "contained",
-          disabled: !canGoNext,
-        }}
-      >
-        <SendRequestFlow
-          step={wizardStep}
-          targetLabel={draft.targetName}
-          draft={draft}
-          onChange={onChangeDraft}
-        />
-      </Modal>
+        wizardStep={wizardStep}
+        goNext={goNext}
+        goBack={goBack}
+        canGoNext={canGoNext}
+        onSubmitRequest={onSubmitRequest}
+        titlePrefix="Team request"
+        isSending={isSendingJoin}
+      />
     </>
   );
 }

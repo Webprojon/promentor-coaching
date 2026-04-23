@@ -1,63 +1,51 @@
-import type { ComponentType } from "react";
 import { Button, Typography } from "@promentorapp/ui-kit";
-import { IoIosFootball } from "react-icons/io";
 import {
-  LuArrowUpRight,
-  LuCircle,
-  LuEraser,
-  LuMinus,
-  LuMousePointer2,
-  LuRadio,
-  LuRectangleHorizontal,
+  LuArrowLeft,
   LuRedo2,
   LuRotateCcw,
+  LuSave,
   LuTrash2,
-  LuTriangle,
   LuUndo2,
-  LuUserRound,
 } from "react-icons/lu";
+import {
+  getTacticsToolButtonClass,
+  TACTICS_TOOLBAR_CHIP_BASE,
+  TACTICS_TOOLBAR_CHIP_NEUTRAL,
+  TACTICS_TOOLBAR_DRAW_TOOLS,
+  TACTICS_TOOLBAR_STICKER_TOOLS,
+} from "@/pages/boards/model/constants/tactics-toolbar";
 import { useBoardsTactics } from "@/pages/boards/model/useBoardsTactics";
-import type { ToolKind } from "@/pages/boards/model/types";
 
-const DRAW_TOOLS: Array<{
-  value: ToolKind;
-  label: string;
-  icon: ComponentType<{ className?: string }>;
-}> = [
-  { value: "select", label: "Select", icon: LuMousePointer2 },
-  { value: "line", label: "Line", icon: LuMinus },
-  { value: "arrow", label: "Arrow", icon: LuArrowUpRight },
-  { value: "rect", label: "Rect", icon: LuRectangleHorizontal },
-  { value: "circle", label: "Circle", icon: LuCircle },
-  { value: "eraser", label: "Eraser", icon: LuEraser },
-];
+type TacticsToolbarProps =
+  | {
+      variant: "viewer";
+      onBack: () => void;
+    }
+  | {
+      variant: "editor";
+      onBack: () => void;
+      onSave: () => void;
+      canSave: boolean;
+      isSaveBusy?: boolean;
+    };
 
-const STICKER_TOOLS: Array<{
-  value: ToolKind;
-  label: string;
-  icon: ComponentType<{ className?: string }>;
-}> = [
-  { value: "puck", label: "Puck", icon: LuRadio },
-  { value: "cone", label: "Cone", icon: LuTriangle },
-  { value: "ball", label: "Ball", icon: IoIosFootball },
-  { value: "player", label: "Player", icon: LuUserRound },
-];
-
-function getToolButtonClass(
-  tool: ToolKind,
-  value: ToolKind,
-  palette: "draw" | "sticker",
-) {
-  if (tool === value) {
-    return palette === "draw"
-      ? "border-cyan-300/70 bg-cyan-400/10 text-cyan-100"
-      : "border-emerald-300/70 bg-emerald-400/10 text-emerald-100";
-  }
-
-  return "border-white/10 bg-white/5 text-slate-200 hover:border-white/20 hover:bg-white/10";
+function TacticsBackButton({ onBack }: { onBack: () => void }) {
+  return (
+    <Button
+      type="button"
+      onClick={onBack}
+      className={`order-first shrink-0 ${TACTICS_TOOLBAR_CHIP_BASE} ${TACTICS_TOOLBAR_CHIP_NEUTRAL}`}
+      aria-label="Back to board list"
+    >
+      <LuArrowLeft className="size-4 shrink-0" aria-hidden />
+      <Typography component="span" className="whitespace-nowrap text-sm">
+        Back to boards
+      </Typography>
+    </Button>
+  );
 }
 
-export function TacticsToolbar() {
+export function TacticsToolbar(props: TacticsToolbarProps) {
   const {
     tool,
     stroke,
@@ -73,15 +61,31 @@ export function TacticsToolbar() {
     objects,
   } = useBoardsTactics();
 
+  if (props.variant === "viewer") {
+    return (
+      <div className="rounded-lg border border-white/10 bg-slate-900/30 p-3 shadow-lg">
+        <div className="flex flex-wrap items-center gap-2">
+          <TacticsBackButton onBack={props.onBack} />
+        </div>
+      </div>
+    );
+  }
+
+  const { onBack, onSave, canSave, isSaveBusy = false } = props;
+
   return (
     <div className="rounded-lg border border-white/10 bg-slate-900/30 p-3 shadow-lg">
       <div className="flex flex-wrap items-center gap-2">
-        {DRAW_TOOLS.map(({ value, label, icon: Icon }) => (
+        <TacticsBackButton onBack={onBack} />
+
+        <div className="mx-0.5 h-8 w-px shrink-0 bg-white/20" aria-hidden />
+
+        {TACTICS_TOOLBAR_DRAW_TOOLS.map(({ value, label, icon: Icon }) => (
           <Button
             key={value}
             type="button"
             onClick={() => setTool(value)}
-            className={`flex items-center gap-2 rounded-lg border p-2 text-sm transition ${getToolButtonClass(tool, value, "draw")}`}
+            className={`${TACTICS_TOOLBAR_CHIP_BASE} ${getTacticsToolButtonClass(tool, value, "draw")}`}
             aria-label={label}
           >
             <Icon className="size-4" />
@@ -93,12 +97,12 @@ export function TacticsToolbar() {
 
         <div className="mx-1 h-8 w-0.5 bg-white/30" />
 
-        {STICKER_TOOLS.map(({ value, label, icon: Icon }) => (
+        {TACTICS_TOOLBAR_STICKER_TOOLS.map(({ value, label, icon: Icon }) => (
           <Button
             key={value}
             type="button"
             onClick={() => setTool(value)}
-            className={`flex items-center gap-2 rounded-lg border p-2 text-sm transition ${getToolButtonClass(tool, value, "sticker")}`}
+            className={`${TACTICS_TOOLBAR_CHIP_BASE} ${getTacticsToolButtonClass(tool, value, "sticker")}`}
             aria-label={label}
           >
             <Icon className="size-4" />
@@ -132,7 +136,7 @@ export function TacticsToolbar() {
             min={1}
             max={10}
             value={strokeWidth}
-            className="w-24 accent-cyan-400"
+            className="w-24 accent-neutral-300"
             onChange={(event) => setStrokeWidth(Number(event.target.value))}
           />
           <Typography
@@ -161,6 +165,17 @@ export function TacticsToolbar() {
           aria-label="Redo"
         >
           <LuRedo2 className="size-4" />
+        </Button>
+
+        <Button
+          type="button"
+          onClick={onSave}
+          disabled={!canSave || isSaveBusy}
+          className="inline-flex min-w-22 items-center justify-center gap-2 rounded-lg border border-emerald-500/40 bg-emerald-500/12 px-3 py-2 text-sm font-medium text-emerald-50/95 shadow-sm transition enabled:hover:border-emerald-400/60 enabled:hover:bg-emerald-500/22 disabled:cursor-not-allowed disabled:opacity-40"
+          aria-label="Save board"
+        >
+          <LuSave className="size-4 shrink-0" aria-hidden />
+          Save
         </Button>
 
         <Button
