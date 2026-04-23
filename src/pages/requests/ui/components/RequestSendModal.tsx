@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { TextField, Typography } from "@promentorapp/ui-kit";
 import {
@@ -143,6 +143,12 @@ export function RequestSendModal({
 
   const createMutation = useCreateMentorBroadcastRequestMutation();
 
+  const tryClose = useCallback(() => {
+    if (!createMutation.isPending) {
+      onClose();
+    }
+  }, [createMutation.isPending, onClose]);
+
   const internList = internTargets.data ?? [];
 
   let primaryOptions: { value: string; label: string }[];
@@ -153,18 +159,13 @@ export function RequestSendModal({
       ...list.map((t) => ({ value: t.id, label: t.name })),
     ];
   } else if (targetKind === "interns") {
-    const allRow =
-      internList.length > 0
-        ? [
-            {
-              value: MENTOR_BROADCAST_ALL_INTERN_VALUE,
-              label: "All interns",
-            },
-          ]
-        : [];
+    const allInternsOption = {
+      value: MENTOR_BROADCAST_ALL_INTERN_VALUE,
+      label: "All interns",
+    };
     primaryOptions = [
       { value: EMPTY, label: fieldset.emptyPrimaryLabel },
-      ...allRow,
+      allInternsOption,
       ...internList.map((t) => ({ value: t.id, label: t.label })),
     ];
   } else {
@@ -227,11 +228,11 @@ export function RequestSendModal({
   return (
     <Modal
       open={open}
-      onClose={onClose}
+      onClose={tryClose}
       title={`New request · ${meta.label}`}
       secondaryAction={{
         label: "Cancel",
-        onClick: onClose,
+        onClick: tryClose,
         variant: "outlined",
         disabled: createMutation.isPending,
       }}
