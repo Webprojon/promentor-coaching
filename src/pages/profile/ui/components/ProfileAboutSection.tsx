@@ -3,11 +3,10 @@ import { RiSparkling2Line } from "react-icons/ri";
 import type { ProfileAboutSectionProps } from "@/pages/profile/model/types";
 
 export function ProfileAboutSection({
-  draftBio,
+  register,
   isChanged,
   isDisabled,
   isSaving,
-  onDraftBioChange,
   onSave,
 }: ProfileAboutSectionProps) {
   return (
@@ -22,11 +21,10 @@ export function ProfileAboutSection({
         </Typography>
       </div>
       <textarea
-        value={draftBio}
+        {...register("about")}
         aria-label="About you"
         placeholder="Tell us about yourself"
         disabled={isDisabled || isSaving}
-        onChange={(event) => onDraftBioChange(event.target.value)}
         className="mt-2 min-h-20 w-full resize-none overflow-y-auto text-sm text-slate-200 outline-none transition placeholder:text-slate-500 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       />
       {isChanged ? (

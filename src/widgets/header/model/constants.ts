@@ -1,7 +1,6 @@
 export const mentorLinks = [
   { to: "/teams", label: "Teams" },
   { to: "/boards", label: "Boards" },
-  { to: "/workout-plans", label: "Workout Plans" },
   { to: "/requests", label: "Requests" },
   { to: "/profile", label: "Profile" },
 ];
@@ -9,5 +8,5 @@ export const mentorLinks = [
 export const regularUserLinks = [
   { to: "/explore-teams", label: "Explore Teams" },
   { to: "/mentors", label: "Mentors" },
-  { to: "/suggestion", label: "Suggestion" },
+  { to: "/suggestion", label: "Suggestions" },
 ];

@@ -10,7 +10,6 @@ import { RouteLoadingFallback } from "@/app/ui/RouteLoadingFallback";
 
 const TeamsPage = lazy(() => import("@/pages/teams"));
 const BoardsPage = lazy(() => import("@/pages/boards"));
-const WorkoutPlansPage = lazy(() => import("@/pages/workout-plans"));
 const ExploreTeamsPage = lazy(() => import("@/pages/explore-teams"));
 const MentorsPage = lazy(() => import("@/pages/mentors"));
 const SuggestionPage = lazy(() => import("@/pages/suggestion"));
@@ -29,7 +28,6 @@ export default function App() {
                 <Route path="/" element={<Navigate to="/teams" replace />} />
                 <Route path="/teams" element={<TeamsPage />} />
                 <Route path="/boards" element={<BoardsPage />} />
-                <Route path="/workout-plans" element={<WorkoutPlansPage />} />
                 <Route path="/explore-teams" element={<ExploreTeamsPage />} />
                 <Route path="/mentors" element={<MentorsPage />} />
                 <Route path="/suggestion" element={<SuggestionPage />} />

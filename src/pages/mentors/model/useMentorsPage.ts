@@ -1,95 +1,99 @@
-import { useState } from "react";
-import type { RequestDraft } from "@/features/send-request-flow/model/types";
+import { useSendRequestWizardState } from "@/features/requests/send-request-flow/model/useSendRequestWizardState";
+import { createEmptyMentorRequestDraft } from "@/features/requests/send-request-flow/model/empty-drafts";
+import { useHostAuthSession } from "@/features/auth";
 import {
-  canProceedWizardStep,
-  FIRST_WIZARD_STEP,
-  getNextWizardStep,
-  getPreviousWizardStep,
-} from "@/features/send-request-flow/model/utils";
-import { MENTOR_ROWS } from "@/pages/mentors/model/constants";
-import type { Mentor, WizardStep } from "@/pages/mentors/model/types";
-import {
-  createEmptyMentorDraft,
-  getMentorActionStatus,
-} from "@/pages/mentors/model/utils";
-
-const updateMentorStatus = (
-  rows: Mentor[],
-  mentorId: string,
-  requestStatus: Mentor["requestStatus"],
-) =>
-  rows.map((mentor) =>
-    mentor.id === mentorId ? { ...mentor, requestStatus } : mentor,
-  );
+  useCreateMentorshipRequestMutation,
+  useDeleteMentorshipRequestMutation,
+} from "@/entities/requests";
+import { useMentorsQuery } from "@/entities/mentors";
+import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
+import { mapMentorFromApi } from "@/pages/mentors/model/lib/map-mentor";
+import type { Mentor } from "@/pages/mentors/model/types";
 
 export function useMentorsPage() {
-  const [mentorRows, setMentorRows] = useState<Mentor[]>(MENTOR_ROWS);
-  const [wizardStep, setWizardStep] = useState<WizardStep>(FIRST_WIZARD_STEP);
-  const [draft, setDraft] = useState<RequestDraft>(createEmptyMentorDraft);
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const { session, isHydrating } = useHostAuthSession();
+  const canLoad = !isHydrating && session.isAuthenticated;
+  const isRegularUser = session.user?.role === "REGULAR_USER";
+
+  const mentorsQuery = useMentorsQuery(canLoad);
+  const createMutation = useCreateMentorshipRequestMutation();
+  const deleteMutation = useDeleteMentorshipRequestMutation();
+
+  const rows: Mentor[] = (mentorsQuery.data ?? []).map(mapMentorFromApi);
+
+  const {
+    requestWizardForm,
+    wizardStep,
+    isWizardOpen,
+    prepareAndOpen,
+    closeWizard,
+    goNext,
+    goBack,
+    canGoNext,
+  } = useSendRequestWizardState(createEmptyMentorRequestDraft);
+
+  const isMentorsLoading = isHydrating || (canLoad && mentorsQuery.isPending);
+  const isMentorshipActionPending =
+    createMutation.isPending || deleteMutation.isPending;
 
   const onRequestClick = (mentorId: string) => {
-    const mentor = mentorRows.find((item) => item.id === mentorId);
-    if (!mentor) return;
-    setDraft({
-      ...createEmptyMentorDraft(),
-      targetId: mentor.id,
-      targetName: mentor.name,
-    });
-    setWizardStep(FIRST_WIZARD_STEP);
-    setIsWizardOpen(true);
+    const mentor = rows.find((item) => item.id === mentorId);
+    if (!mentor || !isRegularUser) return;
+    prepareAndOpen({ targetId: mentor.id, targetName: mentor.name });
   };
 
-  const onCloseWizard = () => {
-    setIsWizardOpen(false);
-    setWizardStep(FIRST_WIZARD_STEP);
-    setDraft(createEmptyMentorDraft());
-  };
-
-  const onChangeDraft = (field: keyof RequestDraft, value: string) => {
-    setDraft((previous) => ({ ...previous, [field]: value }));
-  };
+  const onCloseWizard = closeWizard;
 
   const onSubmitRequest = () => {
-    if (!draft.targetId) return;
-    setMentorRows((previous) =>
-      updateMentorStatus(previous, draft.targetId, "Pending"),
+    const values = requestWizardForm.getValues();
+    if (!values.targetId || !isRegularUser) return;
+    createMutation.mutate(
+      {
+        mentorId: values.targetId,
+        message: buildRequestMessage(values, "Mentorship request"),
+      },
+      { onSuccess: closeWizard },
     );
-    onCloseWizard();
   };
 
   const onMentorActionClick = (mentorId: string) => {
-    const mentor = mentorRows.find((item) => item.id === mentorId);
-    if (!mentor) return;
+    const mentor = rows.find((item) => item.id === mentorId);
+    if (!mentor || !isRegularUser) return;
 
     if (mentor.requestStatus === "NotRequested") {
       onRequestClick(mentorId);
       return;
     }
 
-    const nextStatus = getMentorActionStatus(mentor.requestStatus);
-    setMentorRows((previous) =>
-      updateMentorStatus(previous, mentorId, nextStatus),
-    );
+    if (mentor.requestStatus === "Declined") {
+      onRequestClick(mentorId);
+      return;
+    }
+
+    const requestId = mentor.mentorshipRequestId;
+    if (!requestId) return;
+
+    if (
+      mentor.requestStatus === "Pending" ||
+      mentor.requestStatus === "Accepted"
+    ) {
+      deleteMutation.mutate(requestId);
+    }
   };
 
-  const goNext = () => setWizardStep((previous) => getNextWizardStep(previous));
-  const goBack = () =>
-    setWizardStep((previous) => getPreviousWizardStep(previous));
-  const canGoNext = canProceedWizardStep(wizardStep, draft);
-
   return {
-    rows: mentorRows,
+    rows,
     wizardStep,
-    draft,
+    requestWizardForm,
     isWizardOpen,
-    onRequestClick,
     onMentorActionClick,
     onCloseWizard,
-    onChangeDraft,
     onSubmitRequest,
     goNext,
     goBack,
     canGoNext,
+    isMentorsLoading,
+    isMentorshipActionPending,
+    isSendingMentorship: createMutation.isPending,
   };
 }

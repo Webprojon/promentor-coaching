@@ -1,3 +1,4 @@
+import type { SuggestionPriorityApi } from "@/entities/suggestion/model/suggestion.types";
 import type { RequestStatus } from "@/shared/model/types";
 import type { IconType } from "react-icons";
 
@@ -18,6 +19,9 @@ export type RequestSuggestionCardViewModel = RequestCardSharedFields & {
   counterpartAvatarUrl?: string | null;
   status: RequestStatus;
   statusBadgeClass: string;
+  priorityLevel?: SuggestionPriorityApi;
+  onMentorAccept?: () => Promise<void>;
+  onMentorDecline?: () => Promise<void>;
 };
 
 export type RequestSentCardViewModel = RequestCardSharedFields & {
@@ -25,6 +29,7 @@ export type RequestSentCardViewModel = RequestCardSharedFields & {
   KindIcon: IconType;
   mentorName: string;
   mentorAvatarUrl?: string | null;
+  onCancelRequest: () => Promise<void>;
 };
 
 export type RequestsTabFilterOption<T extends string = string> = {
@@ -41,21 +46,12 @@ export type RequestInboxDirection = "sent" | "received";
 
 export type RequestCategoryFilter = RequestCategory | "all";
 
-export type MentorSentTargetKind =
-  | "teams"
-  | "interns"
-  | "boards"
-  | "workout_plans";
-
-export type MentorSentRequestSendOption = {
-  value: string;
-  label: string;
-};
+export type MentorSentTargetKind = "teams" | "interns" | "boards";
 
 export type MentorSentRequestSendFieldset = {
   primaryLabel: string;
   primaryAriaLabel: string;
-  primaryOptions: readonly MentorSentRequestSendOption[];
+  emptyPrimaryLabel: string;
   angleField: {
     label: string;
     ariaLabel: string;
@@ -85,6 +81,7 @@ export type MentorSentRequestRow = {
   counterpartName: string;
   summary: string;
   createdLabel: string;
+  onCancelRequest: () => Promise<void>;
 };
 
 export type RequestViewToggleOption = {
@@ -116,4 +113,5 @@ export type RequestInboxRow = {
   status: RequestStatus;
   createdLabel: string;
   counterpartAvatarUrl?: string | null;
+  priorityLevel?: SuggestionPriorityApi;
 };

@@ -36,6 +36,8 @@ function RequestsPageContent({
     setCreateModalKind,
     isGridEmpty,
     emptyCard,
+    isReceivedLoading,
+    isSentLoading,
   } = useRequestsPage(direction);
 
   const gridItems =
@@ -101,7 +103,9 @@ function RequestsPageContent({
                 hidden={!isActive}
               >
                 {isActive &&
-                  (isGridEmpty ? (
+                  (isReceivedLoading ? (
+                    <p className="mt-6 text-sm text-slate-500">Loading…</p>
+                  ) : isGridEmpty ? (
                     <RequestsEmptyCard {...emptyCard} />
                   ) : (
                     <section className="mt-6 grid gap-4 md:grid-cols-2">
@@ -126,7 +130,9 @@ function RequestsPageContent({
                 hidden={!isActive}
               >
                 {isActive &&
-                  (isGridEmpty ? (
+                  (isSentLoading ? (
+                    <p className="mt-6 text-sm text-slate-500">Loading…</p>
+                  ) : isGridEmpty ? (
                     <RequestsEmptyCard {...emptyCard} />
                   ) : (
                     <section className="mt-6 grid gap-4 md:grid-cols-2">

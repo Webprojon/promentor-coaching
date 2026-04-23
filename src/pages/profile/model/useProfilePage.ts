@@ -1,86 +1,98 @@
-import { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import { useHostAuthSession } from "@/features/auth";
 import {
-  updateMyProfileMutationOptions,
-  useDeleteMyAccountMutation,
+  updateUserProfileMutationOptions,
+  useDeleteUserAccountMutation,
   useMyProfileQuery,
-  useUpdateMyProfileMutation,
-} from "@/features/profile/api";
+  useUpdateUserProfileMutation,
+} from "@/entities/profile";
+import { PROFILE_SUCCESS_MESSAGES } from "@/pages/profile/model/constants";
 import {
   buildProfileHeader,
   joinFullName,
   splitFullNameToForm,
   trimToOptional,
-} from "@/pages/profile/model/profilePageUtils";
+} from "@/pages/profile/model/lib/profile-utils";
 import type {
+  ProfileAboutFormValues,
   ProfileChangeFormValues,
   ProfilePageUiModel,
+  ProfilePhotoFormValues,
 } from "@/pages/profile/model/types";
 import { notifyOk } from "@/shared/feedback/notify";
-
-const msg = {
-  bioSaved: "Your about section was saved.",
-  detailsUpdated: "Profile details were updated.",
-  photoRemoved: "Profile photo was removed.",
-  photoUpdated: "Profile photo was updated.",
-} as const;
 
 export function useProfilePage(): ProfilePageUiModel {
   const { session, isHydrating } = useHostAuthSession();
   const { data: profile } = useMyProfileQuery(session, isHydrating);
-  const updateBioMutation = useUpdateMyProfileMutation(
-    updateMyProfileMutationOptions.bio,
+  const updateBioMutation = useUpdateUserProfileMutation(
+    updateUserProfileMutationOptions.bio,
   );
-  const updateDetailsMutation = useUpdateMyProfileMutation(
-    updateMyProfileMutationOptions.details,
+  const updateDetailsMutation = useUpdateUserProfileMutation(
+    updateUserProfileMutationOptions.details,
   );
-  const updatePhotoMutation = useUpdateMyProfileMutation(
-    updateMyProfileMutationOptions.photo,
+  const updatePhotoMutation = useUpdateUserProfileMutation(
+    updateUserProfileMutationOptions.photo,
   );
-  const deleteAccountMutation = useDeleteMyAccountMutation();
+  const deleteAccountMutation = useDeleteUserAccountMutation();
 
-  const [draftBioOverride, setDraftBioOverride] = useState<string | null>(null);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
     useState(false);
-  const [avatarDraftDataUrl, setAvatarDraftDataUrl] = useState("");
-  const [isPhotoRemoved, setIsPhotoRemoved] = useState(false);
+
+  const aboutForm = useForm<ProfileAboutFormValues>({
+    defaultValues: { about: "" },
+    mode: "onChange",
+  });
+
+  const detailsForm = useForm<ProfileChangeFormValues>({
+    defaultValues: splitFullNameToForm("", undefined),
+    mode: "onChange",
+  });
+
+  const photoForm = useForm<ProfilePhotoFormValues>({
+    defaultValues: { draftDataUrl: "", photoRemoved: false },
+    mode: "onChange",
+  });
 
   const fullName = profile?.fullName ?? "";
   const jobTitle = profile?.jobTitle;
-
-  const { register, formState, handleSubmit, reset } =
-    useForm<ProfileChangeFormValues>({
-      defaultValues: splitFullNameToForm(fullName, jobTitle),
-      mode: "onChange",
-    });
+  const savedBio = profile?.about ?? "";
+  const profileHeader = buildProfileHeader(profile);
+  const draftDataUrl =
+    useWatch({ control: photoForm.control, name: "draftDataUrl" }) ?? "";
+  const isPhotoRemoved =
+    useWatch({ control: photoForm.control, name: "photoRemoved" }) ?? false;
 
   useEffect(() => {
-    reset(splitFullNameToForm(fullName, jobTitle));
-  }, [fullName, jobTitle, reset]);
+    aboutForm.reset({ about: savedBio });
+  }, [savedBio, aboutForm]);
+
+  useEffect(() => {
+    detailsForm.reset(splitFullNameToForm(fullName, jobTitle));
+  }, [fullName, jobTitle, detailsForm]);
 
   const canEdit = session.isAuthenticated && Boolean(profile);
-  const savedBio = profile?.about ?? "";
-  const draftBio = draftBioOverride ?? savedBio;
-  const profileHeader = useMemo(() => buildProfileHeader(profile), [profile]);
+  const isAboutDirty = aboutForm.formState.isDirty;
+  const canSaveDetails = detailsForm.formState.isDirty && canEdit;
 
-  const handleBioSave = () => {
+  const handleBioFormSubmit = aboutForm.handleSubmit((values) => {
     if (!canEdit) {
       return;
     }
+    const aboutPayload = trimToOptional(values.about);
     updateBioMutation.mutate(
-      { about: trimToOptional(draftBio) },
+      { about: aboutPayload },
       {
         onSuccess: () => {
-          notifyOk(msg.bioSaved);
-          setDraftBioOverride(null);
+          notifyOk(PROFILE_SUCCESS_MESSAGES.bioSaved);
+          aboutForm.reset({ about: aboutPayload ?? "" });
         },
       },
     );
-  };
+  });
 
-  const handleChangeFormSubmit = handleSubmit((values) => {
+  const handleDetailsFormSubmit = detailsForm.handleSubmit((values) => {
     if (!canEdit) {
       return;
     }
@@ -91,39 +103,42 @@ export function useProfilePage(): ProfilePageUiModel {
       },
       {
         onSuccess: (updated) => {
-          notifyOk(msg.detailsUpdated);
-          reset(splitFullNameToForm(updated.fullName, updated.jobTitle));
+          notifyOk(PROFILE_SUCCESS_MESSAGES.detailsUpdated);
+          detailsForm.reset(
+            splitFullNameToForm(updated.fullName, updated.jobTitle),
+          );
         },
       },
     );
   });
 
-  const handlePhotoSave = () => {
+  const handlePhotoFormSubmit = photoForm.handleSubmit((values) => {
     if (!canEdit) {
       return;
     }
-
-    const hasNewPhoto = Boolean(avatarDraftDataUrl.trim());
-    if (!isPhotoRemoved && !hasNewPhoto) {
+    const hasNewPhoto = Boolean(values.draftDataUrl.trim());
+    if (!values.photoRemoved && !hasNewPhoto) {
       setIsPhotoModalOpen(false);
       return;
     }
-
-    const removed = isPhotoRemoved;
+    const removed = values.photoRemoved;
     updatePhotoMutation.mutate(
       {
-        avatarUrl: removed ? null : trimToOptional(avatarDraftDataUrl),
+        avatarUrl: removed ? null : trimToOptional(values.draftDataUrl),
       },
       {
         onSuccess: () => {
-          notifyOk(removed ? msg.photoRemoved : msg.photoUpdated);
+          notifyOk(
+            removed
+              ? PROFILE_SUCCESS_MESSAGES.photoRemoved
+              : PROFILE_SUCCESS_MESSAGES.photoUpdated,
+          );
           setIsPhotoModalOpen(false);
-          setAvatarDraftDataUrl("");
-          setIsPhotoRemoved(false);
+          photoForm.reset({ draftDataUrl: "", photoRemoved: false });
         },
       },
     );
-  };
+  });
 
   const openDeleteAccountModal = () => {
     if (!canEdit) {
@@ -149,38 +164,41 @@ export function useProfilePage(): ProfilePageUiModel {
   return {
     header: profileHeader,
     aboutEditor: {
-      draftBio,
-      isChanged: draftBio !== savedBio,
+      register: aboutForm.register,
+      isChanged: isAboutDirty,
       isDisabled: !canEdit,
       isSaving: updateBioMutation.isPending,
-      onDraftBioChange: setDraftBioOverride,
-      onSave: handleBioSave,
+      onSave: () => {
+        void handleBioFormSubmit();
+      },
     },
     profileChangeForm: {
-      register,
-      canSave: formState.isDirty && canEdit,
+      register: detailsForm.register,
+      canSave: canSaveDetails,
       isDisabled: !canEdit,
       isSaving: updateDetailsMutation.isPending,
-      onSubmit: handleChangeFormSubmit,
+      onSubmit: handleDetailsFormSubmit,
     },
     profilePhotoModal: {
       open: isPhotoModalOpen,
       onClose: () => setIsPhotoModalOpen(false),
       name: profileHeader.name,
       avatarUrl: profile?.avatarUrl,
-      avatarDraftDataUrl,
+      avatarDraftDataUrl: draftDataUrl,
       isPhotoRemoved,
       isDisabled: !canEdit,
       isSaving: updatePhotoMutation.isPending,
-      onAvatarDraftChange: (dataUrl: string) => {
-        setAvatarDraftDataUrl(dataUrl);
-        setIsPhotoRemoved(false);
+      onAvatarDraftChange: (dataUrl) => {
+        photoForm.setValue("draftDataUrl", dataUrl, { shouldDirty: true });
+        photoForm.setValue("photoRemoved", false, { shouldDirty: true });
       },
       onRemovePhoto: () => {
-        setAvatarDraftDataUrl("");
-        setIsPhotoRemoved(true);
+        photoForm.setValue("draftDataUrl", "", { shouldDirty: true });
+        photoForm.setValue("photoRemoved", true, { shouldDirty: true });
       },
-      onSave: handlePhotoSave,
+      onSave: () => {
+        void handlePhotoFormSubmit();
+      },
     },
     deleteAccountModal: {
       open: isDeleteAccountModalOpen,
@@ -194,8 +212,7 @@ export function useProfilePage(): ProfilePageUiModel {
       onOpenDeleteConfirm: openDeleteAccountModal,
     },
     openPhotoModal: () => {
-      setAvatarDraftDataUrl("");
-      setIsPhotoRemoved(false);
+      photoForm.reset({ draftDataUrl: "", photoRemoved: false });
       setIsPhotoModalOpen(true);
     },
   };

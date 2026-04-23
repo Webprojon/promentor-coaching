@@ -1,84 +1,74 @@
-import { useState } from "react";
-import type {
-  RequestDraft,
-  WizardStep,
-} from "@/features/send-request-flow/model/types";
-import {
-  canProceedWizardStep,
-  getNextWizardStep,
-  getPreviousWizardStep,
-} from "@/features/send-request-flow/model/utils";
-import { EXPLORE_TEAM_ROWS } from "@/pages/explore-teams/model/constants";
-import type { ExploreTeam } from "@/pages/explore-teams/model/types";
-
-const createEmptyDraft = (): RequestDraft => ({
-  targetType: "team",
-  targetId: "",
-  targetName: "",
-  goal: "",
-  reason: "",
-  weeklyAvailability: "",
-  note: "",
-});
+import { createEmptyTeamJoinRequestDraft } from "@/features/requests/send-request-flow/model/empty-drafts";
+import { useSendRequestWizardState } from "@/features/requests/send-request-flow/model/useSendRequestWizardState";
+import { useHostAuthSession } from "@/features/auth";
+import { useExploreTeamsQuery } from "@/entities/explore-teams";
+import { useCreateTeamJoinRequestMutation } from "@/entities/requests";
+import { buildRequestMessage } from "@/features/requests/send-request-flow/model/build-request-message";
+import { mapExploreTeamFromApi } from "@/pages/explore-teams/model/lib/map-explore-team";
 
 export function useExploreTeamsPage() {
-  const [exploreRows, setExploreRows] =
-    useState<ExploreTeam[]>(EXPLORE_TEAM_ROWS);
-  const [wizardStep, setWizardStep] = useState<WizardStep>(1);
-  const [draft, setDraft] = useState<RequestDraft>(createEmptyDraft);
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const rows = exploreRows;
+  const { session, isHydrating } = useHostAuthSession();
+  const canLoad = !isHydrating && session.isAuthenticated;
+
+  const exploreQuery = useExploreTeamsQuery(canLoad);
+  const joinMutation = useCreateTeamJoinRequestMutation();
+
+  const rows = (exploreQuery.data ?? []).map(mapExploreTeamFromApi);
+
+  const {
+    requestWizardForm,
+    wizardStep,
+    isWizardOpen,
+    prepareAndOpen,
+    closeWizard,
+    goNext,
+    goBack,
+    canGoNext,
+  } = useSendRequestWizardState(createEmptyTeamJoinRequestDraft);
 
   const onRequestClick = (targetId: string) => {
-    const target = exploreRows.find((row) => row.id === targetId);
-    if (!target) return;
-    setDraft({
-      ...createEmptyDraft(),
-      targetId: target.id,
-      targetName: target.teamName,
-    });
-    setWizardStep(1);
-    setIsWizardOpen(true);
+    const target = rows.find((row) => row.id === targetId);
+    if (
+      !target ||
+      (target.joinUi !== "send_request" && target.joinUi !== "declined")
+    ) {
+      return;
+    }
+    prepareAndOpen({ targetId: target.id, targetName: target.teamName });
   };
 
-  const onCloseWizard = () => {
-    setIsWizardOpen(false);
-    setWizardStep(1);
-    setDraft(createEmptyDraft());
-  };
-
-  const onChangeDraft = (field: keyof RequestDraft, value: string) => {
-    setDraft((previous) => ({ ...previous, [field]: value }));
-  };
+  const onCloseWizard = closeWizard;
 
   const onSubmitRequest = () => {
-    if (!draft.targetId) return;
-
-    setExploreRows((previous) =>
-      previous.map((row) =>
-        row.id === draft.targetId ? { ...row, requestStatus: "Pending" } : row,
-      ),
+    const values = requestWizardForm.getValues();
+    if (!values.targetId) {
+      return;
+    }
+    joinMutation.mutate(
+      {
+        teamId: values.targetId,
+        body: { message: buildRequestMessage(values, "Team join request") },
+      },
+      { onSuccess: closeWizard },
     );
-    onCloseWizard();
   };
 
-  const goNext = () => setWizardStep((previous) => getNextWizardStep(previous));
-  const goBack = () =>
-    setWizardStep((previous) => getPreviousWizardStep(previous));
-
-  const canGoNext = canProceedWizardStep(wizardStep, draft);
+  const isExploreLoading = isHydrating || (canLoad && exploreQuery.isPending);
+  const showExploreEmpty = !isExploreLoading && rows.length === 0;
 
   return {
     rows,
     wizardStep,
-    draft,
+    requestWizardForm,
     isWizardOpen,
     onRequestClick,
     onCloseWizard,
-    onChangeDraft,
     onSubmitRequest,
-    goNext,
     goBack,
+    goNext,
     canGoNext,
+    isSendingJoin: joinMutation.isPending,
+    isExploreLoading,
+    showExploreEmpty,
   };
 }

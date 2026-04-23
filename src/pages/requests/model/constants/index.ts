@@ -13,8 +13,6 @@ export {
 export {
   MENTOR_SENT_DEFAULT_FILTER,
   MENTOR_SENT_DELIVERED_BADGE_CLASS,
-  MENTOR_SENT_REQUEST_VIEW_MODAL_FOOTER_LABELS,
-  type MentorSentRequestViewModalFooterHandlers,
   mentorSentRequestViewModalFooterActions,
   MENTOR_SENT_KIND_META,
   MENTOR_SENT_REQUEST_SEND_FIELDSET,
@@ -25,9 +23,3 @@ export {
   EMPTY_STATE_MESSAGE_BY_DIRECTION,
   EMPTY_STATE_ACTION_LINKS,
 } from "./empty-state";
-
-export {
-  MOCK_CURRENT_MENTOR_SENDER,
-  MOCK_MENTOR_SENT_REQUESTS,
-  MOCK_REQUEST_INBOX,
-} from "./mock-data";
